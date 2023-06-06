@@ -1,5 +1,6 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
+import { v4 as uuid } from "uuid";
 
 export type folderType = {
   id?: string | number;
@@ -34,7 +35,7 @@ export const useFolder = create<folderStateType>()(
               folders: [
                 ...state.folders,
                 {
-                  id: 312313,
+                  id: uuid(),
                   name: uniqueName,
                 },
               ],
@@ -44,7 +45,7 @@ export const useFolder = create<folderStateType>()(
             folders: [
               ...state.folders,
               {
-                id: 312313,
+                id: uuid(),
                 name: data.name,
               },
             ],
