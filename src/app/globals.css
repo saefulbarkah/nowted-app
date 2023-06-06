@@ -79,3 +79,21 @@
     font-feature-settings: "rlig" 1, "calt" 1;
   }
 }
+
+@layer components {
+  .inactive-text{
+    color: rgba(255, 255, 255, 0.6);
+  }
+  .custom-scrollbar {
+    overflow-y: auto;
+  }
+  .custom-scrollbar::-webkit-scrollbar {
+    width: 7px;
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb {
+    @apply bg-white/[20%] rounded-md 
+  }
+  .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+    @apply bg-white/[30%]
+  }
+}
