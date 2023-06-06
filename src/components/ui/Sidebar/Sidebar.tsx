@@ -1,10 +1,11 @@
 import Image from "next/image";
 import React from "react";
-import { FiSearch, FiPlus } from "react-icons/fi";
+import { FiPlus } from "react-icons/fi";
 import { Button } from "../button";
 import FolderMenu from "./FolderMenu";
 import RecentMenu from "./RecentMenu";
 import MoreMenu from "./MoreMenu";
+import SearchNote from "./SearchNote";
 
 export const Sidebar: React.FC = () => {
   return (
@@ -20,9 +21,7 @@ export const Sidebar: React.FC = () => {
               className="object-contain w-full"
             />
           </div>
-          <Button size={"sm"} variant={"ghost"}>
-            <FiSearch className="text-[20px]" />
-          </Button>
+          <SearchNote />
         </div>
         <div className="px-[20px]">
           <Button
