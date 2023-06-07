@@ -1,8 +1,8 @@
-import { Sidebar } from "@/components/ui/Sidebar";
+import { Sidebar } from "@/components/Sidebar";
 
 import "./globals.css";
 import { Source_Sans_Pro } from "next/font/google";
-import { NoteMenu } from "@/components/ui/NoteLists";
+import { NoteMenu } from "@/components/NoteLists";
 import HydrationZustand from "@/components/HydrationZustand";
 import { Toaster } from "@/components/ui/Toaster";
 

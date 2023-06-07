@@ -2,19 +2,19 @@
 import { LuFolderOpen } from "react-icons/lu";
 import { FiEdit, FiFolderPlus, FiSave, FiTrash, FiX } from "react-icons/fi";
 import Link from "next/link";
-import { Button } from "../button";
+import { Button } from "../ui/button";
 import { useState } from "react";
 import { useFolder } from "@/store/store";
 import useValidateName from "@/hooks/useValidateName";
-import { useToast } from "../use-toast";
+import { useToast } from "../ui/use-toast";
 import { CgOptions } from "react-icons/cg";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../dropdown-menu";
-import { Tooltip, TooltipContent, TooltipProvider } from "../tooltip";
+} from "../ui/dropdown-menu";
+import { Tooltip, TooltipContent, TooltipProvider } from "../ui/tooltip";
 import { TooltipTrigger } from "@radix-ui/react-tooltip";
 
 const FolderMenu: React.FC = () => {

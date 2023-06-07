@@ -1,13 +1,13 @@
 "use client";
 import React, { useState, useMemo } from "react";
-import { Button } from "../button";
+import { Button } from "../ui/button";
 import { FiFolder, FiSearch, FiX } from "react-icons/fi";
 import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogTrigger,
-} from "../alert-dialog";
+} from "../ui/alert-dialog";
 import Link from "next/link";
 import { FiFileText } from "react-icons/fi";
 
