@@ -3,7 +3,7 @@ import { LuFolderOpen } from "react-icons/lu";
 import { FiEdit, FiFolderPlus, FiSave, FiTrash, FiX } from "react-icons/fi";
 import Link from "next/link";
 import { Button } from "../button";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { useFolder } from "@/store/store";
 import useValidateName from "@/hooks/useValidateName";
 import { useToast } from "../use-toast";
