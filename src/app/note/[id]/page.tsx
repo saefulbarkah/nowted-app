@@ -1,3 +1,5 @@
+"use server";
+import Note from "@/components/NoteEditor/Note";
 import React from "react";
 
 type Props = {
@@ -12,17 +14,11 @@ export async function generateMetadata({ params }: Props) {
   };
 }
 
-function page({ params }: any) {
+async function page({ params }: any) {
   console.log(params);
   return (
     <div>
-      content
-      <p>
-        Lorem, ipsum dolor sit amet consectetur adipisicing elit. Architecto, a
-        consequatur minus repudiandae enim alias voluptatum, aliquid quod
-        officia corporis labore voluptates cumque magnam numquam molestiae,
-        veritatis asperiores corrupti est.
-      </p>
+      <Note />
     </div>
   );
 }
