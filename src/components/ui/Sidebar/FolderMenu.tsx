@@ -3,7 +3,7 @@ import { LuFolderOpen } from "react-icons/lu";
 import { FiEdit, FiFolderPlus, FiSave, FiTrash, FiX } from "react-icons/fi";
 import Link from "next/link";
 import { Button } from "../button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useFolder } from "@/store/store";
 import useValidateName from "@/hooks/useValidateName";
 import { useToast } from "../use-toast";
@@ -68,7 +68,7 @@ const FolderMenu: React.FC = () => {
             <Button
               size={"sm"}
               variant={"ghost"}
-              onClick={() => handleAddFolder}
+              onClick={() => handleAddFolder()}
               className="px-2 py-2"
             >
               <FiSave className="text-[20px]" />
@@ -105,15 +105,26 @@ const FolderMenu: React.FC = () => {
             <div>
               <LuFolderOpen className="text-[20px]" />
             </div>
-            <input
-              type="text"
-              defaultValue={name}
-              autoFocus
-              onChange={(e) => setName(e.target.value)}
-              className={`bg-transparent outline outline-white/[5%] rounded w-auto ${
-                isError && "border border-red-500"
-              }`}
-            />
+            <div className="relative">
+              <input
+                type="text"
+                defaultValue={name}
+                autoFocus
+                onChange={(e) => setName(e.target.value)}
+                className={`bg-transparent outline outline-white/[5%] rounded w-auto ${
+                  isError && "border border-red-500"
+                }`}
+              />
+              <div
+                className={`absolute transition-all ${
+                  isError
+                    ? "inset-0 -translate-y-6 text-[14px] text-red-500 opacity-100"
+                    : "opacity-0 translate-y-0"
+                }`}
+              >
+                <p>*Folder Name is required</p>
+              </div>
+            </div>
           </div>
         )}
       </>
