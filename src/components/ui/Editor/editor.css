@@ -1,0 +1,42 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  line-height: 1.1;
+  font-weight: 600;
+}
+h1 {
+  font-size: 2.125rem;
+}
+h2 {
+  font-size: 1.875rem;
+}
+
+h3 {
+  font-size: 1.5rem;
+}
+
+h4 {
+  font-size: 1.25rem;
+}
+h5 {
+  font-size: 1.125rem;
+}
+h6 {
+  font-size: 1rem;
+}
+
+.paragraph {
+  @apply leading-relaxed text-[16px];
+  line-height: 28px;
+}
+.image-editor {
+  width: 300px;
+  height: 100%;
+}
+.link-custom {
+  text-decoration: underline;
+  @apply text-indigo-500 cursor-pointer;
+}

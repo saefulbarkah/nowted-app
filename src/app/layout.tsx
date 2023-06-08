@@ -18,11 +18,11 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={inter.className}>
+      <body className={`${inter.className} `}>
         <HydrationZustand>
           <Sidebar />
           <NoteMenu />
-          <div className="border relative ml-[655px] min-h-screen p-[50px]">
+          <div className="relative ml-[655px] min-h-screen p-[30px] custom-scrollbar">
             {children}
           </div>
           <Toaster />

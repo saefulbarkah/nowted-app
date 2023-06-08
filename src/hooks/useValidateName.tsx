@@ -8,7 +8,7 @@ type Props = {
 type returnType = {
   isError: boolean;
 };
-const useValidateName = ({ data }: Props): returnType => {
+const useValidation = ({ data }: Props): returnType => {
   const [isError, setError] = useState<boolean>(false);
   function validate() {
     if (data === "" || !data) {
@@ -24,4 +24,4 @@ const useValidateName = ({ data }: Props): returnType => {
   return { isError };
 };
 
-export default useValidateName;
+export default useValidation;

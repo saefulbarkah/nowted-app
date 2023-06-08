@@ -1,8 +1,9 @@
 "use client";
-import React from "react";
+import React, { useState } from "react";
 import Dvider from "../ui/Dvider";
 import { LuCalendarDays, LuFolder } from "react-icons/lu";
 import NoteMenuList from "./NoteMenuList";
+import { Editor } from "../ui/Editor";
 
 const Note = () => {
   return (
@@ -30,7 +31,9 @@ const Note = () => {
           <p className="font-semibold text-white">Personal</p>
         </div>
       </div>
-      <div className="min-h-screen">{/* <EditorComponent /> */}</div>
+      <div className="min-h-screen">
+        <Editor />
+      </div>
     </div>
   );
 };

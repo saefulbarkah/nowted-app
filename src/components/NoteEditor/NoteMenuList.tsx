@@ -35,17 +35,17 @@ function NoteMenuList() {
         <DropdownMenuContent className="bg-[#333333] p-[15px] translate-y-2 rounded-xl text-white w-[202px] absolute right-0 translate-x-5">
           <div className="flex flex-col gap-[15px]">
             {more.map((item, i) => (
-              <>
+              <React.Fragment key={i}>
                 {i === 2 && <Dvider />}
                 <DropdownMenuItem className="focus:bg-transparent focus:text-white text-white/[50%] cursor-pointer text-[16px]">
-                  <Link href={"#"} key={i}>
+                  <Link href={"#"}>
                     <div className="flex items-center gap-[15px]">
                       <div className="text-[20px]">{item.icon}</div>
                       <p className="truncate">{item.name}</p>
                     </div>
                   </Link>
                 </DropdownMenuItem>
-              </>
+              </React.Fragment>
             ))}
           </div>
         </DropdownMenuContent>
