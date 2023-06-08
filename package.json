@@ -9,8 +9,6 @@
     "lint": "next lint"
   },
   "dependencies": {
-    "@ckeditor/ckeditor5-build-classic": "^38.0.1",
-    "@ckeditor/ckeditor5-react": "^6.0.0",
     "@radix-ui/react-alert-dialog": "^1.0.4",
     "@radix-ui/react-context-menu": "^2.1.4",
     "@radix-ui/react-dropdown-menu": "^2.0.5",
