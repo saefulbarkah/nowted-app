@@ -71,7 +71,6 @@ const RenderFolderItem = ({ title, data, icon }: any) => {
 
 function SearchNote() {
   const [search, setSearch] = useState<string>("");
-  console.log(search);
 
   const dummyData: {
     notes: {
@@ -108,8 +107,6 @@ function SearchNote() {
     );
     return res;
   }, [search]);
-
-  console.log(searchFolderData);
 
   return (
     <>

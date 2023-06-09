@@ -1,6 +1,11 @@
 import React from "react";
 import Image from "next/image";
-const page: React.FC = () => {
+import { Metadata } from "next";
+
+export const metadata: Metadata = {
+  title: "Nowted",
+};
+function page() {
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="flex flex-col gap-[10px] items-center">
@@ -19,6 +24,6 @@ const page: React.FC = () => {
       </div>
     </div>
   );
-};
+}
 
 export default page;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import UpdateFolder from "./UpdateFolder";
 import Link from "next/link";
 import { LuFolderOpen } from "react-icons/lu";
@@ -18,6 +18,16 @@ import { Button } from "@/components/ui/button";
 import { CgOptions } from "react-icons/cg";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import useFolderState from "@/hooks/useFolderState";
+import { useFolder } from "@/store";
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogFooter,
+  AlertDialogHeader,
+} from "@/components/ui/alert-dialog";
+import { useToast } from "@/components/ui/use-toast";
 
 const DropdownMenuFolder = ({
   label,
@@ -39,7 +49,55 @@ const DropdownMenuFolder = ({
   );
 };
 
+const DialogDelete = ({ open, onOpenChange, data }: any) => {
+  const deleteFolder = useFolder((state) => state.deleteFolder);
+  const { toast } = useToast();
+
+  const handleDeleteFolder = () => {
+    if (!data) return;
+    deleteFolder(data.id);
+    setTimeout(() => {
+      toast({
+        title: "Success",
+        description: "Delete folder successfully",
+        variant: "success",
+      });
+    }, 500);
+  };
+
+  return (
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
+      <AlertDialogContent className="bg-background border-white/[20%] flex flex-col justify-center items-center min-w-[120px]">
+        <AlertDialogHeader className="text-[35px] font-semibold">
+          Are you sure ?
+        </AlertDialogHeader>
+        <p>
+          You will delete <span className="font-bold">{data.name}</span>
+        </p>
+        <AlertDialogFooter>
+          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogAction
+            onClick={() => handleDeleteFolder()}
+            className="bg-destructive/[30%] border border-destructive hover:bg-destructive/[70%] font-semibold"
+          >
+            Yes, delete it
+          </AlertDialogAction>
+        </AlertDialogFooter>
+      </AlertDialogContent>
+    </AlertDialog>
+  );
+};
+
 function FolderLists() {
+  const [dialogDelete, setDialogDelete] = useState<boolean>(false);
+  const [deleteData, setDeleteData] = useState<{
+    id: string | number;
+    name: string;
+  }>({
+    id: "",
+    name: "",
+  });
+
   const {
     setDataUpdate,
     setName,
@@ -61,6 +119,11 @@ function FolderLists() {
 
   return (
     <>
+      <DialogDelete
+        data={deleteData}
+        open={dialogDelete}
+        onOpenChange={setDialogDelete}
+      />
       {folders?.map((item, i) => (
         <div
           className="inactive-text hover:text-white hover:bg-white/[3%] px-[30px] transition rounded-md"
@@ -102,7 +165,7 @@ function FolderLists() {
                       <CgOptions className="text-[20px]" />
                     </Button>
                   </DropdownMenuTrigger>
-                  <DropdownMenuContent className="bg-background w-56 border border-white/20">
+                  <DropdownMenuContent className="bg-background border border-white/20">
                     <DropdownMenuFolder
                       icon={<FiEdit className="mr-2 text-[16px]" />}
                       label="Edit Folder"
@@ -111,7 +174,13 @@ function FolderLists() {
                     <DropdownMenuFolder
                       icon={<FiTrash className="mr-2 text-[16px]" />}
                       label="Delete Folder"
-                      onClick={() => alert("Delete folder")}
+                      onClick={() => {
+                        setDeleteData({
+                          id: item.id,
+                          name: item.name,
+                        });
+                        setDialogDelete(true);
+                      }}
                     />
                   </DropdownMenuContent>
                 </DropdownMenu>
