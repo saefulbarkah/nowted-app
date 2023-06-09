@@ -15,6 +15,7 @@ export type folderStateType = {
     name: string;
   }[];
   addFolder: (data: folderType) => void;
+  editFolder: (editData: folderType) => void;
 };
 
 export const useFolder = create<folderStateType>()(
@@ -57,6 +58,17 @@ export const useFolder = create<folderStateType>()(
                 name: data.name,
               },
             ],
+          };
+        });
+      },
+      editFolder: (data: folderType) => {
+        set((state) => {
+          const findData = state.folders.find((item) => item.id === data.id);
+          if (findData) {
+            findData.name = data.name;
+          }
+          return {
+            folders: [...state.folders],
           };
         });
       },

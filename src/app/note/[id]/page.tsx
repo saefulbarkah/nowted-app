@@ -16,7 +16,6 @@ export async function generateMetadata({ params }: Props) {
 }
 
 async function page({ params }: any) {
-  console.log(params);
   return (
     <Container>
       <Note />

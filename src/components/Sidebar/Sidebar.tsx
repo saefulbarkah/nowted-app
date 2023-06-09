@@ -2,7 +2,7 @@ import Image from "next/image";
 import React from "react";
 import { FiPlus } from "react-icons/fi";
 import { Button } from "../ui/button";
-import FolderMenu from "./FolderMenu";
+import FolderMenu from "./FolderMenu/FolderMenu";
 import RecentMenu from "./RecentMenu";
 import MoreMenu from "./MoreMenu";
 import SearchNote from "./SearchNote";
