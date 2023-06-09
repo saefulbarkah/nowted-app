@@ -1,11 +1,12 @@
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
 import { v4 as uuid } from "uuid";
+import { noteType } from "./noteStore";
 
 export type folderType = {
   id?: string | number;
   name: string;
-  notes_lists?: noteType[];
+  notes_lists?: noteType[] | null;
 };
 
 export type folderStateType = {
@@ -19,7 +20,13 @@ export type folderStateType = {
 export const useFolder = create<folderStateType>()(
   persist(
     (set) => ({
-      folders: [],
+      folders: [
+        {
+          id: uuid(),
+          name: "default folder",
+          notes_lists: null,
+        },
+      ],
       addFolder: (data: folderType) => {
         set((state) => {
           const filterName = state.folders.filter((item) =>
@@ -56,33 +63,6 @@ export const useFolder = create<folderStateType>()(
     }),
     {
       name: "folder-notes",
-    }
-  )
-);
-
-export type noteType = {
-  id: string | number;
-  title: string;
-  date: Date;
-  content: string;
-  folder_id?: number | null;
-  is_favorites?: boolean;
-  is_on_trash?: boolean;
-  is_on_archived_notes?: boolean;
-};
-
-export type noteState = {
-  notes: noteType[];
-  saveNote?: (data: string | number | Date | boolean) => void;
-};
-
-export const useNotes = create<noteState>()(
-  persist(
-    (set) => ({
-      notes: [],
-    }),
-    {
-      name: "notes",
     }
   )
 );

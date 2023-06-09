@@ -4,7 +4,7 @@ import { FiEdit, FiFolderPlus, FiSave, FiTrash, FiX } from "react-icons/fi";
 import Link from "next/link";
 import { Button } from "../ui/button";
 import { useState } from "react";
-import { useFolder } from "@/store/store";
+import { useFolder } from "@/store";
 import useValidateName from "@/hooks/useValidateName";
 import { useToast } from "../ui/use-toast";
 import { CgOptions } from "react-icons/cg";
