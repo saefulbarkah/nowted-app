@@ -7,6 +7,8 @@ import React from "react";
 import { FiFolderPlus, FiSave, FiX } from "react-icons/fi";
 
 function CreateOrUpdateFolder() {
+  // state global
+  const updateFolder = useFolder((state) => state.editFolder);
   // Hooks
   const {
     createFolder,
@@ -15,6 +17,7 @@ function CreateOrUpdateFolder() {
     setEditFolder,
     name,
     setName,
+    dataUpdate,
   } = useFolderState();
   const { isError } = useValidation({
     data: name,
@@ -44,10 +47,10 @@ function CreateOrUpdateFolder() {
     if (editFolder) {
       setEditFolder(false);
       setName("My New Folder");
-      // updateFolder({
-      //   id: dataUpdate.id,
-      //   name: name,
-      // });
+      updateFolder({
+        id: dataUpdate.id,
+        name: name,
+      });
       return;
     }
 
