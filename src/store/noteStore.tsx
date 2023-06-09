@@ -1,16 +1,6 @@
+import { noteType } from "@/types/note";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-export type noteType = {
-  id: string | number;
-  title: string;
-  date: Date;
-  content: string;
-  folder_id?: number | null;
-  is_favorites?: boolean;
-  is_on_trash?: boolean;
-  is_on_archived_notes?: boolean;
-};
 
 export type noteState = {
   notes: noteType[];

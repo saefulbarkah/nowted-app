@@ -1,0 +1,58 @@
+generator client {
+    provider = "prisma-client-js"
+}
+
+datasource db {
+    provider = "postgresql"
+    url      = env("DATABASE_URL")
+}
+
+model Users {
+    id     String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    email  String
+    name   String
+    Note   Notes[]
+    Folder Folders[]
+}
+
+model Folders {
+    id         String   @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name       String
+    canDeleted Boolean?
+    Note       Notes[]
+    Users      Users    @relation(fields: [usersId], references: [id])
+    usersId    String   @db.Uuid
+    createdAt  DateTime @default(now())
+}
+
+model Archived {
+    id       String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    archived Notes[]
+}
+
+model Favorites {
+    id    String  @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    notes Notes[]
+}
+
+model Notes {
+    id           String    @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+    name         String
+    title        String
+    date         DateTime
+    content      String
+    isFavories   Boolean   @default(false)
+    isOnTrash    Boolean   @default(false)
+    isOnArchived Boolean   @default(false)
+    folderId     Int
+    userId       Int
+    Users        Users     @relation(fields: [usersId], references: [id])
+    usersId      String    @db.Uuid
+    createdAt    DateTime  @default(now())
+    Folders      Folders   @relation(fields: [foldersId], references: [id])
+    foldersId    String    @db.Uuid
+    Favorites    Favorites @relation(fields: [favoritesId], references: [id])
+    favoritesId  String    @db.Uuid
+    Archived     Archived  @relation(fields: [archivedId], references: [id])
+    archivedId   String    @db.Uuid
+}
