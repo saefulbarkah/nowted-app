@@ -22,9 +22,7 @@ export default function RootLayout({
         <HydrationZustand>
           <Sidebar />
           <NoteMenu />
-          <div className="relative ml-[655px] min-h-screen p-[30px] custom-scrollbar">
-            {children}
-          </div>
+          <div className="relative ml-[655px] custom-scrollbar">{children}</div>
           <Toaster />
         </HydrationZustand>
       </body>

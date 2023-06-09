@@ -1,5 +1,6 @@
 "use server";
 import Note from "@/components/NoteEditor/Note";
+import Container from "@/components/container";
 import React from "react";
 
 type Props = {
@@ -17,9 +18,9 @@ export async function generateMetadata({ params }: Props) {
 async function page({ params }: any) {
   console.log(params);
   return (
-    <div>
+    <Container>
       <Note />
-    </div>
+    </Container>
   );
 }
 
