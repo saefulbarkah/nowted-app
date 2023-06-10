@@ -56,6 +56,7 @@ function CreateOrUpdateFolder() {
 
     setCreateFolder(false);
     addFolder({ name: name });
+    setName("My New Folder");
   };
   return (
     <>

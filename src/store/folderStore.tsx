@@ -1,7 +1,6 @@
 import { create } from "zustand";
-import { persist } from "zustand/middleware";
 import { v4 as uuid } from "uuid";
-import { noteType } from "./noteStore";
+import { noteType } from "@/types/note";
 
 export type folderType = {
   id?: string | number;
@@ -21,14 +20,7 @@ export type folderStateType = {
 };
 
 export const useFolder = create<folderStateType>()((set) => ({
-  folders: [
-    {
-      id: uuid(),
-      name: "My folder",
-      notes_lists: null,
-      can_delete: false,
-    },
-  ],
+  folders: [],
   addFolder: (data: folderType) => {
     set((state) => {
       const filterName = state.folders.filter((item) =>
@@ -37,9 +29,9 @@ export const useFolder = create<folderStateType>()((set) => ({
       const existingName = filterName[filterName.length - 1];
       if (existingName) {
         let uniqueName = `${data.name}_copy`;
-        const ranomizeNumber = Math.floor(Math.random() * 1000);
+        const randomizeNumber = Math.floor(Math.random() * 1000);
         if (existingName.name.includes(uniqueName)) {
-          uniqueName = `${data.name}_copy ${ranomizeNumber}`;
+          uniqueName = `${data.name}_copy ${randomizeNumber}`;
         }
         return {
           folders: [

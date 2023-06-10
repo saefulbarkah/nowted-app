@@ -1,5 +1,4 @@
-"use client";
-import React, { useState } from "react";
+import React from "react";
 import Dvider from "../ui/Dvider";
 import { LuCalendarDays, LuFolder } from "react-icons/lu";
 import NoteMenuList from "./NoteMenuList";
