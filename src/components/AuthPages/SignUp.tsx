@@ -8,7 +8,7 @@ import React, { useState } from "react";
 import WithProvider from "./WithProvider";
 import Loading from "./loading";
 
-export const SignUp = () => {
+export const SignUp = ({ onChangeTab }: any) => {
   const [name, setName] = React.useState("");
   const [email, setEmail] = React.useState("");
   const [password, setPassword] = React.useState("");
@@ -17,19 +17,18 @@ export const SignUp = () => {
 
   const handleSignUp = async () => {
     setLoading(true);
-    try {
-      await supabase.auth.signUp({
-        email: email,
-        password: password,
-        options: {
-          emailRedirectTo: `${location.origin}/auth/callback`,
-        },
-      });
-      setLoading(false);
-    } catch (error) {
-      setLoading(false);
-      console.log(error);
-    }
+    const { error } = await supabase.auth.signUp({
+      email: email,
+      password: password,
+      options: {
+        emailRedirectTo: `${location.origin}/auth/callback`,
+      },
+    });
+    setLoading(false);
+    if (error) return;
+
+    // signup success
+    onChangeTab("signIn");
   };
 
   return (

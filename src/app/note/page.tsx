@@ -1,6 +1,12 @@
+import useCheckLogin from "@/hooks/useCheckLogin";
 import Image from "next/image";
+import { redirect } from "next/navigation";
 
 export default async function page() {
+  const { session } = await useCheckLogin();
+  if (!session) {
+    return redirect("/login");
+  }
   return (
     <div className="flex justify-center items-center h-screen">
       <div className="flex flex-col gap-[10px] items-center">

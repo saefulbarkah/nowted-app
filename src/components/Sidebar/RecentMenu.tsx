@@ -1,4 +1,6 @@
+import { slug } from "@/lib/utils";
 import Link from "next/link";
+import React from "react";
 import { FiFileText } from "react-icons/fi";
 
 export type fileType = {
@@ -19,17 +21,18 @@ const RecentMenu: React.FC = () => {
         Recents
       </p>
       <div className="flex flex-col gap-[5px]">
-        {files.map((item) => (
-          <Link
-            className="flex items-center py-[10px] space-x-[15px] inactive-text hover:text-white hover:bg-white/[3%] transition px-[30px] rounded-md"
-            href={`/note/${item.id}`}
-            key={item.id}
-          >
-            <div>
-              <FiFileText className="text-[20px]" />
-            </div>
-            <p className="truncate text-[16px]">{item.name}</p>
-          </Link>
+        {files.map((item, i) => (
+          <React.Fragment key={i}>
+            <Link
+              className="flex items-center py-[10px] space-x-[15px] inactive-text hover:text-white hover:bg-white/[3%] transition px-[30px] rounded-md"
+              href={`/note/${item.id}`}
+            >
+              <div>
+                <FiFileText className="text-[20px]" />
+              </div>
+              <p className="truncate text-[16px]">{item.name}</p>
+            </Link>
+          </React.Fragment>
         ))}
       </div>
     </div>
