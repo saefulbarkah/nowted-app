@@ -4,16 +4,13 @@ import { v4 as uuid } from "uuid";
 import { noteType } from "./noteStore";
 
 export type folderType = {
-  id?: string | number;
+  id: string;
   name: string;
   notes_lists?: noteType[] | null;
 };
 
 export type folderStateType = {
-  folders: {
-    id: string | number;
-    name: string;
-  }[];
+  folders: folderType[];
   addFolder: (data: folderType) => void;
   editFolder: (editData: folderType) => void;
   deleteFolder: (id: string | number) => void;

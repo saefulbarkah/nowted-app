@@ -18,7 +18,7 @@ import { Button } from "@/components/ui/button";
 import { CgOptions } from "react-icons/cg";
 import { FiEdit, FiTrash } from "react-icons/fi";
 import useFolderState from "@/hooks/useFolderState";
-import { useFolder } from "@/store";
+import { folderType, useFolder } from "@/store";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -28,6 +28,7 @@ import {
   AlertDialogHeader,
 } from "@/components/ui/alert-dialog";
 import { useToast } from "@/components/ui/use-toast";
+import { Skeleton } from "@/components/ui/skeleton";
 
 const DropdownMenuFolder = ({
   label,
@@ -106,9 +107,10 @@ function FolderLists() {
     editFolder,
     dataUpdate,
     createFolder,
+    loading,
   } = useFolderState();
 
-  const handleEditFolder = (item: { name: string; id: string | number }) => {
+  const handleEditFolder = (item: { name: string; id: string }) => {
     setDataUpdate({
       id: item.id,
       name: item.name,
@@ -124,7 +126,7 @@ function FolderLists() {
         open={dialogDelete}
         onOpenChange={setDialogDelete}
       />
-      {folders?.map((item, i) => (
+      {folders?.map((item: folderType, i: any) => (
         <div
           className="inactive-text hover:text-white hover:bg-white/[3%] px-[30px] transition rounded-md"
           key={i}
@@ -189,7 +191,22 @@ function FolderLists() {
           </div>
         </div>
       ))}
-      {folders.length === 0 && createFolder === false && (
+      {loading && (
+        <div className="flex flex-col gap-[15px]">
+          {Array(3)
+            .fill(null)
+            .map(() => (
+              <div className="flex items-center px-[30px] justify-between">
+                <div className="flex gap-2">
+                  <Skeleton className="h-[30px] rounded-sm w-[20px]" />
+                  <Skeleton className="h-[30px] rounded-sm w-[150px]" />
+                </div>
+                <Skeleton className="h-[30px] rounded-sm w-[20px] mr-4" />
+              </div>
+            ))}
+        </div>
+      )}
+      {folders.length === 0 && createFolder === false && !loading && (
         <p className="px-[30px] text-center text-sm">Folder is empty</p>
       )}
     </>

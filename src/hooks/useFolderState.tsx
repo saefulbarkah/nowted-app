@@ -1,8 +1,11 @@
 import { useBoundStore } from "@/components/Sidebar/FolderMenu/store/boundStateFolderStore";
-import { useFolder } from "@/store";
+import { folderType, useFolder } from "@/store";
+import { useEffect, useState } from "react";
 
 function useFolderState() {
-  const folders = useFolder((state) => state.folders);
+  const [loading, setLoading] = useState(true);
+  const [folders, setFolder] = useState<folderType[]>([]);
+  const folderStorage = useFolder((state) => state.folders);
 
   // edit folder state
   const editFolder = useBoundStore((state) => state.editFolder);
@@ -20,6 +23,11 @@ function useFolderState() {
   const name = useBoundStore((state) => state.name);
   const setName = useBoundStore((state) => state.setName);
 
+  useEffect(() => {
+    setFolder(folderStorage);
+    setLoading(false);
+  }, [folderStorage]);
+
   return {
     folders,
     editFolder,
@@ -30,6 +38,7 @@ function useFolderState() {
     setDataUpdate,
     name,
     setName,
+    loading,
   };
 }
 

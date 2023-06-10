@@ -19,12 +19,10 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} `}>
-        <HydrationZustand>
-          <Sidebar />
-          <NoteMenu />
-          <div className="relative ml-[655px] custom-scrollbar">{children}</div>
-          <Toaster />
-        </HydrationZustand>
+        <Sidebar />
+        <NoteMenu />
+        <div className="relative ml-[655px] custom-scrollbar">{children}</div>
+        <Toaster />
       </body>
     </html>
   );
