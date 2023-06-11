@@ -7,16 +7,29 @@ import FolderMenu from "./FolderMenu/FolderMenu";
 import RecentMenu from "./RecentMenu";
 import MoreMenu from "./MoreMenu";
 import SearchNote from "./SearchNote";
-import { User } from "@supabase/auth-helpers-nextjs";
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuTrigger,
 } from "../ui/dropdown-menu";
+import { useQuery } from "@tanstack/react-query";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { Skeleton } from "../ui/skeleton";
+import { useRouter } from "next/navigation";
 
-export const Sidebar = ({ user }: { user: User }) => {
+export const Sidebar = () => {
+  const supabase = createClientComponentClient();
+  const router = useRouter();
+  const { data, isLoading } = useQuery({
+    queryKey: ["user"],
+    queryFn: async () => (await supabase.auth.getUser()).data.user,
+  });
+
   async function handleSignOut() {
-    // const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut();
+    if (!error) {
+      router.replace("/login");
+    }
   }
 
   return (
@@ -35,43 +48,54 @@ export const Sidebar = ({ user }: { user: User }) => {
           <SearchNote />
         </div>
         <div className="px-[30px]">
-          <DropdownMenu>
-            <DropdownMenuTrigger asChild>
-              <Button className="h-[50px] w-full" variant={"ghost"}>
-                <div className="flex justify-between gap-2 items-center w-full">
-                  <div className="flex gap-4 w-[90%] items-center">
-                    <Image
-                      width={30}
-                      height={30}
-                      src={`${user.user_metadata.avatar_url}`}
-                      quality={100}
-                      alt="asdsad"
-                      className="rounded-full"
-                    />
-                    <p className="text-[14px] truncate">
-                      {user.user_metadata.full_name}
-                    </p>
-                  </div>
-                  <div>
-                    <FiMoreHorizontal className="text-white text-[20px]" />
-                  </div>
+          {isLoading ? (
+            <Button className="h-[50px] w-full" variant={"ghost"}>
+              <div className="flex justify-between gap-2 items-center w-full">
+                <div className="flex gap-4 w-[90%] items-center">
+                  <Skeleton className="h-[30px] w-[30px] rounded-full" />
+                  <Skeleton className="h-[20px] w-[90%]" />
                 </div>
-              </Button>
-            </DropdownMenuTrigger>
-            <DropdownMenuContent className="w-[220px] bg-background border-white/[20%] text-white/[60%]">
-              <div className="flex flex-col">
-                <Button
-                  size={"sm"}
-                  variant={"ghost"}
-                  className="font-normal flex justify-between"
-                  onClick={() => handleSignOut()}
-                >
-                  <p>Log Out</p>
-                  <FiLogOut />
-                </Button>
               </div>
-            </DropdownMenuContent>
-          </DropdownMenu>
+            </Button>
+          ) : (
+            <DropdownMenu>
+              <DropdownMenuTrigger asChild>
+                <Button className="h-[50px] w-full" variant={"ghost"}>
+                  <div className="flex justify-between gap-2 items-center w-full">
+                    <div className="flex gap-4 w-[90%] items-center">
+                      <Image
+                        width={30}
+                        height={30}
+                        src={`${data?.user_metadata.avatar_url}`}
+                        quality={100}
+                        alt="asdsad"
+                        className="rounded-full"
+                      />
+                      <p className="text-[14px] truncate">
+                        {data?.user_metadata.full_name}
+                      </p>
+                    </div>
+                    <div>
+                      <FiMoreHorizontal className="text-white text-[20px]" />
+                    </div>
+                  </div>
+                </Button>
+              </DropdownMenuTrigger>
+              <DropdownMenuContent className="w-[220px] bg-background border-white/[20%] text-white/[60%]">
+                <div className="flex flex-col">
+                  <Button
+                    size={"sm"}
+                    variant={"ghost"}
+                    className="font-normal flex justify-between"
+                    onClick={() => handleSignOut()}
+                  >
+                    <p>Log Out</p>
+                    <FiLogOut />
+                  </Button>
+                </div>
+              </DropdownMenuContent>
+            </DropdownMenu>
+          )}
         </div>
         <div className="px-[20px]">
           <Button
