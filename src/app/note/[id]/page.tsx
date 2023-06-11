@@ -9,17 +9,7 @@ export const metadata: Metadata = {
   title: "Nowted APP - note",
 };
 
-export async function checkUser() {
-  const { session, user } = await useCheckLogin();
-  return { session, user };
-}
-
 export default async function page() {
-  const { session, user } = await checkUser();
-  if (!session || !user) {
-    console.log(user);
-    return redirect("/login");
-  }
   return (
     <Container>
       <Note />
