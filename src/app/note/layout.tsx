@@ -1,7 +1,6 @@
 import { Sidebar } from "@/components/Sidebar";
 import { NoteMenu } from "@/components/NoteLists";
 import { Toaster } from "@/components/ui/Toaster";
-import { Metadata } from "next";
 import ReactQueryProvider from "@/lib/reactQueryProvider";
 import useCheckLogin from "@/hooks/useCheckLogin";
 import { redirect } from "next/navigation";

@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Source_Sans_Pro } from "next/font/google";
+import NextTopLoader from "nextjs-toploader";
 
 const inter = Source_Sans_Pro({
   subsets: ["latin"],
@@ -13,7 +14,10 @@ export default async function RootLayout({
 }) {
   return (
     <html lang="en">
-      <body className={`${inter.className}`}>{children}</body>
+      <body className={`${inter.className}`}>
+        <NextTopLoader />
+        {children}
+      </body>
     </html>
   );
 }
