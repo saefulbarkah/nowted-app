@@ -1,22 +1,10 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
-import { Base64, decode } from "js-base64";
+import React, { FormEvent, useRef } from "react";
 import { PropsEditor } from "../EditorToolbar";
 import { Button } from "../../button";
 import { FiImage } from "react-icons/fi";
 
-type imageTypesState = {
-  source: string;
-  alt: string;
-};
-
 function UploadMenu({ editor }: PropsEditor) {
-  if (!editor) return;
   const uploadRef = useRef<HTMLInputElement>(null);
-  const [image, setImage] = useState<imageTypesState>({
-    source: "",
-    alt: "",
-  });
-
   const handleUploadImages = (e: FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
     const files = target.files;
@@ -25,7 +13,7 @@ function UploadMenu({ editor }: PropsEditor) {
       reader.onload = () => {
         const base64String = reader.result;
         setTimeout(() => {
-          editor
+          editor!
             .chain()
             .focus()
             .setImage({

@@ -9,7 +9,7 @@ import {
 } from "../../select";
 
 type Props = {
-  editor?: Editor | null;
+  editor: Editor | null;
 };
 
 type headingLevelType = {
@@ -18,7 +18,6 @@ type headingLevelType = {
 };
 
 function ParagraphMenu({ editor }: Props) {
-  if (!editor) return;
   const headingLevel: headingLevelType[] = [
     {
       name: "Paragraph",
@@ -40,15 +39,15 @@ function ParagraphMenu({ editor }: Props) {
   const handleHeading = (value: number) => {
     setTimeout(() => {
       if (value === 0) {
-        editor.chain().focus().setParagraph().run();
+        editor!.chain().focus().setParagraph().run();
         return;
       }
       const levelValue = value as Level;
-      editor.chain().focus().toggleHeading({ level: levelValue }).run();
+      editor!.chain().focus().toggleHeading({ level: levelValue }).run();
     }, 500);
   };
 
-  const levelSelected = editor.getAttributes("heading");
+  const levelSelected = editor!.getAttributes("heading");
 
   return (
     <>

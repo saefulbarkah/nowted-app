@@ -16,8 +16,7 @@ function LinkMenu({ editor }: PropsEditor) {
   const { isError } = useValidation({ data: url });
   const inputRefUrl = useRef<HTMLInputElement | null>(null);
   const [isNotUrl, setIsNotUrl] = useState<boolean>(false);
-  if (!editor) return;
-  const isUrl = editor.isActive("link");
+  const isUrl = editor!.isActive("link");
 
   const handleChangeWithValidation = (
     e: React.ChangeEvent<HTMLInputElement>
@@ -45,7 +44,7 @@ function LinkMenu({ editor }: PropsEditor) {
     }
     try {
       const newUrl = new URL(url);
-      editor
+      editor!
         .chain()
         .focus()
         .extendMarkRange("link")
@@ -67,7 +66,7 @@ function LinkMenu({ editor }: PropsEditor) {
         <Button
           variant={"secondary"}
           size={"sm"}
-          onClick={() => editor.commands.unsetLink()}
+          onClick={() => editor!.commands.unsetLink()}
         >
           <FiLink className="text-[20px]" />
         </Button>

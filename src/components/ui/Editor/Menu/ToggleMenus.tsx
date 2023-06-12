@@ -4,15 +4,15 @@ import { FiBold, FiItalic, FiUnderline } from "react-icons/fi";
 import { PropsEditor } from "../EditorToolbar";
 
 function ToggleMenus({ editor }: PropsEditor) {
-  const isBold = editor?.isActive("bold");
-  const isItalic = editor?.isActive("italic");
-  const isUnderline = editor?.isActive("underline");
+  const isBold = editor!.isActive("bold");
+  const isItalic = editor!.isActive("italic");
+  const isUnderline = editor!.isActive("underline");
   return (
     <div className="flex gap-[2px] items-center">
       <Button
         variant={isBold ? "secondary" : "ghost"}
         size={"sm"}
-        onClick={() => editor?.chain().focus().toggleBold().run()}
+        onClick={() => editor!.chain().focus().toggleBold().run()}
       >
         <FiBold
           className={`text-[20px] ${
@@ -23,7 +23,7 @@ function ToggleMenus({ editor }: PropsEditor) {
       <Button
         variant={isItalic ? "secondary" : "ghost"}
         size={"sm"}
-        onClick={() => editor?.chain().focus().toggleItalic().run()}
+        onClick={() => editor!.chain().focus().toggleItalic().run()}
       >
         <FiItalic
           className={`text-[20px] ${
@@ -34,7 +34,7 @@ function ToggleMenus({ editor }: PropsEditor) {
       <Button
         variant={isUnderline ? "secondary" : "ghost"}
         size={"sm"}
-        onClick={() => editor?.chain().focus().toggleUnderline().run()}
+        onClick={() => editor!.chain().focus().toggleUnderline().run()}
       >
         <FiUnderline
           className={`text-[20px] ${
