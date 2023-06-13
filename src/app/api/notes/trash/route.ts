@@ -8,10 +8,9 @@ export async function GET(req: NextRequest) {
     where: {
       userId: userId,
       folderId: folderId,
-      deletedAt: null,
-    },
-    include: {
-      Archived: true,
+      deletedAt: {
+        not: null,
+      },
     },
   });
   return NextResponse.json(data);
