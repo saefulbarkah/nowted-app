@@ -23,6 +23,9 @@ export async function POST(req: NextRequest) {
       });
       folder = data?.id;
     }
+
+    if (body.folderId !== undefined) folder = body.folderId;
+
     await prisma.note.upsert({
       where: { id: body.id },
       update: {
