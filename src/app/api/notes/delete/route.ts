@@ -3,11 +3,11 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest) {
   try {
-    const id = req.nextUrl.searchParams.get("id") as string;
+    const body = await req.json();
     await prisma.note.updateMany({
       where: {
         id: {
-          in: id,
+          in: body.id,
         },
       },
       data: {

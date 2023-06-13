@@ -3,13 +3,13 @@ import { NextRequest, NextResponse } from "next/server";
 
 export async function GET(req: NextRequest) {
   try {
-    const userId = req.nextUrl.searchParams.get("userId") as string;
-    if (!userId) {
+    const body = await req.json();
+    if (!body.userId) {
       return NextResponse.json({ msg: "Invalid Parameters" });
     }
     const data = await prisma.archive.findMany({
       where: {
-        userId: userId,
+        userId: body.userId,
       },
       include: {
         note: true,

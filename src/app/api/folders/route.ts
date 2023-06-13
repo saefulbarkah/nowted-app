@@ -1,11 +1,11 @@
 import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
-export async function GET(request: NextRequest) {
-  const userId = request.nextUrl.searchParams.get("userId");
+export async function GET(req: Request) {
   try {
+    const body = await req.json();
     const data = await prisma.folder.findMany({
-      where: { userId: userId },
+      where: { userId: body.userId },
       include: { note: true },
     });
     return NextResponse.json(data);

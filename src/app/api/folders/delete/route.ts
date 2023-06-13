@@ -2,10 +2,10 @@ import prisma from "@/lib/db";
 import { NextRequest, NextResponse } from "next/server";
 
 export async function DELETE(req: NextRequest) {
-  const id = req.nextUrl.searchParams.get("id") as string;
+  const body = await req.json();
   await prisma.folder.delete({
     where: {
-      id: id,
+      id: body.id,
     },
   });
   return NextResponse.json({ msg: "Delete folder success" });

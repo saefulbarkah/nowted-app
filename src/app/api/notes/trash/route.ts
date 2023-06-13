@@ -1,13 +1,12 @@
 import prisma from "@/lib/db";
-import { NextResponse, NextRequest } from "next/server";
+import { NextResponse } from "next/server";
 
-export async function GET(req: NextRequest) {
-  const userId = req.nextUrl.searchParams.get("userId");
-  const folderId = req.nextUrl.searchParams.get("folderId");
+export async function GET(req: Request) {
+  const body = await req.json();
   const data = await prisma.note.findMany({
     where: {
-      userId: userId,
-      folderId: folderId,
+      userId: body.userId,
+      folderId: body.folderId,
       deletedAt: {
         not: null,
       },
