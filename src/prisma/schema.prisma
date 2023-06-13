@@ -272,7 +272,7 @@ model auth_users {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Archived {
-    id        String        @id @unique @db.Uuid
+    id        String        @id @unique @default(cuid())
     createdAt DateTime      @default(now())
     userId    String?       @db.Uuid
     noteId    String?
@@ -284,7 +284,7 @@ model Archived {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Favorites {
-    id        String        @id @unique @db.Uuid
+    id        String        @id @unique @default(cuid())
     createdAt DateTime      @default(now())
     userId    String?       @db.Uuid
     nodeId    String?
@@ -296,7 +296,7 @@ model Favorites {
 
 /// This model contains row level security and requires additional setup for migrations. Visit https://pris.ly/d/row-level-security for more info.
 model Folder {
-    id          String        @id @unique @db.Uuid
+    id          String        @id @unique @default(cuid())
     name        String
     createdAt   DateTime      @default(now())
     userId      String?       @db.Uuid
@@ -315,12 +315,12 @@ model Note {
     createdAt   DateTime      @default(now())
     userId      String?       @db.Uuid
     users       public_users? @relation(fields: [userId], references: [id], onDelete: NoAction, onUpdate: NoAction)
-    Archived    Archived?     @relation(fields: [archivedId], references: [id])
-    archivedId  String?       @db.Uuid
-    Favorites   Favorites?    @relation(fields: [favoritesId], references: [id])
-    favoritesId String?       @db.Uuid
     Folder      Folder?       @relation(fields: [folderId], references: [id])
-    folderId    String?       @db.Uuid
+    folderId    String?
+    Archived    Archived?     @relation(fields: [archivedId], references: [id])
+    archivedId  String?
+    Favorites   Favorites?    @relation(fields: [favoritesId], references: [id])
+    favoritesId String?
 
     @@schema("public")
 }
