@@ -63,7 +63,7 @@ model public_users {
   notes      notes[]
   archived   archives[]
   favorites  favorites[]
-  trashs     trashs[]
+  trashes    trashes[]
 
   @@map("users")
   @@schema("public")
@@ -107,7 +107,7 @@ model folders {
   deleted_at DateTime?
   users      public_users @relation(fields: [user_id], references: [id])
   notes      notes[]
-  trashs     trashs[]
+  trashes    trashes[]
 
   @@schema("public")
 }
@@ -125,7 +125,7 @@ model notes {
   users      public_users @relation(fields: [user_id], references: [id])
   archives   archives[]
   favorites  favorites[]
-  trashs     trashs[]
+  trashes    trashes[]
 
   @@schema("public")
 }
@@ -154,7 +154,7 @@ model favorites {
   @@schema("public")
 }
 
-model trashs {
+model trashes {
   id         String    @id @unique @default(cuid())
   user_id    String    @db.Uuid
   notes_id   String
