@@ -58,14 +58,82 @@ model public_users {
   updated_at DateTime?   @db.Timestamptz(6)
   full_name  String?
   avatar_url String?
-  users      users       @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
-  folders    folders[]
-  notes      notes[]
   archived   archives[]
   favorites  favorites[]
+  folders    folders[]
+  notes      notes[]
   trashes    trashes[]
+  users      users       @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("users")
+  @@schema("public")
+}
+
+model folders {
+  id         String       @id @unique @default(cuid())
+  name       String
+  user_id    String       @db.Uuid
+  created_at DateTime     @default(now())
+  updated_at DateTime?
+  deleted_at DateTime?
+  users      public_users @relation(fields: [user_id], references: [id])
+  notes      notes[]
+  trashes    trashes[]
+
+  @@schema("public")
+}
+
+model notes {
+  id         String       @id @unique @default(cuid())
+  name       String
+  content    String?
+  user_id    String       @db.Uuid
+  folder_id  String
+  created_at DateTime     @default(now())
+  updated_at DateTime?
+  deleted_at DateTime?
+  archives   archives[]
+  favorites  favorites[]
+  folders    folders      @relation(fields: [folder_id], references: [id])
+  users      public_users @relation(fields: [user_id], references: [id])
+  trashes    trashes[]
+
+  @@schema("public")
+}
+
+model archives {
+  id         String       @id @unique @default(cuid())
+  user_id    String       @db.Uuid
+  note_id    String
+  created_at DateTime     @default(now())
+  notes      notes        @relation(fields: [note_id], references: [id])
+  users      public_users @relation(fields: [user_id], references: [id])
+
+  @@schema("public")
+}
+
+model favorites {
+  id         String       @id @unique @default(cuid())
+  user_id    String       @db.Uuid
+  notes_id   String
+  created_at DateTime     @default(now())
+  notes      notes        @relation(fields: [notes_id], references: [id])
+  users      public_users @relation(fields: [user_id], references: [id])
+
+  @@schema("public")
+}
+
+model trashes {
+  id         String       @id @unique @default(cuid())
+  user_id    String       @db.Uuid
+  folder_id  String?
+  created_at DateTime     @default(now())
+  deleted_at DateTime?
+  note_id    String?
+  folders    folders?     @relation(fields: [folder_id], references: [id])
+  notes      notes?       @relation(fields: [note_id], references: [id])
+  users      public_users @relation(fields: [user_id], references: [id])
+
   @@schema("public")
 }
 
@@ -96,75 +164,4 @@ enum factor_type {
   webauthn
 
   @@schema("auth")
-}
-
-model folders {
-  id         String       @id @unique @default(cuid())
-  name       String
-  user_id    String       @db.Uuid
-  created_at DateTime     @default(now())
-  updated_at DateTime?
-  deleted_at DateTime?
-  users      public_users @relation(fields: [user_id], references: [id])
-  notes      notes[]
-  trashes    trashes[]
-
-  @@schema("public")
-}
-
-model notes {
-  id         String       @id @unique @default(cuid())
-  name       String
-  content    String?
-  user_id    String       @db.Uuid
-  folder_id  String
-  created_at DateTime     @default(now())
-  updated_at DateTime?
-  deleted_at DateTime?
-  folders    folders      @relation(fields: [folder_id], references: [id])
-  users      public_users @relation(fields: [user_id], references: [id])
-  archives   archives[]
-  favorites  favorites[]
-  trashes    trashes[]
-
-  @@schema("public")
-}
-
-model archives {
-  id         String   @id @unique @default(cuid())
-  user_id    String   @db.Uuid
-  notesId    String
-  created_at DateTime @default(now())
-
-  notes notes        @relation(fields: [notesId], references: [id])
-  users public_users @relation(fields: [user_id], references: [id])
-
-  @@schema("public")
-}
-
-model favorites {
-  id         String   @id @unique @default(cuid())
-  user_id    String   @db.Uuid
-  notes_id   String
-  created_at DateTime @default(now())
-
-  notes notes        @relation(fields: [notes_id], references: [id])
-  users public_users @relation(fields: [user_id], references: [id])
-
-  @@schema("public")
-}
-
-model trashes {
-  id         String    @id @unique @default(cuid())
-  user_id    String    @db.Uuid
-  notes_id   String
-  folder_id  String
-  created_at DateTime  @default(now())
-  deleted_at DateTime?
-
-  folders folders      @relation(fields: [folder_id], references: [id])
-  notes   notes        @relation(fields: [notes_id], references: [id])
-  users   public_users @relation(fields: [user_id], references: [id])
-
-  @@schema("public")
 }
