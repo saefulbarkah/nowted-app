@@ -46,9 +46,295 @@ model users {
   reauthentication_sent_at    DateTime?     @db.Timestamptz(6)
   is_sso_user                 Boolean       @default(false)
   deleted_at                  DateTime?     @db.Timestamptz(6)
+  identities                  identities[]
+  mfa_factors                 mfa_factors[]
+  sessions                    sessions[]
   users                       public_users?
 
   @@index([instance_id])
+  @@schema("auth")
+}
+
+model folders {
+  id          String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name        String
+  can_deleted Boolean?
+  user_id     String       @db.Uuid
+  created_at  DateTime?    @default(now())
+  updated_at  DateTime?    @db.Timestamptz(6)
+  deleted_at  DateTime?    @db.Timestamptz(6)
+  users       public_users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  notes       notes[]
+  trashes     trashes[]
+
+  @@schema("public")
+}
+
+model notes {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  name       String
+  content    String?
+  user_id    String       @db.Uuid
+  folder_id  String       @db.Uuid
+  created_at DateTime     @default(now())
+  updated_at DateTime?
+  deleted_at DateTime?
+  archives   archives[]
+  favorites  favorites[]
+  folders    folders      @relation(fields: [folder_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users      public_users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  trashes    trashes[]
+
+  @@schema("public")
+}
+
+model archives {
+  user_id    String       @db.Uuid
+  note_id    String       @db.Uuid
+  created_at DateTime     @default(now())
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  notes      notes        @relation(fields: [note_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users      public_users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model favorites {
+  user_id    String       @db.Uuid
+  notes_id   String       @db.Uuid
+  created_at DateTime     @default(now())
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
+  notes      notes        @relation(fields: [notes_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users      public_users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+model trashes {
+  id         String       @id @unique
+  user_id    String       @db.Uuid
+  folder_id  String?      @db.Uuid
+  created_at DateTime     @default(now())
+  deleted_at DateTime?
+  note_id    String?      @db.Uuid
+  folders    folders?     @relation(fields: [folder_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  notes      notes?       @relation(fields: [note_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+  users      public_users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
+
+  @@schema("public")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model audit_log_entries {
+  instance_id String?   @db.Uuid
+  id          String    @id @db.Uuid
+  payload     Json?     @db.Json
+  created_at  DateTime? @db.Timestamptz(6)
+  ip_address  String    @default("") @db.VarChar(64)
+
+  @@index([instance_id], map: "audit_logs_instance_id_idx")
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model flow_state {
+  id                     String                @id @db.Uuid
+  user_id                String?               @db.Uuid
+  auth_code              String
+  code_challenge_method  code_challenge_method
+  code_challenge         String
+  provider_type          String
+  provider_access_token  String?
+  provider_refresh_token String?
+  created_at             DateTime?             @db.Timestamptz(6)
+  updated_at             DateTime?             @db.Timestamptz(6)
+  authentication_method  String
+
+  @@index([created_at(sort: Desc)])
+  @@index([auth_code], map: "idx_auth_code")
+  @@index([user_id, authentication_method], map: "idx_user_id_auth_method")
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model identities {
+  id              String
+  user_id         String    @db.Uuid
+  identity_data   Json
+  provider        String
+  last_sign_in_at DateTime? @db.Timestamptz(6)
+  created_at      DateTime? @db.Timestamptz(6)
+  updated_at      DateTime? @db.Timestamptz(6)
+  email           String?   @default(dbgenerated("lower((identity_data ->> 'email'::text))"))
+  users           users     @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@id([provider, id])
+  @@index([email])
+  @@index([user_id])
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model instances {
+  id              String    @id @db.Uuid
+  uuid            String?   @db.Uuid
+  raw_base_config String?
+  created_at      DateTime? @db.Timestamptz(6)
+  updated_at      DateTime? @db.Timestamptz(6)
+
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model mfa_amr_claims {
+  session_id            String   @db.Uuid
+  created_at            DateTime @db.Timestamptz(6)
+  updated_at            DateTime @db.Timestamptz(6)
+  authentication_method String
+  id                    String   @id(map: "amr_id_pk") @db.Uuid
+  sessions              sessions @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@unique([session_id, authentication_method], map: "mfa_amr_claims_session_id_authentication_method_pkey")
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model mfa_challenges {
+  id          String      @id @db.Uuid
+  factor_id   String      @db.Uuid
+  created_at  DateTime    @db.Timestamptz(6)
+  verified_at DateTime?   @db.Timestamptz(6)
+  ip_address  String      @db.Inet
+  mfa_factors mfa_factors @relation(fields: [factor_id], references: [id], onDelete: Cascade, onUpdate: NoAction, map: "mfa_challenges_auth_factor_id_fkey")
+
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model mfa_factors {
+  id             String           @id @db.Uuid
+  user_id        String           @db.Uuid
+  friendly_name  String?
+  factor_type    factor_type
+  status         factor_status
+  created_at     DateTime         @db.Timestamptz(6)
+  updated_at     DateTime         @db.Timestamptz(6)
+  secret         String?
+  mfa_challenges mfa_challenges[]
+  users          users            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([user_id, created_at], map: "factor_id_created_at_idx")
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model refresh_tokens {
+  instance_id String?   @db.Uuid
+  id          BigInt    @id @default(autoincrement())
+  token       String?   @unique(map: "refresh_tokens_token_unique") @db.VarChar(255)
+  user_id     String?   @db.VarChar(255)
+  revoked     Boolean?
+  created_at  DateTime? @db.Timestamptz(6)
+  updated_at  DateTime? @db.Timestamptz(6)
+  parent      String?   @db.VarChar(255)
+  session_id  String?   @db.Uuid
+  sessions    sessions? @relation(fields: [session_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([instance_id])
+  @@index([instance_id, user_id])
+  @@index([parent])
+  @@index([session_id, revoked])
+  @@index([updated_at(sort: Desc)])
+  @@schema("auth")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model saml_providers {
+  id                String        @id @db.Uuid
+  sso_provider_id   String        @db.Uuid
+  entity_id         String        @unique
+  metadata_xml      String
+  metadata_url      String?
+  attribute_mapping Json?
+  created_at        DateTime?     @db.Timestamptz(6)
+  updated_at        DateTime?     @db.Timestamptz(6)
+  sso_providers     sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([sso_provider_id])
+  @@schema("auth")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model saml_relay_states {
+  id              String        @id @db.Uuid
+  sso_provider_id String        @db.Uuid
+  request_id      String
+  for_email       String?
+  redirect_to     String?
+  from_ip_address String?       @db.Inet
+  created_at      DateTime?     @db.Timestamptz(6)
+  updated_at      DateTime?     @db.Timestamptz(6)
+  sso_providers   sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([created_at(sort: Desc)])
+  @@index([for_email])
+  @@index([sso_provider_id])
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model schema_migrations {
+  version String @id @unique(map: "schema_migrations_version_idx") @db.VarChar(14)
+
+  @@schema("auth")
+}
+
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sessions {
+  id             String           @id @db.Uuid
+  user_id        String           @db.Uuid
+  created_at     DateTime?        @db.Timestamptz(6)
+  updated_at     DateTime?        @db.Timestamptz(6)
+  factor_id      String?          @db.Uuid
+  aal            aal_level?
+  not_after      DateTime?        @db.Timestamptz(6)
+  mfa_amr_claims mfa_amr_claims[]
+  refresh_tokens refresh_tokens[]
+  users          users            @relation(fields: [user_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([not_after(sort: Desc)])
+  @@index([user_id])
+  @@index([user_id, created_at], map: "user_id_created_at_idx")
+  @@schema("auth")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sso_domains {
+  id              String        @id @db.Uuid
+  sso_provider_id String        @db.Uuid
+  domain          String
+  created_at      DateTime?     @db.Timestamptz(6)
+  updated_at      DateTime?     @db.Timestamptz(6)
+  sso_providers   sso_providers @relation(fields: [sso_provider_id], references: [id], onDelete: Cascade, onUpdate: NoAction)
+
+  @@index([sso_provider_id])
+  @@schema("auth")
+}
+
+/// This table contains check constraints and requires additional setup for migrations. Visit https://pris.ly/d/check-constraints for more info.
+/// This model or at least one of its fields has comments in the database, and requires an additional setup for migrations: Read more: https://pris.ly/d/database-comments
+model sso_providers {
+  id                String              @id @db.Uuid
+  resource_id       String?
+  created_at        DateTime?           @db.Timestamptz(6)
+  updated_at        DateTime?           @db.Timestamptz(6)
+  saml_providers    saml_providers[]
+  saml_relay_states saml_relay_states[]
+  sso_domains       sso_domains[]
+
   @@schema("auth")
 }
 
@@ -58,7 +344,7 @@ model public_users {
   updated_at DateTime?   @db.Timestamptz(6)
   full_name  String?
   avatar_url String?
-  archived   archives[]
+  archives   archives[]
   favorites  favorites[]
   folders    folders[]
   notes      notes[]
@@ -66,74 +352,6 @@ model public_users {
   users      users       @relation(fields: [id], references: [id], onDelete: Cascade, onUpdate: NoAction)
 
   @@map("users")
-  @@schema("public")
-}
-
-model folders {
-  id         String       @id @unique @default(cuid())
-  name       String
-  user_id    String       @db.Uuid
-  created_at DateTime     @default(now())
-  updated_at DateTime?
-  deleted_at DateTime?
-  users      public_users @relation(fields: [user_id], references: [id])
-  notes      notes[]
-  trashes    trashes[]
-
-  @@schema("public")
-}
-
-model notes {
-  id         String       @id @unique @default(cuid())
-  name       String
-  content    String?
-  user_id    String       @db.Uuid
-  folder_id  String
-  created_at DateTime     @default(now())
-  updated_at DateTime?
-  deleted_at DateTime?
-  archives   archives[]
-  favorites  favorites[]
-  folders    folders      @relation(fields: [folder_id], references: [id])
-  users      public_users @relation(fields: [user_id], references: [id])
-  trashes    trashes[]
-
-  @@schema("public")
-}
-
-model archives {
-  id         String       @id @unique @default(cuid())
-  user_id    String       @db.Uuid
-  note_id    String
-  created_at DateTime     @default(now())
-  notes      notes        @relation(fields: [note_id], references: [id])
-  users      public_users @relation(fields: [user_id], references: [id])
-
-  @@schema("public")
-}
-
-model favorites {
-  id         String       @id @unique @default(cuid())
-  user_id    String       @db.Uuid
-  notes_id   String
-  created_at DateTime     @default(now())
-  notes      notes        @relation(fields: [notes_id], references: [id])
-  users      public_users @relation(fields: [user_id], references: [id])
-
-  @@schema("public")
-}
-
-model trashes {
-  id         String       @id @unique @default(cuid())
-  user_id    String       @db.Uuid
-  folder_id  String?
-  created_at DateTime     @default(now())
-  deleted_at DateTime?
-  note_id    String?
-  folders    folders?     @relation(fields: [folder_id], references: [id])
-  notes      notes?       @relation(fields: [note_id], references: [id])
-  users      public_users @relation(fields: [user_id], references: [id])
-
   @@schema("public")
 }
 

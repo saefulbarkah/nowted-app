@@ -7,12 +7,12 @@ export async function GET(req: NextRequest) {
     if (!body.userId) {
       return NextResponse.json({ msg: "Invalid Parameters" });
     }
-    const data = await prisma.archive.findMany({
+    const data = await prisma.archives.findMany({
       where: {
-        userId: body.userId,
+        user_id: body.user_id,
       },
       include: {
-        note: true,
+        notes: true,
       },
     });
     return NextResponse.json({ data });

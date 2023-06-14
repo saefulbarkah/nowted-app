@@ -1,17 +1,21 @@
-import prisma from "@/lib/db";
-import { NextResponse } from "next/server";
+import prisma from '@/lib/db';
+import { createFolderSchema } from '@/schema';
+import { NextResponse } from 'next/server';
 
 export async function POST(req: Request) {
-  try {
-    const body = await req.json();
-    await prisma.folder.create({
-      data: {
-        name: body.name,
-        userId: body.userId,
-      },
-    });
-    return NextResponse.json({ response: "Create Success" });
-  } catch (error) {
-    return NextResponse.json({ response: error, status: 400 });
-  }
+   const body = await req.json();
+   const { name, user_id } = body;
+   try {
+      await createFolderSchema.validate({ name, user_id });
+      await prisma.folders.create({
+         data: {
+            name: name,
+            user_id: user_id,
+            can_deleted: true
+         }
+      });
+      return NextResponse.json({ response: 'Create Success', status: 200 });
+   } catch (error: any) {
+      return NextResponse.json({ response: error.errors, status: 400 });
+   }
 }
