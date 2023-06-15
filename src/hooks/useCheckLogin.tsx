@@ -1,5 +1,5 @@
-import { cookies } from "next/headers";
-import { createServerComponentClient } from "@supabase/auth-helpers-nextjs";
+import { cookies } from 'next/headers';
+import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
 async function useCheckLogin() {
   const supabaseServer = createServerComponentClient({ cookies });
   const getSession = await supabaseServer.auth.getSession();
