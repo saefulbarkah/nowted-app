@@ -11,6 +11,7 @@ export async function POST(req: Request) {
       where: {
         name: name,
         user_id: user_id,
+        deleted_at: null,
       },
     });
     if (isExists) {
