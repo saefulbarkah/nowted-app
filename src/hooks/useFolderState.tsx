@@ -1,5 +1,12 @@
-import { useBoundStore } from '@/components/Sidebar/FolderMenu/store/boundStateFolderStore';
+'use client';
+import { useBoundStore } from '@/components/Sidebar/Folder/store/boundStateFolderStore';
 import { useFolder } from '@/store';
+import { useState } from 'react';
+
+interface dataDelete {
+  id?: string;
+  name: string;
+}
 
 function useFolderState() {
   const folders = useFolder((state) => state.folders);
@@ -8,12 +15,18 @@ function useFolderState() {
   const setIsLoading = useFolder((state) => state.setIsLoading);
 
   // edit folder state
-  const editFolder = useBoundStore((state) => state.editFolder);
-  const setEditFolder = useBoundStore((state) => state.setEditFolder);
+  const toggleEdit = useBoundStore((state) => state.toggleEditFolder);
+  const setToggleEdit = useBoundStore((state) => state.setToggleEditFolder);
+
+  // delete fodler state
+  const [deleteData, setDeleteData] = useState<dataDelete>({
+    id: '',
+    name: '',
+  });
 
   // create folder state
-  const createFolder = useBoundStore((state) => state.createFolder);
-  const setCreateFolder = useBoundStore((state) => state.setCreateFolder);
+  const toggleCreate = useBoundStore((state) => state.toggleCreate);
+  const setToggleCreate = useBoundStore((state) => state.setToggleCreate);
 
   // update folder state
   const dataUpdate = useBoundStore((state) => state.dataUpdate);
@@ -26,10 +39,10 @@ function useFolderState() {
 
   return {
     folders,
-    editFolder,
-    setEditFolder,
-    createFolder,
-    setCreateFolder,
+    toggleEdit,
+    setToggleEdit,
+    toggleCreate,
+    setToggleCreate,
     dataUpdate,
     setDataUpdate,
     name,
@@ -37,6 +50,8 @@ function useFolderState() {
     setFolder,
     isLoading,
     setIsLoading,
+    deleteData,
+    setDeleteData,
     updateStateFolder,
   };
 }

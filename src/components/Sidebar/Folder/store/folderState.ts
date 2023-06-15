@@ -12,18 +12,18 @@ export const createNameStore: StateCreator<NameType, [], [], NameType> = (set) =
 export const createFolderStore: StateCreator<createFolderType, [], [], createFolderType> = (
   set
 ) => ({
-  createFolder: false,
-  setCreateFolder: (status: boolean) =>
+  toggleCreate: false,
+  setToggleCreate: (status: boolean) =>
     set(() => ({
-      createFolder: status,
+      toggleCreate: status,
     })),
 });
 
 export const editFolderStore: StateCreator<editFolderType, [], [], editFolderType> = (set) => ({
-  editFolder: false,
-  setEditFolder: (status: boolean) =>
+  toggleEditFolder: false,
+  setToggleEditFolder: (status: boolean) =>
     set(() => ({
-      editFolder: status,
+      toggleEditFolder: status,
     })),
 });
 export const updateFolderStore: StateCreator<updateFolderType, [], [], updateFolderType> = (
