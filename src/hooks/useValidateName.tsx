@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useEffect, useState } from "react";
+import { useEffect, useState } from 'react';
 
 type Props = {
   data: string | number | string[];
@@ -11,7 +11,7 @@ type returnType = {
 const useValidation = ({ data }: Props): returnType => {
   const [isError, setError] = useState<boolean>(false);
   function validate() {
-    if (data === "" || !data) {
+    if (data === '' || !data) {
       return setError(true);
     }
     return setError(false);

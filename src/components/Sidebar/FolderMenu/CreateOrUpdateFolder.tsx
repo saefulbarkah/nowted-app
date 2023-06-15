@@ -10,7 +10,6 @@ import React from 'react';
 import { FiFolderPlus, FiSave, FiX } from 'react-icons/fi';
 import { folderTypes } from '@/types';
 import LoadingIcons from 'react-loading-icons';
-import { uniqueName } from '@/lib/utils';
 
 function CreateOrUpdateFolder() {
   const updateFolder = useFolder((state) => state.editFolder);
@@ -23,21 +22,17 @@ function CreateOrUpdateFolder() {
     setName,
     dataUpdate,
     isLoading,
-    folders,
   } = useFolderState();
-  const { isError } = useValidation({
+  useValidation({
     data: name,
   });
+
   const { toast } = useToast();
   const addFolder = useFolder((state) => state.addFolder);
   const user = useUserStore((state) => state.user);
 
   const mutateCreatedFolder = async (data: Partial<folderTypes>) => {
-    const isUniqueName = await uniqueName({
-      data: folders,
-      values: data.name as string,
-    });
-    return await createFolderToDb({ user_id: data.user_id, name: isUniqueName });
+    return await createFolderToDb({ user_id: data.user_id, name: data.name });
   };
 
   const { mutateAsync: handleCreateFolder, isLoading: onHandleCreated } = useMutation(
@@ -47,10 +42,12 @@ function CreateOrUpdateFolder() {
         data,
         response,
         status,
+        error,
       }: {
         data: folderTypes;
         response: string;
         status: number;
+        error: string;
       }) => {
         if (status === 400) {
           toast({
@@ -71,9 +68,12 @@ function CreateOrUpdateFolder() {
     }
   );
 
-  const mutateUpdateFolder = async (data: Pick<folderTypes, 'id' | 'name'>) => {
-    const isUniqueName = await uniqueName({ data: folders, values: data.name as string });
-    return await updateDataFolder({ id: data.id as string, name: isUniqueName });
+  const mutateUpdateFolder = async (data: Partial<folderTypes>) => {
+    return await updateDataFolder({
+      id: data.id as string,
+      name: data.name as string,
+      user_id: user?.id,
+    });
   };
 
   const { mutateAsync: handleUpdateFolder, isLoading: onHandleUpdating } = useMutation(
@@ -142,10 +142,7 @@ function CreateOrUpdateFolder() {
                   handleCreateFolder({ name, user_id: user?.id });
                   return;
                 }
-                handleUpdateFolder({
-                  id: dataUpdate.id,
-                  name: dataUpdate.name,
-                });
+                handleUpdateFolder({ id: dataUpdate.id, name: name });
               }}
               className="px-2 py-2"
             >

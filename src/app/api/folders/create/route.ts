@@ -7,6 +7,19 @@ export async function POST(req: Request) {
   const { name, user_id } = body;
   try {
     await createFolderSchema.validate({ name, user_id });
+    const isExists = await prisma.folders.findFirst({
+      where: {
+        name: name,
+        user_id: user_id,
+      },
+    });
+    if (isExists) {
+      return NextResponse.json({
+        response: `Folder ${isExists.name} already exist`,
+        status: 400,
+        error: 'isExists',
+      });
+    }
     const data = await prisma.folders.create({
       data: {
         name: name,
