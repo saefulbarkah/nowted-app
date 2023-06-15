@@ -53,21 +53,10 @@ const DeleteFolder: FC<DeleteFolderProps> = ({ open, onOpenChange, data }: Delet
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <Button
             onClick={() => handleDeleteFolder({ id: data.id })}
-            disabled={onDeleting ? true : false}
+            isLoading={onDeleting}
             className="bg-destructive/[30%] border border-destructive hover:bg-destructive/[70%] font-semibold"
           >
-            {onDeleting ? (
-              <div className="flex gap-2 items-center">
-                <LoadingIcons.Oval
-                  height={15}
-                  width={15}
-                  strokeWidth={5}
-                />
-                <p>Deleting...</p>
-              </div>
-            ) : (
-              <p>Yes, delete it</p>
-            )}
+            {onDeleting ? <p>please wait...</p> : <p>Yes, delete it</p>}
           </Button>
         </AlertDialogFooter>
       </AlertDialogContent>

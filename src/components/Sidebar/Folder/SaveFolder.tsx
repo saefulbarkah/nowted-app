@@ -78,6 +78,7 @@ const SaveFolder: FC<SaveFolderProps> = ({}) => {
       <Button
         size={'sm'}
         variant={'ghost'}
+        disabled={isLoading ? true : false}
         onClick={() => {
           setToggleCreate(false);
           setToggleEdit(false);
