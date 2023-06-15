@@ -2,12 +2,7 @@ import React, { useState } from 'react';
 import UpdateFolder from './UpdateFolder';
 import Link from 'next/link';
 import { LuFolderOpen } from 'react-icons/lu';
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from '@/components/ui/tooltip';
+import { Tooltip, TooltipContent, TooltipProvider, TooltipTrigger } from '@/components/ui/tooltip';
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -33,6 +28,7 @@ import { deleteDataFolder, getFolders } from '@/lib/api';
 import { useUserStore } from '@/store/userStore';
 import { Skeleton } from '@/components/ui/skeleton';
 import LoadingIcons from 'react-loading-icons';
+import { folderTypes } from '@/types';
 
 const DropdownMenuFolder = ({
   label,
@@ -57,29 +53,22 @@ const DropdownMenuFolder = ({
 const DialogDelete = ({ open, onOpenChange, data }: any) => {
   const deleteFolder = useFolder((state) => state.deleteFolder);
   const { toast } = useToast();
-  const { mutateAsync: handleDeleteFolder, isLoading: onDeleting } =
-    useMutation(
-      (data: { id: string }) => {
-        return deleteDataFolder({ id: data.id });
+  const { mutateAsync: handleDeleteFolder, isLoading: onDeleting } = useMutation(
+    (data: { id: string }) => {
+      return deleteDataFolder({ id: data.id });
+    },
+    {
+      onSuccess: ({ data, response }: { data: { id: string }; response: string }) => {
+        const { id } = data;
+        toast({
+          title: response,
+          variant: 'success',
+        });
+        onOpenChange(false);
+        deleteFolder(id);
       },
-      {
-        onSuccess: ({
-          data,
-          response,
-        }: {
-          data: { id: string };
-          response: string;
-        }) => {
-          const { id } = data;
-          toast({
-            title: response,
-            variant: 'success',
-          });
-          onOpenChange(false);
-          deleteFolder(id);
-        },
-      }
-    );
+    }
+  );
 
   return (
     <AlertDialog
@@ -87,9 +76,7 @@ const DialogDelete = ({ open, onOpenChange, data }: any) => {
       onOpenChange={onOpenChange}
     >
       <AlertDialogContent className="bg-background border-white/[20%] flex flex-col justify-center items-center min-w-[120px]">
-        <AlertDialogHeader className="text-[35px] font-semibold">
-          Are you sure ?
-        </AlertDialogHeader>
+        <AlertDialogHeader className="text-[35px] font-semibold">Are you sure ?</AlertDialogHeader>
         <p>
           You will delete <span className="font-bold">{data.name}</span>
         </p>
@@ -151,7 +138,7 @@ function FolderLists() {
     user_id: '',
   });
 
-  const handleEditFolder = (item: { name: string; id?: string }) => {
+  const handleEditFolder = (item: { id?: string; name: string }) => {
     setDataUpdate({
       id: item.id,
       name: item.name,
@@ -186,9 +173,7 @@ function FolderLists() {
                   </div>
                   <TooltipProvider>
                     <Tooltip>
-                      <TooltipTrigger className="truncate">
-                        {item.name}
-                      </TooltipTrigger>
+                      <TooltipTrigger className="truncate">{item.name}</TooltipTrigger>
                       <TooltipContent className="border border-white/[60%] bg-background text-white">
                         {item.name}
                       </TooltipContent>
@@ -238,8 +223,11 @@ function FolderLists() {
         <div className="flex flex-col gap-[15px]">
           {Array(3)
             .fill(null)
-            .map(() => (
-              <div className="flex items-center px-[30px] justify-between">
+            .map((item, i) => (
+              <div
+                className="flex items-center px-[30px] justify-between"
+                key={i}
+              >
                 <div className="flex gap-2">
                   <Skeleton className="h-[30px] rounded-sm w-[25px]" />
                   <Skeleton className="h-[30px] rounded-sm w-[150px]" />

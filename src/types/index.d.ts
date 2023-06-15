@@ -12,7 +12,7 @@ export type noteType = {
 export interface folderTypes {
   id?: string;
   name: string;
-  user_id: string;
+  user_id?: string;
   can_deleted?: boolean | null;
   created_at?: Date | null;
   updated_at?: Date | null;

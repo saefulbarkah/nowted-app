@@ -4,7 +4,7 @@ import { create } from 'zustand';
 export type folderStateType = {
   folders: folderTypes[];
   addFolder: (data: folderTypes) => void;
-  editFolder: (editData: folderTypes) => void;
+  editFolder: (data: folderTypes) => void;
   deleteFolder: (id: string) => void;
   setFolder: (data: any) => void;
   isLoading: boolean;
@@ -16,9 +16,7 @@ export const useFolder = create<folderStateType>()((set) => ({
   isLoading: true,
   addFolder: (data: folderTypes) => {
     set((state) => {
-      const filterName = state.folders.filter((item) =>
-        item.name.includes(data.name)
-      );
+      const filterName = state.folders.filter((item) => item.name.includes(data.name));
       const existingName = filterName[filterName.length - 1];
       if (existingName) {
         let uniqueName = `${data.name}_copy`;

@@ -16,6 +16,14 @@ export const createFolderToDb = async (body: Partial<folders>) => {
   return data;
 };
 
+export const updateDataFolder = async (body: Pick<folders, 'id' | 'name'>) => {
+  const { data } = await api.post('/folders/update', {
+    id: body.id,
+    name: body.name,
+  });
+  return data;
+};
+
 export const deleteDataFolder = async (body: Partial<folders>) => {
   const { data } = await api.post('/folders/delete', {
     id: body.id,

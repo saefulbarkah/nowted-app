@@ -18,6 +18,7 @@ function useFolderState() {
   // update folder state
   const dataUpdate = useBoundStore((state) => state.dataUpdate);
   const setDataUpdate = useBoundStore((state) => state.setDataUpdate);
+  const updateStateFolder = useFolder((state) => state.editFolder);
 
   // update folder name state
   const name = useBoundStore((state) => state.name);
@@ -36,6 +37,7 @@ function useFolderState() {
     setFolder,
     isLoading,
     setIsLoading,
+    updateStateFolder,
   };
 }
 
