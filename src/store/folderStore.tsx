@@ -1,27 +1,20 @@
-import { create } from "zustand";
-import { v4 as uuid } from "uuid";
-import { noteType } from "@/types/note";
-
-export type folderType = {
-  id?: string | number;
-  name: string;
-  notes_lists?: noteType[] | null;
-};
+import { folderTypes } from '@/types';
+import { create } from 'zustand';
 
 export type folderStateType = {
-  folders: {
-    id: string | number;
-    name: string;
-    can_delete?: boolean;
-  }[];
-  addFolder: (data: folderType) => void;
-  editFolder: (editData: folderType) => void;
-  deleteFolder: (id: string | number) => void;
+  folders: folderTypes[];
+  addFolder: (data: folderTypes) => void;
+  editFolder: (editData: folderTypes) => void;
+  deleteFolder: (id: string) => void;
+  setFolder: (data: any) => void;
+  isLoading: boolean;
+  setIsLoading: (status: boolean) => void;
 };
 
 export const useFolder = create<folderStateType>()((set) => ({
   folders: [],
-  addFolder: (data: folderType) => {
+  isLoading: true,
+  addFolder: (data: folderTypes) => {
     set((state) => {
       const filterName = state.folders.filter((item) =>
         item.name.includes(data.name)
@@ -37,8 +30,10 @@ export const useFolder = create<folderStateType>()((set) => ({
           folders: [
             ...state.folders,
             {
-              id: uuid(),
+              id: data.id,
               name: uniqueName,
+              user_id: data.user_id,
+              can_deleted: true,
             },
           ],
         };
@@ -47,14 +42,16 @@ export const useFolder = create<folderStateType>()((set) => ({
         folders: [
           ...state.folders,
           {
-            id: uuid(),
+            id: data.id,
             name: data.name,
+            user_id: data.user_id,
+            can_deleted: true,
           },
         ],
       };
     });
   },
-  editFolder: (data: folderType) => {
+  editFolder: (data: folderTypes) => {
     set((state) => {
       const findData = state.folders.find((item) => item.id === data.id);
       if (findData) {
@@ -65,9 +62,11 @@ export const useFolder = create<folderStateType>()((set) => ({
       };
     });
   },
-  deleteFolder: (id: string | number) => {
+  deleteFolder: (id: string) => {
     set((state) => ({
       folders: state.folders.filter((item) => item.id !== id),
     }));
   },
+  setFolder: (data: any) => set(() => ({ folders: data })),
+  setIsLoading: (status: boolean) => set(() => ({ isLoading: status })),
 }));

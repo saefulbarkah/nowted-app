@@ -1,5 +1,5 @@
-import { noteType } from "@/types/note";
-import { create } from "zustand";
+import { noteType } from '@/types';
+import { create } from 'zustand';
 
 export type noteState = {
   notes: noteType[];

@@ -1,8 +1,11 @@
-import { useBoundStore } from "@/components/Sidebar/FolderMenu/store/boundStateFolderStore";
-import { useFolder } from "@/store";
+import { useBoundStore } from '@/components/Sidebar/FolderMenu/store/boundStateFolderStore';
+import { useFolder } from '@/store';
 
 function useFolderState() {
   const folders = useFolder((state) => state.folders);
+  const setFolder = useFolder((state) => state.setFolder);
+  const isLoading = useFolder((state) => state.isLoading);
+  const setIsLoading = useFolder((state) => state.setIsLoading);
 
   // edit folder state
   const editFolder = useBoundStore((state) => state.editFolder);
@@ -30,6 +33,9 @@ function useFolderState() {
     setDataUpdate,
     name,
     setName,
+    setFolder,
+    isLoading,
+    setIsLoading,
   };
 }
 

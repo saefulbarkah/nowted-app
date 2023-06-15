@@ -1,11 +1,11 @@
-import axios from "axios";
+import axios from 'axios';
 
 const api = axios.create({
-  baseURL: `${process.env.BASE_URL}/api`,
+  baseURL: 'http://localhost:3000/api',
   maxBodyLength: Infinity,
   timeout: 5000,
   headers: {
-    "Content-Type": "Application/json",
+    'Content-Type': 'Application/json',
   },
 });
 

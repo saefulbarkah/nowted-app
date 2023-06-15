@@ -89,10 +89,10 @@ model notes {
 }
 
 model archives {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user_id    String       @db.Uuid
   note_id    String       @db.Uuid
   created_at DateTime     @default(now())
-  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   notes      notes        @relation(fields: [note_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users      public_users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
@@ -100,10 +100,10 @@ model archives {
 }
 
 model favorites {
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user_id    String       @db.Uuid
   notes_id   String       @db.Uuid
   created_at DateTime     @default(now())
-  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   notes      notes        @relation(fields: [notes_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
   users      public_users @relation(fields: [user_id], references: [id], onDelete: NoAction, onUpdate: NoAction)
 
@@ -111,7 +111,7 @@ model favorites {
 }
 
 model trashes {
-  id         String       @id @unique
+  id         String       @id @default(dbgenerated("gen_random_uuid()")) @db.Uuid
   user_id    String       @db.Uuid
   folder_id  String?      @db.Uuid
   created_at DateTime     @default(now())

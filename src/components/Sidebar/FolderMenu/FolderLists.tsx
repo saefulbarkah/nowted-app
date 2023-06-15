@@ -1,24 +1,24 @@
-import React, { useState } from "react";
-import UpdateFolder from "./UpdateFolder";
-import Link from "next/link";
-import { LuFolderOpen } from "react-icons/lu";
+import React, { useState } from 'react';
+import UpdateFolder from './UpdateFolder';
+import Link from 'next/link';
+import { LuFolderOpen } from 'react-icons/lu';
 import {
   Tooltip,
   TooltipContent,
   TooltipProvider,
   TooltipTrigger,
-} from "@/components/ui/tooltip";
+} from '@/components/ui/tooltip';
 import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { Button } from "@/components/ui/button";
-import { CgOptions } from "react-icons/cg";
-import { FiEdit, FiTrash } from "react-icons/fi";
-import useFolderState from "@/hooks/useFolderState";
-import { useFolder } from "@/store";
+} from '@/components/ui/dropdown-menu';
+import { Button } from '@/components/ui/button';
+import { CgOptions } from 'react-icons/cg';
+import { FiEdit, FiTrash } from 'react-icons/fi';
+import useFolderState from '@/hooks/useFolderState';
+import { useFolder } from '@/store';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -26,8 +26,13 @@ import {
   AlertDialogContent,
   AlertDialogFooter,
   AlertDialogHeader,
-} from "@/components/ui/alert-dialog";
-import { useToast } from "@/components/ui/use-toast";
+} from '@/components/ui/alert-dialog';
+import { useToast } from '@/components/ui/use-toast';
+import { useMutation, useQuery } from '@tanstack/react-query';
+import { deleteDataFolder, getFolders } from '@/lib/api';
+import { useUserStore } from '@/store/userStore';
+import { Skeleton } from '@/components/ui/skeleton';
+import LoadingIcons from 'react-loading-icons';
 
 const DropdownMenuFolder = ({
   label,
@@ -52,21 +57,35 @@ const DropdownMenuFolder = ({
 const DialogDelete = ({ open, onOpenChange, data }: any) => {
   const deleteFolder = useFolder((state) => state.deleteFolder);
   const { toast } = useToast();
-
-  const handleDeleteFolder = () => {
-    if (!data) return;
-    deleteFolder(data.id);
-    setTimeout(() => {
-      toast({
-        title: "Success",
-        description: "Delete folder successfully",
-        variant: "success",
-      });
-    }, 500);
-  };
+  const { mutateAsync: handleDeleteFolder, isLoading: onDeleting } =
+    useMutation(
+      (data: { id: string }) => {
+        return deleteDataFolder({ id: data.id });
+      },
+      {
+        onSuccess: ({
+          data,
+          response,
+        }: {
+          data: { id: string };
+          response: string;
+        }) => {
+          const { id } = data;
+          toast({
+            title: response,
+            variant: 'success',
+          });
+          onOpenChange(false);
+          deleteFolder(id);
+        },
+      }
+    );
 
   return (
-    <AlertDialog open={open} onOpenChange={onOpenChange}>
+    <AlertDialog
+      open={open}
+      onOpenChange={onOpenChange}
+    >
       <AlertDialogContent className="bg-background border-white/[20%] flex flex-col justify-center items-center min-w-[120px]">
         <AlertDialogHeader className="text-[35px] font-semibold">
           Are you sure ?
@@ -76,12 +95,24 @@ const DialogDelete = ({ open, onOpenChange, data }: any) => {
         </p>
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
-          <AlertDialogAction
-            onClick={() => handleDeleteFolder()}
+          <Button
+            onClick={() => handleDeleteFolder({ id: data.id })}
+            disabled={onDeleting ? true : false}
             className="bg-destructive/[30%] border border-destructive hover:bg-destructive/[70%] font-semibold"
           >
-            Yes, delete it
-          </AlertDialogAction>
+            {onDeleting ? (
+              <div className="flex gap-2 items-center">
+                <LoadingIcons.Oval
+                  height={15}
+                  width={15}
+                  strokeWidth={5}
+                />
+                <p>Deleting...</p>
+              </div>
+            ) : (
+              <p>Yes, delete it</p>
+            )}
+          </Button>
         </AlertDialogFooter>
       </AlertDialogContent>
     </AlertDialog>
@@ -89,15 +120,7 @@ const DialogDelete = ({ open, onOpenChange, data }: any) => {
 };
 
 function FolderLists() {
-  const [dialogDelete, setDialogDelete] = useState<boolean>(false);
-  const [deleteData, setDeleteData] = useState<{
-    id: string | number;
-    name: string;
-  }>({
-    id: "",
-    name: "",
-  });
-
+  const user = useUserStore((state) => state.user);
   const {
     setDataUpdate,
     setName,
@@ -106,9 +129,29 @@ function FolderLists() {
     editFolder,
     dataUpdate,
     createFolder,
+    setFolder,
+    isLoading,
+    setIsLoading,
   } = useFolderState();
 
-  const handleEditFolder = (item: { name: string; id: string | number }) => {
+  useQuery({
+    queryKey: ['folder'],
+    queryFn: async () => await getFolders({ user_id: user?.id }),
+    onSuccess: (data) => {
+      setIsLoading(false);
+      setFolder(data);
+    },
+    enabled: !!user,
+  });
+
+  const [dialogDelete, setDialogDelete] = useState<boolean>(false);
+  const [deleteData, setDeleteData] = useState<any>({
+    id: '',
+    name: '',
+    user_id: '',
+  });
+
+  const handleEditFolder = (item: { name: string; id?: string }) => {
     setDataUpdate({
       id: item.id,
       name: item.name,
@@ -158,8 +201,8 @@ function FolderLists() {
                     asChild
                   >
                     <Button
-                      size={"sm"}
-                      variant={"ghost"}
+                      size={'sm'}
+                      variant={'ghost'}
                       className="ring-0 outline-none focus:ring-0 focus-visible:ring-0 focus-visible:ring-offset-0"
                     >
                       <CgOptions className="text-[20px]" />
@@ -171,17 +214,19 @@ function FolderLists() {
                       label="Edit Folder"
                       onClick={() => handleEditFolder(item)}
                     />
-                    <DropdownMenuFolder
-                      icon={<FiTrash className="mr-2 text-[16px]" />}
-                      label="Delete Folder"
-                      onClick={() => {
-                        setDeleteData({
-                          id: item.id,
-                          name: item.name,
-                        });
-                        setDialogDelete(true);
-                      }}
-                    />
+                    {item.can_deleted && (
+                      <DropdownMenuFolder
+                        icon={<FiTrash className="mr-2 text-[16px]" />}
+                        label="Delete Folder"
+                        onClick={() => {
+                          setDeleteData({
+                            id: item.id,
+                            name: item.name,
+                          });
+                          setDialogDelete(true);
+                        }}
+                      />
+                    )}
                   </DropdownMenuContent>
                 </DropdownMenu>
               </>
@@ -189,7 +234,22 @@ function FolderLists() {
           </div>
         </div>
       ))}
-      {folders.length === 0 && createFolder === false && (
+      {isLoading && (
+        <div className="flex flex-col gap-[15px]">
+          {Array(3)
+            .fill(null)
+            .map(() => (
+              <div className="flex items-center px-[30px] justify-between">
+                <div className="flex gap-2">
+                  <Skeleton className="h-[30px] rounded-sm w-[25px]" />
+                  <Skeleton className="h-[30px] rounded-sm w-[150px]" />
+                </div>
+                <Skeleton className="h-[30px] rounded-sm w-[25px] mr-2" />
+              </div>
+            ))}
+        </div>
+      )}
+      {folders.length === 0 && createFolder === false && !isLoading && (
         <p className="px-[30px] text-center text-sm">Folder is empty</p>
       )}
     </>
