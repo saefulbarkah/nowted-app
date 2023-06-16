@@ -1,12 +1,12 @@
-export type noteType = {
-  id: string | number;
-  title: string;
-  date: Date;
-  content: string;
-  folderId?: number | null;
-  isFavorites?: boolean;
-  isOnTrash?: boolean;
-  isOnArchived?: boolean;
+export type noteTypes = {
+  id: string;
+  name: string;
+  content?: string | null;
+  user_id: string;
+  folder_id: string;
+  created_at?: Date;
+  updated_at?: Date | null;
+  deleted_at?: Date | null;
 };
 
 export interface folderTypes {

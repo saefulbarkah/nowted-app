@@ -27,9 +27,8 @@ const useUpdateFolder = () => {
     });
   };
 
-  const { mutateAsync: handleUpdateFolder, isLoading: onHandleUpdating } = useMutation(
-    mutateUpdateFolder,
-    {
+  const { mutateAsync: handleUpdateFolder, isLoading: onHandleUpdating } =
+    useMutation(mutateUpdateFolder, {
       onSuccess: ({
         data,
         response,
@@ -51,13 +50,11 @@ const useUpdateFolder = () => {
           title: response,
           variant: 'success',
         });
-        console.log(data);
         updateFolder(data);
         setToggleEdit(false);
         setName('My New Folder');
       },
-    }
-  );
+    });
 
   return {
     handleUpdateFolder,

@@ -9,7 +9,6 @@ export async function POST(req: Request) {
     await folderSchema.validate({ user_id });
     const data = await prisma.folders.findMany({
       where: { user_id: body.user_id, deleted_at: null },
-      include: { notes: true },
     });
     return NextResponse.json(data);
   } catch (e: any) {
