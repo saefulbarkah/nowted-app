@@ -12,7 +12,7 @@ import AuthMenu from './AuthMenu';
 interface SidebarProps {}
 
 export const Sidebar: FC<SidebarProps> = async () => {
-  const { user } = await useCheckLogin();
+  const { session } = await useCheckLogin();
   return (
     <div className="fixed left-0 bottom-0 top-0 w-[300px] custom-scrollbar">
       <div className="flex flex-col gap-[30px] my-[30px]">
@@ -28,7 +28,7 @@ export const Sidebar: FC<SidebarProps> = async () => {
           </div>
           <SearchNote />
         </div>
-        <AuthMenu user={user} />
+        <AuthMenu user={session!.user} />
         <div className="px-[20px]">
           <Button
             className="w-full text-[16px] font-semibold flex gap-2"

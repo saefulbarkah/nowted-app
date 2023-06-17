@@ -1,4 +1,5 @@
 import { getFolderFirst, getNotes } from '@/lib/api';
+import { noteTypes } from '@/types';
 import { useQuery } from '@tanstack/react-query';
 import { useEffect, useState } from 'react';
 import { create } from 'zustand';
@@ -22,8 +23,10 @@ interface UseNoteListsProps {
 const useNoteLists = ({ folder_id, user_id }: UseNoteListsProps) => {
   const setTitle = useFolderTitle((state) => state.setTitle);
   const conditonalQuery = async () => {
+    setTitle('');
     if (folder_id) {
-      const data = await getNotes({ folder_id, user_id });
+      const data = (await getNotes({ folder_id, user_id })) as noteTypes[];
+      setTitle(data[0].folder.name);
       return data;
     }
     const data = await getFolderFirst({ user_id });

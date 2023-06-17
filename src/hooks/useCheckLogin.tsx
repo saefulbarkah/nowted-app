@@ -1,12 +1,12 @@
-import { cookies } from 'next/headers';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-async function useCheckLogin() {
-  const supabaseServer = createServerComponentClient({ cookies });
-  const getSession = await supabaseServer.auth.getSession();
-  const getUser = await supabaseServer.auth.getUser();
-  const session = getSession.data.session;
-  const user = getUser.data.user;
-  return { session, user };
+import { authOption } from '@/lib/nextauth/config';
+import { Session, User } from 'next-auth';
+import { getServerSession } from 'next-auth/next';
+interface returnProps {
+  session: Session | null;
+}
+async function useCheckLogin(): Promise<returnProps> {
+  const session = await getServerSession(authOption);
+  return { session };
 }
 
 export default useCheckLogin;

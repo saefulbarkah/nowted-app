@@ -8,10 +8,21 @@ export async function POST(req: Request) {
     const { user_id, folder_id } = body;
     await notesSchema.validate({ user_id, folder_id });
     const data = await prisma.notes.findMany({
-      where: { user_id, deleted_at: null, folder_id },
+      where: {
+        user_id: user_id,
+        folder_id: Number(folder_id),
+      },
+      include: {
+        folder: {
+          select: {
+            name: true,
+            id: true,
+          },
+        },
+      },
     });
     return NextResponse.json(data);
   } catch (e: any) {
-    return NextResponse.json({ status: 400, response: e.errors });
+    return NextResponse.json({ status: 400, response: e });
   }
 }

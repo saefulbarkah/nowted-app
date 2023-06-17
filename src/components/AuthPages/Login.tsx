@@ -1,43 +1,36 @@
-"use client";
-import Dvider from "@/components/ui/Dvider";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import React, { useState } from "react";
-import WithProvider from "./WithProvider";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import Loading from "./loading";
-import { useToast } from "../ui/use-toast";
-import { useRouter } from "next/navigation";
+'use client';
+import Dvider from '@/components/ui/Dvider';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import React, { useState } from 'react';
+import WithProvider from './WithProvider';
+import Loading from './loading';
+import { useToast } from '../ui/use-toast';
+import { useRouter } from 'next/navigation';
 
 export const Login = () => {
-  const [name, setName] = useState("");
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const supabase = createClientComponentClient();
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
   const [loading, setLoading] = useState(false);
   const { toast } = useToast();
   const router = useRouter();
 
   const handleSigIn = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signInWithPassword({
-      email: email,
-      password: password,
-    });
 
     setLoading(false);
-    if (error) {
-      toast({
-        title: "Login Failed",
-        description: error?.message,
-        variant: "danger",
-      });
-      return;
-    }
+    // if (error) {
+    //   toast({
+    //     title: 'Login Failed',
+    //     description: error?.message,
+    //     variant: 'danger',
+    //   });
+    //   return;
+    // }
     toast({
-      title: "Login success",
-      variant: "success",
+      title: 'Login success',
+      variant: 'success',
     });
     router.refresh();
   };
@@ -65,7 +58,7 @@ export const Login = () => {
       </div>
       <div className="flex flex-col">
         <Button
-          size={"lg"}
+          size={'lg'}
           className="bg-indigo-800 text-lg font-semibold"
           onClick={() => handleSigIn()}
           disabled={loading ? true : false}

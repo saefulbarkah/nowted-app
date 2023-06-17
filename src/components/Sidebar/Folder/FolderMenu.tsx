@@ -12,8 +12,8 @@ async function getFolderByuUser({ user_id }: { user_id: string }) {
 }
 
 const FolderMenu: React.FC<folderProps> = async () => {
-  const { user } = await useCheckLogin();
-  const getFolder = await getFolderByuUser({ user_id: user!.id });
+  const { session } = await useCheckLogin();
+  const getFolder = await getFolderByuUser({ user_id: session!.user.id });
   return (
     <div className="flex flex-col space-y-[8px]">
       <div className="flex justify-between items-center px-[30px] inactive-text">

@@ -3,6 +3,7 @@ import { Button } from '@/components/ui/button';
 import useCreateFolder from '@/hooks/useCreateFolder';
 import useFolderState from '@/hooks/useFolderState';
 import useUpdateFolder from '@/hooks/useUpdateFolder';
+import useValidation from '@/hooks/useValidateName';
 import { useUserStore } from '@/store/userStore';
 import React, { FC } from 'react';
 import { FiFolderPlus, FiSave, FiX } from 'react-icons/fi';
@@ -21,6 +22,8 @@ const SaveFolder: FC<SaveFolderProps> = ({}) => {
     name,
     dataUpdate,
   } = useFolderState();
+
+  const { isError } = useValidation({ data: name });
   const user = useUserStore((state) => state.user);
   const { handleCreateFolder, onHandleCreated } = useCreateFolder();
   const { handleUpdateFolder, onHandleUpdating } = useUpdateFolder();
@@ -30,7 +33,6 @@ const SaveFolder: FC<SaveFolderProps> = ({}) => {
       <Button
         size={'sm'}
         variant={'ghost'}
-        disabled={isLoading ? true : false}
         onClick={() => {
           setToggleCreate(true);
         }}
@@ -41,15 +43,8 @@ const SaveFolder: FC<SaveFolderProps> = ({}) => {
   };
   const renderLoadingButton = () => {
     return (
-      <Button
-        size={'sm'}
-        variant={'ghost'}
-      >
-        <LoadingIcons.Oval
-          height={18}
-          width={18}
-          strokeWidth={4}
-        />
+      <Button size={'sm'} variant={'ghost'}>
+        <LoadingIcons.Oval height={18} width={18} strokeWidth={4} />
       </Button>
     );
   };
@@ -59,6 +54,7 @@ const SaveFolder: FC<SaveFolderProps> = ({}) => {
       <Button
         size={'sm'}
         variant={'ghost'}
+        disabled={isError ? true : false}
         onClick={() => {
           if (toggleCreate) {
             handleCreateFolder({ name, user_id: user?.id });
@@ -78,7 +74,6 @@ const SaveFolder: FC<SaveFolderProps> = ({}) => {
       <Button
         size={'sm'}
         variant={'ghost'}
-        disabled={isLoading ? true : false}
         onClick={() => {
           setToggleCreate(false);
           setToggleEdit(false);
@@ -95,7 +90,11 @@ const SaveFolder: FC<SaveFolderProps> = ({}) => {
     <React.Fragment>
       {toggleCreate || toggleEdit ? (
         <div className="flex">
-          {onHandleCreated || onHandleUpdating ? renderLoadingButton() : <>{renderSaveFolder()}</>}
+          {onHandleCreated || onHandleUpdating ? (
+            renderLoadingButton()
+          ) : (
+            <>{renderSaveFolder()}</>
+          )}
           {renderCloseFolder()}
         </div>
       ) : (

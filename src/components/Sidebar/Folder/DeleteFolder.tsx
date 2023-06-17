@@ -7,45 +7,36 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
+import useDeleteFolder from '@/hooks/useDeleteFolder';
 import { deleteDataFolder } from '@/lib/api';
 import { useFolder } from '@/store';
 import { useMutation } from '@tanstack/react-query';
-import React, { Dispatch, FC, SetStateAction } from 'react';
-import LoadingIcons from 'react-loading-icons';
+import { useRouter } from 'next/navigation';
+import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
 
 interface DeleteFolderProps {
   open: boolean;
   onOpenChange: Dispatch<SetStateAction<boolean>>;
-  data: { id?: string; name: string };
+  data: { id: number; name: string };
 }
 
-const DeleteFolder: FC<DeleteFolderProps> = ({ open, onOpenChange, data }: DeleteFolderProps) => {
-  const deleteFolder = useFolder((state) => state.deleteFolder);
-  const { toast } = useToast();
-  const { mutateAsync: handleDeleteFolder, isLoading: onDeleting } = useMutation(
-    (data: { id?: string }) => {
-      return deleteDataFolder({ id: data.id });
-    },
-    {
-      onSuccess: ({ data, response }: { data: { id: string }; response: string }) => {
-        const { id } = data;
-        toast({
-          title: response,
-          variant: 'success',
-        });
-        onOpenChange(false);
-        deleteFolder(id);
-      },
-    }
-  );
+const DeleteFolder: FC<DeleteFolderProps> = ({
+  open,
+  onOpenChange,
+  data,
+}: DeleteFolderProps) => {
+  const router = useRouter();
+  const { isSuccess, handleDeleteFolder, onDeleting } = useDeleteFolder();
 
+  useEffect(() => {
+    onOpenChange(false);
+  }, [isSuccess]);
   return (
-    <AlertDialog
-      open={open}
-      onOpenChange={onOpenChange}
-    >
+    <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="bg-background border-white/[20%] flex flex-col justify-center items-center min-w-[120px]">
-        <AlertDialogHeader className="text-[35px] font-semibold">Are you sure ?</AlertDialogHeader>
+        <AlertDialogHeader className="text-[35px] font-semibold">
+          Are you sure ?
+        </AlertDialogHeader>
         <p>
           You will delete <span className="font-bold">{data.name}</span>
         </p>

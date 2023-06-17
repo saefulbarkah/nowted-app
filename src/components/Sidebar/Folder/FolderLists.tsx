@@ -24,6 +24,7 @@ import DeleteFolder from './DeleteFolder';
 import { useSearchParams, usePathname } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
 import { useFolderTitle } from '@/hooks/useNoteLists';
+import { slug } from '@/lib/utils';
 
 interface ListFolderProps {
   data: folderTypes[];
@@ -32,8 +33,13 @@ interface ListFolderProps {
 const ListFolder: FC<ListFolderProps> = ({ data }) => {
   const currTitleFolder = useFolderTitle((state) => state.title);
   const searchParams = useSearchParams();
-  const currentPath = usePathname();
   const getNameFolder = searchParams.get('folder');
+
+  console.log({
+    param_title_folder: currTitleFolder,
+    current_folder: getNameFolder,
+  });
+
   const {
     setName,
     toggleEdit,
@@ -42,14 +48,14 @@ const ListFolder: FC<ListFolderProps> = ({ data }) => {
     setDataUpdate,
     deleteData,
     setDeleteData,
-    setFolder,
     folders,
-    isLoading,
+    setFolder,
     setIsLoading,
+    isLoading,
   } = useFolderState();
   const [dialogDelete, setDialogDelete] = useState(false);
 
-  const handleEditFolder = (item: { id?: string; name: string }) => {
+  const handleEditFolder = (item: { id: number; name: string }) => {
     setDataUpdate({
       id: item.id,
       name: item.name,
@@ -59,8 +65,8 @@ const ListFolder: FC<ListFolderProps> = ({ data }) => {
   };
 
   useEffect(() => {
-    setFolder(data);
     setIsLoading(false);
+    setFolder(data);
   }, [data]);
 
   return (
@@ -91,9 +97,12 @@ const ListFolder: FC<ListFolderProps> = ({ data }) => {
       {folders?.map((item, i) => (
         <div
           className={`inactive-text hover:text-white hover:bg-white/[3%] px-[30px] transition rounded-md ${
-            getNameFolder === item.name && 'bg-white/[3%] text-white'
-          }
-           ${currTitleFolder === getNameFolder && 'bg-white/[3%] text-white'}`}
+            getNameFolder === slug(item.name) && 'bg-white/[3%] text-white'
+          } ${
+            currTitleFolder === slug(item.name) &&
+            !getNameFolder &&
+            'bg-white/[3%] text-white'
+          }`}
           key={i}
         >
           <div className="flex items-center justify-between">
@@ -103,7 +112,7 @@ const ListFolder: FC<ListFolderProps> = ({ data }) => {
               <>
                 <Link
                   className="flex items-center gap-[15px] w-[80%] h-full py-[10px] pr-[20px]"
-                  href={`/note?folder=${item.name}&folder_id=${item.id}`}
+                  href={`/note?folder=${slug(item.name)}&folder_id=${item.id}`}
                 >
                   <div>
                     <LuFolderOpen className="text-[20px]" />

@@ -4,6 +4,8 @@ import { useMutation } from '@tanstack/react-query';
 import useFolderState from './useFolderState';
 import { useToast } from '@/components/ui/use-toast';
 import { useFolder } from '@/store';
+import { useRouter } from 'next/navigation';
+import { useFolderTitle } from './useNoteLists';
 
 interface updateData {
   id: string;
@@ -11,17 +13,15 @@ interface updateData {
   user_id: string;
 }
 
-interface returnProps {
-  handleUpdateFolder: (data: updateData) => void;
-  onHandleUpdating: boolean;
-}
 const useUpdateFolder = () => {
   const { toast } = useToast();
   const updateFolder = useFolder((state) => state.editFolder);
+  const setTitle = useFolderTitle((state) => state.setTitle);
   const { setName, setToggleEdit } = useFolderState();
+  const router = useRouter();
   const mutateUpdateFolder = async (data: Partial<folderTypes>) => {
     return await updateDataFolder({
-      id: data.id as string,
+      id: data.id,
       name: data.name as string,
       user_id: data.user_id,
     });
@@ -53,6 +53,8 @@ const useUpdateFolder = () => {
         updateFolder(data);
         setToggleEdit(false);
         setName('My New Folder');
+        setTitle(data.name);
+        router.refresh();
       },
     });
 

@@ -1,11 +1,10 @@
-import useCheckLogin from "@/hooks/useCheckLogin";
-import { redirect } from "next/navigation";
+import useCheckLogin from '@/hooks/useCheckLogin';
+import { redirect } from 'next/navigation';
 
 export default async function page() {
   const { session } = await useCheckLogin();
-
-  if (!session) {
-    redirect("/login");
+  if (!session?.user) {
+    redirect('/login');
   }
-  redirect("/note");
+  redirect('/note');
 }

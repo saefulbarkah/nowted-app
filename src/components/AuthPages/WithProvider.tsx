@@ -1,34 +1,17 @@
 'use client';
 import React, { useState } from 'react';
 import { Button } from '../ui/button';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { FcGoogle } from 'react-icons/fc';
 import { useRouter } from 'next/navigation';
-import { useToast } from '../ui/use-toast';
+import { signIn } from 'next-auth/react';
 
 function WithProvider() {
   const [loading, setLoading] = useState(false);
-  const supabase = createClientComponentClient();
   const router = useRouter();
-  const { toast } = useToast();
 
   async function handleSignGoogle() {
     setLoading(true);
-    try {
-      await supabase.auth.signInWithOAuth({
-        provider: 'google',
-        options: {
-          redirectTo: `${location.origin}/auth/callback`,
-        },
-      });
-      router.push('/note');
-    } catch (error) {
-      toast({
-        title: 'There was a problem',
-        description: 'There was an error loggin in with google',
-        variant: 'danger',
-      });
-    }
+    await signIn('google');
   }
   return (
     <div className="flex flex-col gap-[20px]">

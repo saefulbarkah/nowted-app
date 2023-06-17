@@ -7,10 +7,11 @@ export type noteTypes = {
   created_at?: Date;
   updated_at?: Date | null;
   deleted_at?: Date | null;
+  folder: folderTypes;
 };
 
 export interface folderTypes {
-  id?: string;
+  id: number;
   name: string;
   user_id?: string;
   can_deleted?: boolean | null;

@@ -1,23 +1,29 @@
-import NoteMenuList from "@/components/NoteEditor/NoteMenuList";
-import Container from "@/components/container";
-import Dvider from "@/components/ui/Dvider";
-import { Editor } from "@/components/ui/Editor";
-import { Metadata } from "next";
-import { LuCalendarDays, LuFolder } from "react-icons/lu";
+import NoteMenuList from '@/components/NoteEditor/NoteMenuList';
+import Container from '@/components/container';
+import Dvider from '@/components/ui/Dvider';
+import { Editor } from '@/components/ui/Editor';
+import { Metadata } from 'next';
+import { LuCalendarDays, LuFolder } from 'react-icons/lu';
 
-interface paramsProps {
-  params: { id: string };
+export interface paramsProps {
+  params: { name: string };
+  searchParams?: {
+    note_id: number;
+  };
 }
 
 export async function generateMetadata({
   params,
 }: paramsProps): Promise<Metadata> {
-  const id = params.id;
+  const name = params.name;
   return {
-    title: "Nowted - " + id,
+    title: 'Nowted - ' + name,
   };
 }
-export default async function page() {
+
+export async function getNoteById(id: string) {}
+
+export default async function page({ params, searchParams }: paramsProps) {
   return (
     <Container>
       <div className="flex flex-col gap-5">

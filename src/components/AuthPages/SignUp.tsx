@@ -1,34 +1,26 @@
-"use client";
-import Dvider from "@/components/ui/Dvider";
-import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import React, { useState } from "react";
-import WithProvider from "./WithProvider";
-import Loading from "./loading";
+'use client';
+import Dvider from '@/components/ui/Dvider';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import React, { useState } from 'react';
+import WithProvider from './WithProvider';
+import Loading from './loading';
 
 export const SignUp = ({ onChangeTab }: any) => {
-  const [name, setName] = React.useState("");
-  const [email, setEmail] = React.useState("");
-  const [password, setPassword] = React.useState("");
-  const supabase = createClientComponentClient();
+  const [name, setName] = React.useState('');
+  const [email, setEmail] = React.useState('');
+  const [password, setPassword] = React.useState('');
   const [loading, setLoading] = useState(false);
 
   const handleSignUp = async () => {
     setLoading(true);
-    const { error } = await supabase.auth.signUp({
-      email: email,
-      password: password,
-      options: {
-        emailRedirectTo: `${location.origin}/auth/callback`,
-      },
-    });
+
     setLoading(false);
-    if (error) return;
+    // if (error) return;
 
     // signup success
-    onChangeTab("signIn");
+    onChangeTab('signIn');
   };
 
   return (
@@ -65,7 +57,7 @@ export const SignUp = ({ onChangeTab }: any) => {
       </div>
       <div className="flex flex-col">
         <Button
-          size={"lg"}
+          size={'lg'}
           className="bg-indigo-800 text-lg font-semibold"
           onClick={() => handleSignUp()}
           disabled={loading ? true : false}

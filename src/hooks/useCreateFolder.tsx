@@ -22,9 +22,8 @@ const useCreateFolder = (): useCreateFolderReturn => {
     return await createFolderToDb({ user_id: data.user_id, name: data.name });
   };
 
-  const { mutateAsync: handleCreateFolder, isLoading: onHandleCreated } = useMutation(
-    mutateCreatedFolder,
-    {
+  const { mutateAsync: handleCreateFolder, isLoading: onHandleCreated } =
+    useMutation(mutateCreatedFolder, {
       onSuccess: ({
         data,
         response,
@@ -51,8 +50,7 @@ const useCreateFolder = (): useCreateFolderReturn => {
         setToggleCreate(false);
         setName('My New Folder');
       },
-    }
-  );
+    });
   return { handleCreateFolder, onHandleCreated };
 };
 

@@ -4,7 +4,7 @@ import { useFolder } from '@/store';
 import { useState } from 'react';
 
 interface dataDelete {
-  id?: string;
+  id: number;
   name: string;
 }
 
@@ -20,7 +20,7 @@ function useFolderState() {
 
   // delete fodler state
   const [deleteData, setDeleteData] = useState<dataDelete>({
-    id: '',
+    id: 0,
     name: '',
   });
 

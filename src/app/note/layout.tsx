@@ -1,9 +1,9 @@
-import { Sidebar } from "@/components/Sidebar";
-import { NoteMenu } from "@/components/NoteLists";
-import { Toaster } from "@/components/ui/Toaster";
-import ReactQueryProvider from "@/lib/reactQueryProvider";
-import useCheckLogin from "@/hooks/useCheckLogin";
-import { redirect } from "next/navigation";
+import { Sidebar } from '@/components/Sidebar';
+import { NoteMenu } from '@/components/NoteLists';
+import { Toaster } from '@/components/ui/Toaster';
+import ReactQueryProvider from '@/lib/reactQueryProvider';
+import useCheckLogin from '@/hooks/useCheckLogin';
+import { redirect } from 'next/navigation';
 
 export default async function notelayout({
   children,
@@ -12,7 +12,7 @@ export default async function notelayout({
 }) {
   const { session } = await useCheckLogin();
   if (!session) {
-    redirect("/login");
+    redirect('/login');
   }
   return (
     <>

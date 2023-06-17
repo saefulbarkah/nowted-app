@@ -1,51 +1,50 @@
 'use client';
-import { User } from '@supabase/supabase-js';
 import React, { FC, useEffect } from 'react';
 import { Button } from '../ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuTrigger } from '../ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuTrigger,
+} from '../ui/dropdown-menu';
 import { FiLogOut, FiMoreHorizontal } from 'react-icons/fi';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { useUserStore } from '@/store/userStore';
 import Image from 'next/image';
+import { signOut } from 'next-auth/react';
+import { User } from 'next-auth';
 
 interface AuthMenuProps {
-  user: User | null;
+  user: User;
 }
 
 const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
-  const supabase = createClientComponentClient();
   const router = useRouter();
   const setUser = useUserStore((state) => state.setUser);
   async function handleSignOut() {
-    const { error } = await supabase.auth.signOut();
-    if (!error) {
-      router.replace('/login');
-    }
+    await signOut();
+    router.replace('/login');
   }
 
   useEffect(() => {
     setUser(user);
   }, [user]);
+
   return (
     <div className="px-[30px]">
       <DropdownMenu>
         <DropdownMenuTrigger asChild>
-          <Button
-            className="h-[50px] w-full"
-            variant={'ghost'}
-          >
+          <Button className="h-[50px] w-full" variant={'ghost'}>
             <div className="flex justify-between gap-2 items-center w-full">
               <div className="flex gap-4 w-[90%] items-center">
                 <Image
                   width={30}
                   height={30}
-                  src={`${user?.user_metadata.avatar_url}`}
+                  src={`${user?.image}`}
                   quality={100}
                   alt="asdsad"
                   className="rounded-full"
                 />
-                <p className="text-[14px] truncate">{user?.user_metadata.full_name}</p>
+                <p className="text-[14px] truncate">{user?.name}</p>
               </div>
               <div>
                 <FiMoreHorizontal className="text-white text-[20px]" />

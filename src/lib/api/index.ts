@@ -47,3 +47,9 @@ export async function getNotes(body: Partial<noteTypes>) {
   });
   return data;
 }
+export async function getNotesById(body: Partial<noteTypes>) {
+  const { data } = await api.post('/notes', {
+    id: body.id,
+  });
+  return data;
+}
