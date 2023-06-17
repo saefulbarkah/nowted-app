@@ -29,9 +29,9 @@ const useNoteLists = ({ folder_id, user_id }: UseNoteListsProps) => {
       setTitle(data[0].folder.name);
       return data;
     }
-    const data = await getFolderFirst({ user_id });
-    setTitle(data.name);
-    return data.notes;
+    const data = (await getNotes({ user_id })) as noteTypes[];
+    setTitle(data[0].folder.name);
+    return data;
   };
   const {
     data: notes,

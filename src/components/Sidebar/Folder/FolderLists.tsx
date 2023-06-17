@@ -35,11 +35,6 @@ const ListFolder: FC<ListFolderProps> = ({ data }) => {
   const searchParams = useSearchParams();
   const getNameFolder = searchParams.get('folder');
 
-  console.log({
-    param_title_folder: currTitleFolder,
-    current_folder: getNameFolder,
-  });
-
   const {
     setName,
     toggleEdit,

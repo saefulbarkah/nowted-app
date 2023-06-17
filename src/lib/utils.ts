@@ -6,6 +6,7 @@ export function cn(...inputs: ClassValue[]) {
 }
 
 export function slug(value: string) {
+  if (!value) return;
   const slug = value.split(' ').join('-');
   return slug;
 }

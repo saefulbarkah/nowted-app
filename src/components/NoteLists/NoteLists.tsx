@@ -8,6 +8,7 @@ import { noteTypes } from '@/types';
 import useNoteLists, { useFolderTitle } from '@/hooks/useNoteLists';
 import { User } from 'next-auth';
 import Link from 'next/link';
+import { useRecentStore } from '@/store/useRecentStore';
 
 interface NoteListsProps {
   user: User;
@@ -18,6 +19,7 @@ const NoteLists: FC<NoteListsProps> = ({ user }) => {
   const folder_id = searchParam.get('folder_id');
   const note_id = searchParam.get('note_id');
   const title = useFolderTitle((state) => state.title);
+  const addToRecent = useRecentStore((state) => state.addToRecents);
 
   const { notes, isNoteLoading } = useNoteLists({
     folder_id: folder_id,
@@ -52,12 +54,13 @@ const NoteLists: FC<NoteListsProps> = ({ user }) => {
               </div>
             ) : (
               <>
-                {notes?.map((item: noteTypes, i: Key) => (
+                {notes?.map((item: any, i: Key) => (
                   <Link
                     href={`/note/${slug(item.name)}?folder=${slug(
-                      item.folder.name
+                      item.folder?.name
                     )}&folder_id=${item.folder_id}&note_id=${item.id}`}
                     key={i}
+                    onClick={() => addToRecent(item)}
                   >
                     <Card
                       className={`border-none hover:bg-white/[7%] bg-white/[3%] transition cursor-pointer hover:text-white group ${

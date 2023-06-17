@@ -9,7 +9,8 @@ export async function POST(req: Request) {
     await folderSchema.validate({ user_id });
     const data = await prisma.folders.findFirst({
       where: { user_id: body.user_id, deleted_at: null, can_deleted: false },
-      include: {
+      select: {
+        id: true,
         notes: true,
       },
     });

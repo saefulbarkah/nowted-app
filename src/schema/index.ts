@@ -11,7 +11,7 @@ export const noteSchemaByid = yup.object<notesSchema>({
 
 export const notesSchema = yup.object({
   user_id: yup.string().required(),
-  folder_id: yup.number().required(),
+  folder_id: yup.number(),
 });
 
 // folders
