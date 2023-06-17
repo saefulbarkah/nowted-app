@@ -5,9 +5,11 @@ import Link from 'next/link';
 import React, { Key } from 'react';
 import { Card, CardContent } from '../ui/card';
 import { noteTypes } from '@/types';
+import { useSearchParams } from 'next/navigation';
 
-function Lists({ notes, note_id }: { notes: noteTypes[]; note_id?: number }) {
+function Lists({ notes }: { notes: noteTypes[] }) {
   const addToRecent = useRecentStore((state) => state.addToRecents);
+  const note_id = useSearchParams().get('note_id');
 
   return (
     <>
