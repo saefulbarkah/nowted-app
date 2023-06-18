@@ -4,11 +4,11 @@ import { Card, CardContent, CardHeader } from '@/components/ui/card';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
 import { useState } from 'react';
 
-export default function page() {
-  const [tabValue, setTabValue] = useState('signIn');
+export default function Page() {
+  const [TabValue, setTabValue] = useState('signIn');
   return (
     <div className="min-h-screen flex items-center justify-center">
-      <Tabs value={tabValue}>
+      <Tabs value={TabValue}>
         <TabsList className="grid w-full grid-cols-2 bg-white/[5%]">
           <TabsTrigger value="signIn" onClick={() => setTabValue('signIn')}>
             Sigh in

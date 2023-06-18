@@ -8,7 +8,6 @@ import {
 } from '../ui/dropdown-menu';
 import { FiLogOut, FiMoreHorizontal } from 'react-icons/fi';
 import { useRouter } from 'next/navigation';
-import { useUserStore } from '@/store/userStore';
 import Image from 'next/image';
 import { signOut } from 'next-auth/react';
 import { User } from 'next-auth';
@@ -19,15 +18,10 @@ interface AuthMenuProps {
 
 const AuthMenu: FC<AuthMenuProps> = ({ user }) => {
   const router = useRouter();
-  const setUser = useUserStore((state) => state.setUser);
   async function handleSignOut() {
     await signOut();
     router.replace('/login');
   }
-
-  useEffect(() => {
-    setUser(user);
-  }, [user]);
 
   return (
     <div className="px-[30px]">

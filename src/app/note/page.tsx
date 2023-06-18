@@ -1,8 +1,8 @@
-import Image from "next/image";
-import { Metadata } from "next";
+import Image from 'next/image';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Nowted APP",
+  title: 'Nowted APP',
 };
 
 export default async function page() {
@@ -12,7 +12,7 @@ export default async function page() {
         <Image
           alt="icon"
           priority
-          src={"/FileText.svg"}
+          src={'/FileText.svg'}
           height={80}
           width={80}
         />

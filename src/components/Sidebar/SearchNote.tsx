@@ -1,15 +1,15 @@
-"use client";
-import React, { useState, useMemo } from "react";
-import { Button } from "../ui/button";
-import { FiFolder, FiSearch, FiX } from "react-icons/fi";
+'use client';
+import React, { useState, useMemo } from 'react';
+import { Button } from '../ui/button';
+import { FiFolder, FiSearch, FiX } from 'react-icons/fi';
 import {
   AlertDialog,
   AlertDialogCancel,
   AlertDialogContent,
   AlertDialogTrigger,
-} from "../ui/alert-dialog";
-import Link from "next/link";
-import { FiFileText } from "react-icons/fi";
+} from '../ui/alert-dialog';
+import Link from 'next/link';
+import { FiFileText } from 'react-icons/fi';
 
 const RenderNoteItem = ({ title, data, icon }: any) => {
   return (
@@ -23,7 +23,7 @@ const RenderNoteItem = ({ title, data, icon }: any) => {
             </div>
             {data?.map((item: any, i: any) => (
               <Link
-                href={"#"}
+                href={'#'}
                 className="hover:bg-white/[5%] py-3 rounded-md transition px-3"
                 key={i}
               >
@@ -52,7 +52,7 @@ const RenderFolderItem = ({ title, data, icon }: any) => {
             </div>
             {data?.map((item: any, i: any) => (
               <Link
-                href={"#"}
+                href={'#'}
                 className="hover:bg-white/[5%] py-3 rounded-md transition px-3"
                 key={i}
               >
@@ -69,28 +69,28 @@ const RenderFolderItem = ({ title, data, icon }: any) => {
   );
 };
 
-function SearchNote() {
-  const [search, setSearch] = useState<string>("");
+const dummyData: {
+  notes: {
+    title: string;
+    category: string;
+  }[];
+  folders: {
+    title: string;
+    category: string;
+  }[];
+} = {
+  notes: [
+    { title: 'wedqweqewqasdqweqwewqeqe', category: 'notes' },
+    { title: 'loweqweqw eqw eqwewes', category: 'notes' },
+  ],
+  folders: [
+    { title: 'Travel', category: 'folder' },
+    { title: 'Home', category: 'folder' },
+  ],
+};
 
-  const dummyData: {
-    notes: {
-      title: string;
-      category: string;
-    }[];
-    folders: {
-      title: string;
-      category: string;
-    }[];
-  } = {
-    notes: [
-      { title: "wedqweqewqasdqweqwewqeqe", category: "notes" },
-      { title: "loweqweqw eqw eqwewes", category: "notes" },
-    ],
-    folders: [
-      { title: "Travel", category: "folder" },
-      { title: "Home", category: "folder" },
-    ],
-  };
+function SearchNote() {
+  const [search, setSearch] = useState<string>('');
 
   const searchNoteData = useMemo(() => {
     if (!search) return dummyData.notes;
@@ -98,6 +98,7 @@ function SearchNote() {
       item.title.toLowerCase().includes(search)
     );
     return res;
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
   const searchFolderData = useMemo(() => {
@@ -112,7 +113,7 @@ function SearchNote() {
     <>
       <AlertDialog>
         <AlertDialogTrigger asChild>
-          <Button size={"sm"} variant={"ghost"}>
+          <Button size={'sm'} variant={'ghost'}>
             <FiSearch className="text-[20px]" />
           </Button>
         </AlertDialogTrigger>
@@ -131,8 +132,8 @@ function SearchNote() {
               </div>
               <AlertDialogCancel asChild>
                 <Button
-                  size={"sm"}
-                  variant={"ghost"}
+                  size={'sm'}
+                  variant={'ghost'}
                   className="outline-none border-none ring-0 px-[10px] py-[10px]"
                 >
                   <FiX className="text-[22px]" />
@@ -152,7 +153,7 @@ function SearchNote() {
             {searchNoteData.length === 0 && searchFolderData.length === 0 && (
               <p className="text-lg flex h-[330px] items-center justify-center truncate">
                 <span>No results for</span>
-                <span className="ml-2 font-bold text-white">"{search}"</span>
+                <span className="ml-2 font-bold text-white">{search}</span>
               </p>
             )}
           </div>

@@ -19,6 +19,7 @@ const useValidation = ({ data }: Props): returnType => {
 
   useEffect(() => {
     validate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [data]);
 
   return { isError };

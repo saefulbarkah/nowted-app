@@ -5,6 +5,7 @@ import { persist } from 'zustand/middleware';
 interface recentTypes {
   recents: noteTypes[];
   addToRecents: (data: any) => void;
+  removeRecents: ({ id }: { id: number }) => void;
 }
 
 export const useRecentStore = create<recentTypes>()(
@@ -22,6 +23,11 @@ export const useRecentStore = create<recentTypes>()(
             ],
           };
         });
+      },
+      removeRecents: ({ id }: { id: number }) => {
+        set((state) => ({
+          recents: state.recents.filter((item) => item.id !== id),
+        }));
       },
     }),
     {

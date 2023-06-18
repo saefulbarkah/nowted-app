@@ -1,2 +1,1 @@
-export * from "./Note";
-export * from "./NoteMenuList";
+export * from './NoteMenuList';

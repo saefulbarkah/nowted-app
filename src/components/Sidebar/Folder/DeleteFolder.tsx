@@ -21,12 +21,11 @@ const DeleteFolder: FC<DeleteFolderProps> = ({
   onOpenChange,
   data,
 }: DeleteFolderProps) => {
-  const router = useRouter();
   const { isSuccess, handleDeleteFolder, onDeleting } = useDeleteFolder();
 
   useEffect(() => {
     onOpenChange(false);
-  }, [isSuccess]);
+  }, [isSuccess, onOpenChange]);
   return (
     <AlertDialog open={open} onOpenChange={onOpenChange}>
       <AlertDialogContent className="bg-background border-white/[20%] flex flex-col justify-center items-center min-w-[120px]">

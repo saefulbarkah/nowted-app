@@ -4,11 +4,12 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useFolderState from './useFolderState';
 import { useToast } from '@/components/ui/use-toast';
 import { useFolderTitle } from '@/components/NoteLists/Lists';
+import { useRouter } from 'next/navigation';
 
 const useUpdateFolder = () => {
   const { toast } = useToast();
-  const setTitle = useFolderTitle((state) => state.setTitle);
   const { setName, setToggleEdit } = useFolderState();
+  const router = useRouter();
   const queryClient = useQueryClient();
   const mutateUpdateFolder = async (data: Partial<folderTypes>) => {
     return await updateDataFolder({
@@ -37,14 +38,16 @@ const useUpdateFolder = () => {
           });
           return;
         }
-        await queryClient.refetchQueries(['folders']);
+        await queryClient.invalidateQueries(['folders']);
+        await queryClient.invalidateQueries(['find-note']);
+        await queryClient.invalidateQueries(['notes']);
+        // await queryClient.refetchQueries(['folders', 'notes']);
         toast({
           title: response,
           variant: 'success',
         });
         setToggleEdit(false);
         setName('My New Folder');
-        queryClient.invalidateQueries(['folders']);
       },
     });
 

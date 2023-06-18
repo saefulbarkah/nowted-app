@@ -1,6 +1,6 @@
 import { authOption } from '@/lib/nextauth/config';
-import { Session, User } from 'next-auth';
-import { getServerSession } from 'next-auth/next';
+import { Session } from 'next-auth';
+import { getServerSession, unstable_getServerSession } from 'next-auth/next';
 interface returnProps {
   session: Session | null;
 }

@@ -13,6 +13,10 @@ export const notesSchema = yup.object({
   user_id: yup.string().required(),
   folder_id: yup.number(),
 });
+export const firstNote = yup.object({
+  id: yup.number().required(),
+  user_id: yup.string().required(),
+});
 
 // folders
 export const folderSchema = yup.object({

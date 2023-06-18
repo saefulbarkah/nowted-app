@@ -48,8 +48,17 @@ export async function getNotes(body: Partial<noteTypes>) {
   return data;
 }
 export async function getNotesById(body: Partial<noteTypes>) {
-  const { data } = await api.post('/notes', {
+  const { data } = await api.post(`/notes/find`, {
     id: body.id,
+  });
+  return data;
+}
+
+export async function saveNotesById(body: Partial<noteTypes>) {
+  const { data } = await api.post(`/notes/save`, {
+    id: body.id,
+    name: body.name,
+    content: body.content,
   });
   return data;
 }

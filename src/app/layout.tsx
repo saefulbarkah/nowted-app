@@ -1,3 +1,4 @@
+import SessionProviders from '@/Providers/SessionProviders';
 import './globals.css';
 import { Source_Sans_Pro } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
@@ -15,8 +16,10 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={`${sabs.className}`}>
-        <NextTopLoader />
-        {children}
+        <SessionProviders>
+          <NextTopLoader />
+          {children}
+        </SessionProviders>
       </body>
     </html>
   );

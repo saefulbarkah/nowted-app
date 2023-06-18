@@ -8,7 +8,7 @@ export const metadata: Metadata = {
   title: 'Nowted APP - LOGIN',
 };
 
-export default async function authLayout({
+export default async function AuthLayout({
   children,
 }: {
   children: React.ReactNode;

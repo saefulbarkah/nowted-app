@@ -63,7 +63,7 @@ function Lists({ user }: { user: User }) {
 
   useEffect(() => {
     refetchNotes();
-  }, [folder_id]);
+  }, [folder_id, refetchNotes]);
 
   return (
     <>

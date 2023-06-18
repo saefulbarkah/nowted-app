@@ -4,7 +4,13 @@ import useCreateFolder from '@/hooks/useCreateFolder';
 import useFolderState from '@/hooks/useFolderState';
 import useUpdateFolder from '@/hooks/useUpdateFolder';
 import useValidation from '@/hooks/useValidateName';
-import { useUserStore } from '@/store/userStore';
+import {
+  QueryClient,
+  useIsFetching,
+  useQuery,
+  useQueryClient,
+} from '@tanstack/react-query';
+import { useSession } from 'next-auth/react';
 import React, { FC } from 'react';
 import { FiFolderPlus, FiSave, FiX } from 'react-icons/fi';
 import LoadingIcons from 'react-loading-icons';
@@ -23,14 +29,16 @@ const SaveFolder: FC<SaveFolderProps> = ({}) => {
   } = useFolderState();
 
   const { isError } = useValidation({ data: name });
-  const user = useUserStore((state) => state.user);
   const { handleCreateFolder, onHandleCreated } = useCreateFolder();
   const { handleUpdateFolder, onHandleUpdating } = useUpdateFolder();
+  const session = useSession();
+  const isFetching = useIsFetching({ queryKey: ['folders'] });
 
   const renderCreateFolder = () => {
     return (
       <Button
         size={'sm'}
+        disabled={isFetching ? true : false}
         variant={'ghost'}
         onClick={() => {
           setToggleCreate(true);
@@ -56,7 +64,7 @@ const SaveFolder: FC<SaveFolderProps> = ({}) => {
         disabled={isError ? true : false}
         onClick={() => {
           if (toggleCreate) {
-            handleCreateFolder({ name, user_id: user?.id });
+            handleCreateFolder({ name, user_id: session?.data?.user.id });
             return;
           }
           handleUpdateFolder({ id: dataUpdate.id, name: name });

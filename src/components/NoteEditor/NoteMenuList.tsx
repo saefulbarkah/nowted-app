@@ -20,7 +20,7 @@ function NoteMenuList() {
     { name: 'Delete', href: '/trash', icon: <FiTrash /> },
   ];
   return (
-    <>
+    <div className="ml-5">
       <DropdownMenu>
         <DropdownMenuTrigger
           asChild
@@ -51,7 +51,7 @@ function NoteMenuList() {
           </div>
         </DropdownMenuContent>
       </DropdownMenu>
-    </>
+    </div>
   );
 }
 

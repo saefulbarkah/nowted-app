@@ -5,7 +5,7 @@ import ReactQueryProvider from '@/lib/reactQueryProvider';
 import useCheckLogin from '@/hooks/useCheckLogin';
 import { redirect } from 'next/navigation';
 
-export default async function notelayout({
+export default async function NoteLayout({
   children,
 }: {
   children: React.ReactNode;
