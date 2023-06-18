@@ -1,31 +1,26 @@
 import { useToast } from '@/components/ui/use-toast';
 import { createFolderToDb } from '@/lib/api';
 import { folderTypes } from '@/types';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useFolderState from './useFolderState';
-import { useFolder } from '@/store';
+import LoadingIcons from 'react-loading-icons';
 
-interface useCreateFolderProps {
-  handleCreateFolder: any;
-  onHandleCreated: boolean;
-}
 interface useCreateFolderReturn {
   handleCreateFolder: any;
   onHandleCreated: boolean;
 }
 
 const useCreateFolder = (): useCreateFolderReturn => {
-  const addFolder = useFolder((state) => state.addFolder);
   const { toast } = useToast();
   const { setName, setToggleCreate } = useFolderState();
+  const queryClient = useQueryClient();
   const mutateCreatedFolder = async (data: Partial<folderTypes>) => {
     return await createFolderToDb({ user_id: data.user_id, name: data.name });
   };
 
-  const { mutateAsync: handleCreateFolder, isLoading: onHandleCreated } =
+  const { mutate: handleCreateFolder, isLoading: onHandleCreated } =
     useMutation(mutateCreatedFolder, {
-      onSuccess: ({
-        data,
+      onSuccess: async ({
         response,
         status,
       }: {
@@ -42,13 +37,14 @@ const useCreateFolder = (): useCreateFolderReturn => {
           });
           return;
         }
+        await queryClient.refetchQueries(['folders']);
         toast({
           title: response,
           variant: 'success',
         });
-        addFolder({ name: data.name, user_id: data.user_id, id: data.id });
-        setToggleCreate(false);
         setName('My New Folder');
+        setToggleCreate(false);
+        queryClient.invalidateQueries(['folders']);
       },
     });
   return { handleCreateFolder, onHandleCreated };

@@ -1,24 +1,15 @@
 import { updateDataFolder } from '@/lib/api';
 import { folderTypes } from '@/types';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import useFolderState from './useFolderState';
 import { useToast } from '@/components/ui/use-toast';
-import { useFolder } from '@/store';
-import { useRouter } from 'next/navigation';
-import { useFolderTitle } from './useNoteLists';
-
-interface updateData {
-  id: string;
-  name: string;
-  user_id: string;
-}
+import { useFolderTitle } from '@/components/NoteLists/Lists';
 
 const useUpdateFolder = () => {
   const { toast } = useToast();
-  const updateFolder = useFolder((state) => state.editFolder);
   const setTitle = useFolderTitle((state) => state.setTitle);
   const { setName, setToggleEdit } = useFolderState();
-  const router = useRouter();
+  const queryClient = useQueryClient();
   const mutateUpdateFolder = async (data: Partial<folderTypes>) => {
     return await updateDataFolder({
       id: data.id,
@@ -29,7 +20,7 @@ const useUpdateFolder = () => {
 
   const { mutateAsync: handleUpdateFolder, isLoading: onHandleUpdating } =
     useMutation(mutateUpdateFolder, {
-      onSuccess: ({
+      onSuccess: async ({
         data,
         response,
         status,
@@ -46,15 +37,14 @@ const useUpdateFolder = () => {
           });
           return;
         }
+        await queryClient.refetchQueries(['folders']);
         toast({
           title: response,
           variant: 'success',
         });
-        updateFolder(data);
         setToggleEdit(false);
         setName('My New Folder');
-        setTitle(data.name);
-        router.refresh();
+        queryClient.invalidateQueries(['folders']);
       },
     });
 

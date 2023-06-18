@@ -1,5 +1,5 @@
 'use client';
-import React, { FC, useEffect, useState } from 'react';
+import React, { FC, useState } from 'react';
 import { LuFolderOpen } from 'react-icons/lu';
 import {
   DropdownMenu,
@@ -21,19 +21,26 @@ import { FiEdit, FiTrash } from 'react-icons/fi';
 import UpdateFolder from './UpdateFolder';
 import useFolderState from '@/hooks/useFolderState';
 import DeleteFolder from './DeleteFolder';
-import { useSearchParams, usePathname } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
 import { Skeleton } from '@/components/ui/skeleton';
-import { useFolderTitle } from '@/hooks/useNoteLists';
 import { slug } from '@/lib/utils';
+import { useQuery } from '@tanstack/react-query';
+import { getFolders } from '@/lib/api';
+import { User } from 'next-auth';
+import { useFolderTitle } from '@/components/NoteLists/Lists';
 
 interface ListFolderProps {
-  data: folderTypes[];
+  user: User;
 }
 
-const ListFolder: FC<ListFolderProps> = ({ data }) => {
+const ListFolder: FC<ListFolderProps> = ({ user }) => {
   const currTitleFolder = useFolderTitle((state) => state.title);
   const searchParams = useSearchParams();
   const getNameFolder = searchParams.get('folder');
+  const { data: folders, isLoading } = useQuery<folderTypes[]>({
+    queryKey: ['folders'],
+    queryFn: async () => await getFolders({ user_id: user.id }),
+  });
 
   const {
     setName,
@@ -43,10 +50,6 @@ const ListFolder: FC<ListFolderProps> = ({ data }) => {
     setDataUpdate,
     deleteData,
     setDeleteData,
-    folders,
-    setFolder,
-    setIsLoading,
-    isLoading,
   } = useFolderState();
   const [dialogDelete, setDialogDelete] = useState(false);
 
@@ -58,11 +61,6 @@ const ListFolder: FC<ListFolderProps> = ({ data }) => {
     setName(item.name);
     setToggleEdit(true);
   };
-
-  useEffect(() => {
-    setIsLoading(false);
-    setFolder(data);
-  }, [data]);
 
   return (
     <>
@@ -166,7 +164,7 @@ const ListFolder: FC<ListFolderProps> = ({ data }) => {
           </div>
         </div>
       ))}
-      {data.length === 0 && (
+      {folders?.length === 0 && (
         <p className="px-[30px] text-center text-sm">Folder is empty</p>
       )}
     </>

@@ -3,7 +3,7 @@ export type noteTypes = {
   name: string;
   content?: string | null;
   user_id: string;
-  folder_id: string;
+  folder_id: number;
   created_at?: Date;
   updated_at?: Date | null;
   deleted_at?: Date | null;

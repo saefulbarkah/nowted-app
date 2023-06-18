@@ -13,7 +13,6 @@ interface SaveFolderProps {}
 
 const SaveFolder: FC<SaveFolderProps> = ({}) => {
   const {
-    isLoading,
     setToggleCreate,
     setToggleEdit,
     toggleCreate,

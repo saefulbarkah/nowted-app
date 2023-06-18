@@ -41,12 +41,6 @@ export const getFolderFirst = async (body: Partial<folders>) => {
 
 // NOTES API
 export async function getNotes(body: Partial<noteTypes>) {
-  // if (!body.folder_id) {
-  //   const { data } = await api.post('/notes', {
-  //     user_id: body.user_id,
-  //   });
-  //   return data;
-  // }
   const { data } = await api.post('/notes', {
     user_id: body.user_id,
     folder_id: body.folder_id,

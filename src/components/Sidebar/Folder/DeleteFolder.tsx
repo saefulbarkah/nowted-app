@@ -6,11 +6,7 @@ import {
   AlertDialogHeader,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
-import { useToast } from '@/components/ui/use-toast';
 import useDeleteFolder from '@/hooks/useDeleteFolder';
-import { deleteDataFolder } from '@/lib/api';
-import { useFolder } from '@/store';
-import { useMutation } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 import React, { Dispatch, FC, SetStateAction, useEffect } from 'react';
 

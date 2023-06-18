@@ -1,23 +1,23 @@
-"use client";
-import React from "react";
+'use client';
+import React from 'react';
 import {
   DropdownMenu,
   DropdownMenuItem,
   DropdownMenuTrigger,
-} from "../ui/dropdown-menu";
-import { DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
-import { Button } from "../ui/button";
-import { SlOptions } from "react-icons/sl";
-import Link from "next/link";
-import { FiArchive, FiStar, FiTrash } from "react-icons/fi";
-import { MoreType } from "../Sidebar/MoreMenu";
-import Dvider from "../ui/Dvider";
+} from '../ui/dropdown-menu';
+import { DropdownMenuContent } from '@radix-ui/react-dropdown-menu';
+import { Button } from '../ui/button';
+import { SlOptions } from 'react-icons/sl';
+import Link from 'next/link';
+import { FiArchive, FiStar, FiTrash } from 'react-icons/fi';
+import { MoreType } from '../Sidebar/MoreMenu';
+import Dvider from '../ui/Dvider';
 
 function NoteMenuList() {
   const more: MoreType = [
-    { name: "Favorites", href: "/favorites", icon: <FiStar /> },
-    { name: "Archived Notes", href: "/archived-notes", icon: <FiArchive /> },
-    { name: "Delete", href: "/trash", icon: <FiTrash /> },
+    { name: 'Favorites', href: '/favorites', icon: <FiStar /> },
+    { name: 'Archived Notes', href: '/archived-notes', icon: <FiArchive /> },
+    { name: 'Delete', href: '/trash', icon: <FiTrash /> },
   ];
   return (
     <>
@@ -28,7 +28,7 @@ function NoteMenuList() {
         >
           <Button
             className="rounded-full border-[2px] border-white/[50%] p-0 h-[40px] w-[40px]"
-            variant={"ghost"}
+            variant={'ghost'}
           >
             <SlOptions />
           </Button>
@@ -39,7 +39,7 @@ function NoteMenuList() {
               <React.Fragment key={i}>
                 {i === 2 && <Dvider />}
                 <DropdownMenuItem className="focus:bg-transparent focus:text-white text-white/[50%] cursor-pointer text-[16px]">
-                  <Link href={"#"}>
+                  <Link href={'#'}>
                     <div className="flex items-center gap-[15px]">
                       <div className="text-[20px]">{item.icon}</div>
                       <p className="truncate">{item.name}</p>

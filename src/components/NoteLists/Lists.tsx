@@ -1,25 +1,84 @@
 'use client';
+import { create } from 'zustand';
 import { dateToString, htmlToPlainText, slug } from '@/lib/utils';
 import { useRecentStore } from '@/store/useRecentStore';
 import Link from 'next/link';
-import React, { Key } from 'react';
+import React, { Key, useEffect, useState } from 'react';
 import { Card, CardContent } from '../ui/card';
-import { noteTypes } from '@/types';
 import { useSearchParams } from 'next/navigation';
+import { User } from 'next-auth';
+import { useQuery } from '@tanstack/react-query';
+import { getNotes } from '@/lib/api';
+import { noteTypes } from '@/types';
+import LoadingIcons from 'react-loading-icons';
+import { Skeleton } from '../ui/skeleton';
 
-function Lists({ notes }: { notes: noteTypes[] }) {
+interface folderTitle {
+  title: string;
+  setTitle: (title: string) => void;
+}
+export const useFolderTitle = create<folderTitle>((set) => ({
+  title: '',
+  setTitle: (title: string) => {
+    set(() => ({ title: title }));
+  },
+}));
+
+function Lists({ user }: { user: User }) {
   const addToRecent = useRecentStore((state) => state.addToRecents);
   const note_id = useSearchParams().get('note_id');
+  const folder_id = useSearchParams().get('folder_id');
+  const title = useFolderTitle((state) => state.title);
+  const setTitle = useFolderTitle((state) => state.setTitle);
+
+  const fetchNotes = async ({
+    user_id,
+    folder_id,
+  }: {
+    user_id: string;
+    folder_id: number;
+  }) => {
+    if (!folder_id) {
+      const notes = (await getNotes({ user_id })) as noteTypes[];
+      setTitle(notes[0].folder.name);
+      return notes;
+    }
+    const notes = (await getNotes({ user_id, folder_id })) as noteTypes[];
+    setTitle(notes[0].folder.name);
+    return notes;
+  };
+
+  const {
+    data: notes,
+    refetch: refetchNotes,
+    isLoading,
+  } = useQuery({
+    queryKey: ['notes'],
+    queryFn: async () =>
+      await fetchNotes({
+        user_id: user.id,
+        folder_id: Number(folder_id),
+      }),
+  });
+
+  useEffect(() => {
+    refetchNotes();
+  }, [folder_id]);
 
   return (
     <>
-      {notes?.length === 0 ? (
-        <div className="min-h-[55vh] flex items-center justify-center">
-          <p className="font-normal text-[18px]">please make a new note</p>
-        </div>
-      ) : (
-        <>
-          {notes?.map((item: any, i: Key) => (
+      <h2 className="text-[22px] font-semibold truncate">{title}</h2>
+      <div className="flex flex-col pb-[30px] mt-[30px] gap-[20px]">
+        {isLoading ? (
+          <>
+            {Array(5)
+              .fill(null)
+              .map((item, i) => (
+                <Skeleton className="h-[80px]" key={i} />
+              ))}
+          </>
+        ) : (
+          notes?.map((item: any, i: Key) => (
             <Link
               href={`/note/${slug(item.name)}?folder=${slug(
                 item.folder?.name
@@ -34,27 +93,26 @@ function Lists({ notes }: { notes: noteTypes[] }) {
               >
                 <CardContent className="p-[20px]">
                   <h2
-                    className={`inactive-text line-clamp-2 text-[18px] font-medium leading-7 group-hover:text-white transition ${
-                      Number(note_id) === Number(item.id) &&
-                      'text-white font-semibold'
+                    className={`inactive-text line-clamp-2 text-[16px] font-semibold leading-7 group-hover:text-white transition ${
+                      Number(note_id) === Number(item.id) && 'text-white'
                     }`}
                   >
                     {item.name}
                   </h2>
                   <div className="flex gap-[10px] inactive-text mt-[10px]">
-                    <p className="font-normal">
+                    <p className="font-normal text-[16px]">
                       {dateToString({ values: item.created_at })}
                     </p>
-                    <p className="truncate font-normal">
+                    <p className="truncate font-normal text-[16px]">
                       {htmlToPlainText({ html: item.content })}
                     </p>
                   </div>
                 </CardContent>
               </Card>
             </Link>
-          ))}
-        </>
-      )}
+          ))
+        )}
+      </div>
     </>
   );
 }

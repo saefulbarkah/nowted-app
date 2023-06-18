@@ -1,40 +1,37 @@
 import { useToast } from '@/components/ui/use-toast';
 import { deleteDataFolder } from '@/lib/api';
 import { useFolder } from '@/store';
-import { useMutation } from '@tanstack/react-query';
+import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useRouter } from 'next/navigation';
 
 function useDeleteFolder() {
-  const deleteFolder = useFolder((state) => state.deleteFolder);
   const { toast } = useToast();
   const router = useRouter();
+  const queryClient = useQueryClient();
 
   const deletingFolder = (data: { id: number }) => {
     return deleteDataFolder({ id: data.id });
   };
 
   const handleMutation = {
-    onSuccess: ({
+    onSuccess: async ({
       data,
       response,
     }: {
       data: { id: number };
       response: string;
     }) => {
+      await queryClient.refetchQueries(['folders']);
       const { id } = data;
       toast({
         title: response,
         variant: 'success',
       });
-      deleteFolder(id);
       router.push('/note');
+      queryClient.invalidateQueries(['folders']);
     },
   };
-  const {
-    mutateAsync: handleDeleteFolder,
-    isLoading: onDeleting,
-    isSuccess,
-  } = useMutation(
+  const { mutate: handleDeleteFolder, isLoading: onDeleting } = useMutation(
     (data: { id: number }) => deletingFolder(data),
     handleMutation
   );
@@ -42,7 +39,6 @@ function useDeleteFolder() {
   return {
     handleDeleteFolder,
     onDeleting,
-    isSuccess,
   };
 }
 
