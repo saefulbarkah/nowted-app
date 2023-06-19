@@ -1,10 +1,10 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
 datasource db {
   provider = "postgresql"
   url      = env("DATABASE_URL")
-}
-
-generator client {
-  provider = "prisma-client-js"
 }
 
 model Account {
@@ -13,15 +13,14 @@ model Account {
   type              String
   provider          String
   providerAccountId String
-  refresh_token     String? @db.Text
-  access_token      String? @db.Text
+  refresh_token     String?
+  access_token      String?
   expires_at        Int?
   token_type        String?
   scope             String?
-  id_token          String? @db.Text
+  id_token          String?
   session_state     String?
-
-  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+  user              User    @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@unique([provider, providerAccountId])
 }
@@ -42,10 +41,10 @@ model User {
   image         String?
   accounts      Account[]
   sessions      Session[]
-  folders       folders[]
-  notes         notes[]
   archives      archives[]
   favorites     favorites[]
+  folders       folders[]
+  notes         notes[]
   trashes       trashes[]
 }
 
@@ -64,9 +63,9 @@ model folders {
   created_at  DateTime? @default(now())
   updated_at  DateTime?
   deleted_at  DateTime?
-  notes       notes[]
   user_id     String
   user        User      @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  notes       notes[]
   trashes     trashes[]
 }
 
@@ -78,42 +77,42 @@ model notes {
   created_at DateTime    @default(now())
   updated_at DateTime?
   deleted_at DateTime?
-  folder     folders     @relation(fields: [folder_id], references: [id])
-  user       User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
+  folder_id  Int
   archives   archives[]
   favorites  favorites[]
+  folder     folders     @relation(fields: [folder_id], references: [id])
+  user       User        @relation(fields: [user_id], references: [id], onDelete: Cascade)
   trashes    trashes[]
-  folder_id  Int
 }
 
 model archives {
   id         Int       @id @unique @default(autoincrement())
   user_id    String
-  notes_id   Int
-  notes      notes     @relation(fields: [notes_id], references: [id])
-  user       User      @relation(fields: [user_id], references: [id])
+  note_id    Int
   created_at DateTime  @default(now())
   deleted_at DateTime?
+  notes      notes     @relation(fields: [note_id], references: [id])
+  user       User      @relation(fields: [user_id], references: [id])
 }
 
 model favorites {
   id         Int       @id @unique @default(autoincrement())
   user_id    String
-  notes_id   Int
-  notes      notes     @relation(fields: [notes_id], references: [id])
-  user       User      @relation(fields: [user_id], references: [id])
+  note_id    Int
   created_at DateTime  @default(now())
   deleted_at DateTime?
+  notes      notes     @relation(fields: [note_id], references: [id])
+  user       User      @relation(fields: [user_id], references: [id])
 }
 
 model trashes {
   id         Int       @id @unique @default(autoincrement())
   user_id    String
-  notes_id   Int?
+  note_id    Int?
   folder_id  Int?
-  folders    folders?  @relation(fields: [folder_id], references: [id], onDelete: Cascade)
-  notes      notes?    @relation(fields: [notes_id], references: [id], onDelete: Cascade)
-  user       User      @relation(fields: [user_id], references: [id])
   created_at DateTime  @default(now())
   deleted_at DateTime?
+  folders    folders?  @relation(fields: [folder_id], references: [id], onDelete: Cascade)
+  notes      notes?    @relation(fields: [note_id], references: [id], onDelete: Cascade)
+  user       User      @relation(fields: [user_id], references: [id])
 }

@@ -53,7 +53,7 @@ const ListFolder: FC<ListFolderProps> = ({ user }) => {
   } = useFolderState();
   const [dialogDelete, setDialogDelete] = useState(false);
 
-  const handleEditFolder = (item: { id: number; name: string }) => {
+  const handleEditFolder = (item: Pick<folderTypes, 'name' | 'id'>) => {
     setDataUpdate({
       id: item.id,
       name: item.name,
@@ -146,7 +146,7 @@ const ListFolder: FC<ListFolderProps> = ({ user }) => {
                       <DropdownMenuItem
                         onClick={() => {
                           setDeleteData({
-                            id: item.id,
+                            id: item.id!,
                             name: item.name,
                           });
                           setDialogDelete(true);

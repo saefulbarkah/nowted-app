@@ -13,7 +13,7 @@ const useUpdateFolder = () => {
   const queryClient = useQueryClient();
   const mutateUpdateFolder = async (data: Partial<folderTypes>) => {
     return await updateDataFolder({
-      id: data.id,
+      id: data.id!,
       name: data.name as string,
       user_id: data.user_id,
     });

@@ -1,2 +1,1 @@
-export * from "./folderStore";
-export * from "./noteStore";
+export * from './folderStore';
