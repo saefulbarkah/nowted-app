@@ -1,7 +1,6 @@
-"use server";
-import Note from "@/components/NoteEditor/Note";
-import Container from "@/components/container";
-import React from "react";
+import Note from '@/components/NoteEditor/Note';
+import Container from '@/components/container';
+import React from 'react';
 
 type Props = {
   params: { id: string };
@@ -11,7 +10,7 @@ type Props = {
 export async function generateMetadata({ params }: Props) {
   const id = params.id;
   return {
-    title: "Note id :" + id,
+    title: 'Note id :' + id,
   };
 }
 
