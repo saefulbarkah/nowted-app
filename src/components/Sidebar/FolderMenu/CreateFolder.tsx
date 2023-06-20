@@ -1,9 +1,14 @@
 import useFolderState from '@/hooks/useFolderState';
+import useValidation from '@/hooks/useValidation';
 import React from 'react';
 import { LuFolderOpen } from 'react-icons/lu';
 
 function CreateFolder() {
-  const { isCreateFolder, isError, name, setName } = useFolderState();
+  const { isCreateFolder, name, setName } = useFolderState();
+  const { isError, response } = useValidation({
+    field: 'Folder',
+    value: name,
+  });
   return (
     <>
       {isCreateFolder && (
@@ -28,7 +33,7 @@ function CreateFolder() {
                   : 'opacity-0'
               }`}
             >
-              {isError && <p>*Folder Name is required</p>}
+              {isError && <p>{response.message}</p>}
             </div>
           </div>
         </div>

@@ -20,6 +20,7 @@ interface ActionFolder {
   setIsEdit: (status: boolean) => void;
   setDialogDelete: (status: boolean) => void;
   setUpdateData: (data: Pick<FolderTypes, 'id_folder' | 'name'>) => void;
+  setIsError: (status: boolean) => void;
 }
 
 export const useFolderStateStore = create<
@@ -67,5 +68,10 @@ export const useFolderStateStore = create<
     set(() => ({
       updateData: { id_folder: data.id_folder, name: data.name },
     }));
+  },
+  setIsError: (status) => {
+    set(() => {
+      return { isError: status };
+    });
   },
 }));

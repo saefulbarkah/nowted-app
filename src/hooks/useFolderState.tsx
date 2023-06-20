@@ -1,5 +1,4 @@
 import { useFolderStateStore } from '@/components/Sidebar/FolderMenu/store';
-import { useState } from 'react';
 
 function useFolderState() {
   // init state
@@ -19,6 +18,7 @@ function useFolderState() {
   const setDialogDelete = useFolderStateStore((state) => state.setDialogDelete);
   const setName = useFolderStateStore((state) => state.setName);
   const setUpdateData = useFolderStateStore((state) => state.setUpdateData);
+  const setIsError = useFolderStateStore((state) => state.setIsError);
 
   return {
     name,
@@ -33,6 +33,7 @@ function useFolderState() {
     setIsCreate,
     setUpdateData,
     setDialogDelete,
+    setIsError,
   };
 }
 
