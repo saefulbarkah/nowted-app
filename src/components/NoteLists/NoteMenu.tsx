@@ -1,5 +1,5 @@
-import React from "react";
-import { Card, CardContent } from "../ui/card";
+import React from 'react';
+import { Card, CardContent } from '../ui/card';
 
 export const NoteMenu = () => {
   return (
@@ -10,7 +10,10 @@ export const NoteMenu = () => {
           {Array(5)
             .fill(null)
             .map((item, i) => (
-              <Card className="bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer">
+              <Card
+                className="bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer"
+                key={i}
+              >
                 <CardContent className="p-[20px]">
                   <h2 className="text-white line-clamp-2 text-[18px] font-semibold leading-7">
                     My Favorite Memories from Childhood

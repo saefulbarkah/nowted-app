@@ -1,8 +1,7 @@
-import React, { ChangeEvent, FormEvent, useRef, useState } from "react";
-import { Base64, decode } from "js-base64";
-import { PropsEditor } from "../EditorToolbar";
-import { Button } from "../../button";
-import { FiImage } from "react-icons/fi";
+import React, { ChangeEvent, FormEvent, useRef, useState } from 'react';
+import { PropsEditor } from '../EditorToolbar';
+import { Button } from '../../button';
+import { FiImage } from 'react-icons/fi';
 
 type imageTypesState = {
   source: string;
@@ -10,12 +9,12 @@ type imageTypesState = {
 };
 
 function UploadMenu({ editor }: PropsEditor) {
-  if (!editor) return;
-  const uploadRef = useRef<HTMLInputElement>(null);
+  const uploadRef = useRef<HTMLInputElement | null>(null);
   const [image, setImage] = useState<imageTypesState>({
-    source: "",
-    alt: "",
+    source: '',
+    alt: '',
   });
+  if (!editor) return;
 
   const handleUploadImages = (e: FormEvent<HTMLInputElement>) => {
     const target = e.target as HTMLInputElement;
@@ -46,8 +45,8 @@ function UploadMenu({ editor }: PropsEditor) {
         onChangeCapture={(e) => handleUploadImages(e)}
       />
       <Button
-        size={"sm"}
-        variant={"ghost"}
+        size={'sm'}
+        variant={'ghost'}
         onClick={() => {
           if (uploadRef.current) {
             uploadRef.current.click();
