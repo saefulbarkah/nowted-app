@@ -17,7 +17,7 @@ function UpdateFolder() {
               name="folderName"
               type="text"
               autoFocus
-              value={updateData.name}
+              defaultValue={updateData.name}
               onChange={(e) => setName(e.target.value)}
               className={`bg-transparent outline outline-white/[5%] rounded w-auto ${
                 isError && 'border border-red-500'
