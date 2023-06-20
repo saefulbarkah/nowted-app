@@ -1,4 +1,5 @@
 import { useFolderStateStore } from '@/components/Sidebar/FolderMenu/store';
+import { useState } from 'react';
 
 function useFolderState() {
   // init state
