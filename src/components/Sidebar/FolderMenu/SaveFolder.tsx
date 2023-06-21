@@ -91,7 +91,7 @@ function SaveFolder() {
             size={'sm'}
             variant={'ghost'}
             className="px-2 py-2"
-            disabled={isError}
+            disabled={isLoading}
             onClick={() => {
               if (isCreateFolder) {
                 handleAddFolder();

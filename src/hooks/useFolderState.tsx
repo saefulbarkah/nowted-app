@@ -6,6 +6,7 @@ function useFolderState() {
   const folders = useFolder((state) => state.folders);
   const addFolder = useFolder((state) => state.addFolder);
   const updateFolder = useFolder((state) => state.updateFolder);
+  const removeFolder = useFolder((state) => state.removeFolder);
 
   // init state
   const name = useFolderStateStore((state) => state.name);
@@ -23,8 +24,9 @@ function useFolderState() {
   const setIsCreate = useFolderStateStore((state) => state.setIsCreate);
   const setDialogDelete = useFolderStateStore((state) => state.setDialogDelete);
   const setName = useFolderStateStore((state) => state.setName);
-  const setUpdateData = useFolderStateStore((state) => state.setUpdateData);
   const setIsError = useFolderStateStore((state) => state.setIsError);
+  const setUpdateData = useFolderStateStore((state) => state.setUpdateData);
+  const setDeleteData = useFolderStateStore((state) => state.setDeleteData);
 
   return {
     name,
@@ -40,11 +42,13 @@ function useFolderState() {
     setUpdateData,
     setDialogDelete,
     setIsError,
+    setDeleteData,
 
     // store
     folders,
     updateFolder,
     addFolder,
+    removeFolder,
   };
 }
 

@@ -25,11 +25,12 @@ function FolderLists() {
   const folders = useFolder((state) => state.folders);
   const {
     isEditFolder,
-    updateData,
     isCreateFolder,
+    updateData,
     setUpdateData,
     setIsEdit,
     setDialogDelete,
+    setDeleteData,
   } = useFolderState();
 
   return (
@@ -88,7 +89,10 @@ function FolderLists() {
                     </DropdownMenuItem>
                     <DropdownMenuItem
                       className="focus:text-white cursor-pointer text-white/[60%] focus:bg-white/[5%] py-2"
-                      onClick={() => setDialogDelete(true)}
+                      onClick={() => {
+                        setDeleteData(item);
+                        setDialogDelete(true);
+                      }}
                     >
                       <FiTrash className="mr-2 text-[16px]" />
                       <span className="text-[16px]">Delete Folder</span>
