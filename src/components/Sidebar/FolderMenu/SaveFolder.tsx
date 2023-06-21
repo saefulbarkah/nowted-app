@@ -1,9 +1,7 @@
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import useFolderState from '@/hooks/useFolderState';
-import useValidation from '@/hooks/useValidation';
 import { isExistArray } from '@/lib/utils';
-import { useFolder } from '@/store';
 import { Loader2 } from 'lucide-react';
 import React, { useState } from 'react';
 import { FiFolderPlus, FiSave, FiX } from 'react-icons/fi';

@@ -1,3 +1,4 @@
+'use client';
 import React from 'react';
 import Link from 'next/link';
 import { LuFolderOpen } from 'react-icons/lu';
@@ -21,8 +22,6 @@ import UpdateFolder from './EditFolder';
 import useFolderState from '@/hooks/useFolderState';
 import { slug } from '@/lib/utils';
 import { useNowtedStore } from '@/store';
-import { Badge } from '@/components/ui/badge';
-import Dvider from '@/components/ui/Dvider';
 
 function FolderLists() {
   const folders = useNowtedStore((state) => state.folders);
