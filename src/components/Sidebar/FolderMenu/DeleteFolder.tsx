@@ -49,7 +49,9 @@ const DialogDelete = () => {
           You will delete <span className="font-bold">{deleteData.name}</span>
         </p>
         <AlertDialogFooter>
-          <AlertDialogCancel>Cancel</AlertDialogCancel>
+          <AlertDialogCancel onClick={() => setDialogDelete(false)}>
+            Cancel
+          </AlertDialogCancel>
           <AlertDialogAction
             onClick={() => handleDeleteFolder()}
             className="bg-destructive/[30%] border border-destructive hover:bg-destructive/[70%] font-semibold"

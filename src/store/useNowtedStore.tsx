@@ -3,10 +3,13 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { v4 as uuid } from 'uuid';
 import { FolderTypes, NoteTypes } from '@/types';
 
+const generateFolderId = uuid();
+
 export const DEFAULT_NOTES: NoteTypes = {
   id_note: uuid(),
   name: 'lets making story',
   content: 'Our Story......',
+  folder_id: generateFolderId,
 };
 
 export type folderStateType = {
@@ -16,25 +19,39 @@ export type folderStateType = {
   removeFolder: (data: Pick<FolderTypes, 'id_folder'>) => void;
 };
 
-export const useFolder = create<folderStateType>()(
+export type noteStateType = {
+  note?: NoteTypes;
+  addNote: (data: { id_folder: string | null }) => void;
+};
+
+export const useNowtedStore = create<folderStateType & noteStateType>()(
   persist(
     (set) => ({
       folders: [
         {
-          id_folder: uuid(),
+          id_folder: generateFolderId,
           name: 'Personal',
+          can_delete: false,
           notes: [DEFAULT_NOTES],
         },
       ],
       addFolder: (data) => {
         set((state) => {
+          const folderId = uuid();
           return {
             folders: [
               ...state.folders,
               {
-                id_folder: uuid(),
+                id_folder: folderId,
                 name: data.name,
-                notes: [DEFAULT_NOTES],
+                can_delete: true,
+                notes: [
+                  {
+                    ...DEFAULT_NOTES,
+                    id_note: uuid(),
+                    folder_id: folderId,
+                  },
+                ],
               },
             ],
           };
@@ -58,6 +75,40 @@ export const useFolder = create<folderStateType>()(
               (item) => item.id_folder !== data.id_folder
             ),
           };
+        });
+      },
+      addNote: (data) => {
+        set((state) => {
+          if (!data.id_folder) {
+            const filtered = state.folders.find(
+              (item) => item.can_delete === false
+            );
+            if (filtered) {
+              filtered.notes = [
+                ...filtered.notes!,
+                {
+                  ...DEFAULT_NOTES,
+                  id_note: uuid(),
+                  folder_id: filtered.id_folder,
+                },
+              ];
+            }
+            return { folders: [...state.folders] };
+          }
+          const filtered = state.folders.find(
+            (item) => item.id_folder === data.id_folder
+          );
+          if (filtered) {
+            filtered.notes = [
+              ...filtered.notes!,
+              {
+                ...DEFAULT_NOTES,
+                id_note: uuid(),
+                folder_id: filtered.id_folder,
+              },
+            ];
+          }
+          return { folders: [...state.folders] };
         });
       },
     }),

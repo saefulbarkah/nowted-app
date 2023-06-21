@@ -5,6 +5,19 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+export function slug(value: string) {
+  if (!value) {
+    return value;
+  }
+  const results = value
+    .toLowerCase()
+    .trim()
+    .replace(/[^\w\s-]/g, '')
+    .replace(/[\s_-]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return results;
+}
+
 interface validatationObj {
   array: any[];
   inArray: { value: string | number; key: string | number };

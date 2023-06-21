@@ -1,12 +1,12 @@
 import { useFolderStateStore } from '@/components/Sidebar/FolderMenu/store';
-import { useFolder } from '@/store';
+import { useNowtedStore } from '@/store';
 
 function useFolderState() {
   // state store
-  const folders = useFolder((state) => state.folders);
-  const addFolder = useFolder((state) => state.addFolder);
-  const updateFolder = useFolder((state) => state.updateFolder);
-  const removeFolder = useFolder((state) => state.removeFolder);
+  const folders = useNowtedStore((state) => state.folders);
+  const addFolder = useNowtedStore((state) => state.addFolder);
+  const updateFolder = useNowtedStore((state) => state.updateFolder);
+  const removeFolder = useNowtedStore((state) => state.removeFolder);
 
   // init state
   const name = useFolderStateStore((state) => state.name);

@@ -56,7 +56,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     ref
   ) => {
     const isDisabled: boolean = disabled ? disabled : isLoading;
-    console.log(isDisabled);
     return (
       <button
         className={cn(buttonVariants({ variant, size, className }))}

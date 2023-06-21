@@ -3,14 +3,14 @@ import Container from '@/components/container';
 import React from 'react';
 
 type Props = {
-  params: { id: string };
+  params: { name: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 };
 
 export async function generateMetadata({ params }: Props) {
-  const id = params.id;
+  const name = params.name;
   return {
-    title: 'Note id :' + id,
+    title: 'Nowted APP - ' + name,
   };
 }
 
