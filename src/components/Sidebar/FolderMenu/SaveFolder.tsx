@@ -2,6 +2,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import useFolderState from '@/hooks/useFolderState';
 import useValidation from '@/hooks/useValidation';
+import { isExistArray } from '@/lib/utils';
 import { useFolder } from '@/store';
 import { Loader2 } from 'lucide-react';
 import React, { useState } from 'react';
@@ -16,9 +17,11 @@ function SaveFolder() {
     setName,
     name,
     isError,
+    folders,
+    updateData,
+    addFolder,
+    updateFolder,
   } = useFolderState();
-  const addFolder = useFolder((state) => state.addFolder);
-  const folders = useFolder((state) => state.folders);
   const [isLoading, setIsLoading] = useState(false);
   const { toast } = useToast();
 
@@ -49,6 +52,22 @@ function SaveFolder() {
   };
   const handleUpdateFolder = () => {
     setIsLoading(true);
+    const isExists = isExistArray({
+      array: folders,
+      inArray: { key: 'id_folder', value: updateData.id_folder },
+      equalTo: { key: 'name', value: updateData.name },
+    });
+    if (isExists) {
+      setTimeout(() => {
+        toast({
+          title: 'Failed to update',
+          description: `Folder ${updateData.name} already exists`,
+          variant: 'danger',
+        });
+        setIsLoading(false);
+      }, 500);
+      return;
+    }
     setTimeout(() => {
       toast({
         title: 'Succesfully updated',
@@ -56,6 +75,10 @@ function SaveFolder() {
       });
       setIsLoading(false);
       setIsEdit(false);
+      updateFolder({
+        id_folder: updateData.id_folder,
+        name: updateData.name,
+      });
       setName('New Folder');
     }, 1000);
   };

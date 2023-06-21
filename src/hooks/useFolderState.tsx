@@ -1,6 +1,12 @@
 import { useFolderStateStore } from '@/components/Sidebar/FolderMenu/store';
+import { useFolder } from '@/store';
 
 function useFolderState() {
+  // state store
+  const folders = useFolder((state) => state.folders);
+  const addFolder = useFolder((state) => state.addFolder);
+  const updateFolder = useFolder((state) => state.updateFolder);
+
   // init state
   const name = useFolderStateStore((state) => state.name);
   const isError = useFolderStateStore((state) => state.isError);
@@ -34,6 +40,11 @@ function useFolderState() {
     setUpdateData,
     setDialogDelete,
     setIsError,
+
+    // store
+    folders,
+    updateFolder,
+    addFolder,
   };
 }
 

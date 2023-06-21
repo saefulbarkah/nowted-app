@@ -3,7 +3,7 @@ import React from 'react';
 import { LuFolderOpen } from 'react-icons/lu';
 
 function UpdateFolder() {
-  const { isEditFolder, isError, updateData, setName } = useFolderState();
+  const { isEditFolder, isError, updateData, setUpdateData } = useFolderState();
 
   return (
     <>
@@ -18,7 +18,12 @@ function UpdateFolder() {
               type="text"
               autoFocus
               defaultValue={updateData.name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) =>
+                setUpdateData({
+                  name: e.target.value,
+                  id_folder: updateData.id_folder,
+                })
+              }
               className={`bg-transparent outline outline-white/[5%] rounded w-auto ${
                 isError && 'border border-red-500'
               }`}

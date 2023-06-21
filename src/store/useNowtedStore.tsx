@@ -12,7 +12,7 @@ export const DEFAULT_NOTES: NoteTypes = {
 export type folderStateType = {
   folders: FolderTypes[];
   addFolder: (data: Pick<FolderTypes, 'name'>) => void;
-  editFolder?: (editData: Partial<FolderTypes>) => void;
+  updateFolder: (data: Pick<FolderTypes, 'id_folder' | 'name'>) => void;
   deleteFolder?: (data: Partial<FolderTypes>) => void;
 };
 
@@ -37,6 +37,17 @@ export const useFolder = create<folderStateType>()(
                 notes: [DEFAULT_NOTES],
               },
             ],
+          };
+        });
+      },
+      updateFolder: (data) => {
+        set((state) => {
+          return {
+            folders: state.folders.map((item) =>
+              item.id_folder === data.id_folder
+                ? { ...item, name: data.name }
+                : item
+            ),
           };
         });
       },
