@@ -1,4 +1,5 @@
 import { Sidebar } from '@/components/Sidebar';
+import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
 import { Source_Sans_Pro } from 'next/font/google';
 import { Toaster } from '@/components/ui/Toaster';
@@ -17,6 +18,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} `}>
+        <NextTopLoader />
         <Sidebar />
         <NoteMenu />
         <div className="relative ml-[655px] custom-scrollbar">{children}</div>
