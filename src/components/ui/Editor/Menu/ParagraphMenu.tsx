@@ -1,15 +1,15 @@
-import { Editor } from "@tiptap/react";
-import { Level } from "@tiptap/extension-heading";
+import { Editor } from '@tiptap/react';
+import { Level } from '@tiptap/extension-heading';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from "../../select";
+} from '../../select';
 
 type Props = {
-  editor?: Editor | null;
+  editor: Editor | null;
 };
 
 type headingLevelType = {
@@ -18,37 +18,36 @@ type headingLevelType = {
 };
 
 function ParagraphMenu({ editor }: Props) {
-  if (!editor) return;
   const headingLevel: headingLevelType[] = [
     {
-      name: "Paragraph",
+      name: 'Paragraph',
       level: 0,
     },
     {
-      name: "Heading 1",
+      name: 'Heading 1',
       level: 1,
     },
     {
-      name: "Heading 2",
+      name: 'Heading 2',
       level: 2,
     },
     {
-      name: "Heading 3",
+      name: 'Heading 3',
       level: 3,
     },
   ];
   const handleHeading = (value: number) => {
     setTimeout(() => {
       if (value === 0) {
-        editor.chain().focus().setParagraph().run();
+        editor!.chain().focus().setParagraph().run();
         return;
       }
       const levelValue = value as Level;
-      editor.chain().focus().toggleHeading({ level: levelValue }).run();
+      editor!.chain().focus().toggleHeading({ level: levelValue }).run();
     }, 500);
   };
 
-  const levelSelected = editor.getAttributes("heading");
+  const levelSelected = editor!.getAttributes('heading');
 
   return (
     <>

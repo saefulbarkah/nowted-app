@@ -5,7 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import useNotes from '@/hooks/useNotes';
 import { Skeleton } from '../ui/skeleton';
 import Link from 'next/link';
-import { slug } from '@/lib/utils';
+import { dateToString, slug } from '@/lib/utils';
 
 const NoteMenu = () => {
   const searchParams = useSearchParams();
@@ -54,7 +54,9 @@ const NoteMenu = () => {
                       {item.name}
                     </h2>
                     <div className="flex gap-[10px] inactive-text mt-[10px]">
-                      <p className="font-normal">31/12/2022</p>
+                      <p className="font-normal">
+                        {dateToString({ values: item.createdAt })}
+                      </p>
                       <p className="truncate font-normal">{item.content}</p>
                     </div>
                   </CardContent>

@@ -1,36 +1,26 @@
-h1,
-h2,
-h3,
-h4,
-h5,
-h6 {
+h1.heading-text,
+h2.heading-text,
+h3.heading-text,
+h4.heading-text,
+h5.heading-text,
+h6.heading-text {
   line-height: 1.1;
   font-weight: 600;
+  color: white;
 }
-h1 {
-  font-size: 2.125rem;
+h1.heading-text {
+  font-size: 1.8rem;
 }
-h2 {
-  font-size: 1.875rem;
-}
-
-h3 {
-  font-size: 1.5rem;
+h2.heading-text {
+  font-size: 1.6rem;
 }
 
-h4 {
-  font-size: 1.25rem;
-}
-h5 {
-  font-size: 1.125rem;
-}
-h6 {
-  font-size: 1rem;
+h3.heading-text {
+  font-size: 1.4rem;
 }
 
 .paragraph {
-  @apply leading-relaxed text-[16px];
-  line-height: 28px;
+  @apply text-[16px] text-white font-normal;
 }
 .image-editor {
   width: 300px;

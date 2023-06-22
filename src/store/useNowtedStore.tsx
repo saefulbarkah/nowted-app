@@ -10,6 +10,7 @@ export const DEFAULT_NOTES: NoteTypes = {
   name: 'lets making story',
   content: 'Our Story......',
   folder_id: generateFolderId,
+  createdAt: new Date(),
 };
 
 export type folderStateType = {
@@ -33,6 +34,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
           name: 'Personal',
           can_delete: false,
           notes: [DEFAULT_NOTES],
+          createdAt: new Date(),
         },
       ],
       addFolder: (data) => {
@@ -49,8 +51,10 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
                     ...DEFAULT_NOTES,
                     id_note: uuid(),
                     folder_id: folderId,
+                    createdAt: new Date(),
                   },
                 ],
+                createdAt: new Date(),
               },
               ...state.folders,
             ],
@@ -91,6 +95,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
                   name: 'New Notes',
                   id_note: uuid(),
                   folder_id: filtered.id_folder,
+                  createdAt: new Date(),
                 },
                 ...filtered.notes!,
               ];
@@ -107,6 +112,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
                 name: 'New Notes',
                 id_note: uuid(),
                 folder_id: filtered.id_folder,
+                createdAt: new Date(),
               },
               ...filtered.notes!,
             ];

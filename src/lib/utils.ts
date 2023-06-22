@@ -5,6 +5,29 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+interface dateToString {
+  type?: 'yyy-mm-dd' | null;
+  values: any;
+}
+
+export function dateToString({ type, values }: dateToString) {
+  let results;
+  const date = new Date(values);
+  switch (type) {
+    case 'yyy-mm-dd':
+      const converting = date.toLocaleDateString('zh-Hans-CN');
+      results = converting;
+      break;
+
+    default:
+      const defaultConverting = date.toLocaleDateString('default');
+      results = defaultConverting;
+      break;
+  }
+
+  return results;
+}
+
 export function slug(value: string) {
   if (!value) {
     return value;

@@ -14,7 +14,6 @@ function SaveFolder() {
     setIsCreate,
     setName,
     name,
-    isError,
     folders,
     updateData,
     addFolder,
@@ -89,7 +88,7 @@ function SaveFolder() {
             size={'sm'}
             variant={'ghost'}
             className="px-2 py-2"
-            disabled={isLoading}
+            disabled={isLoading || (name === '' && true)}
             onClick={() => {
               if (isCreateFolder) {
                 handleAddFolder();

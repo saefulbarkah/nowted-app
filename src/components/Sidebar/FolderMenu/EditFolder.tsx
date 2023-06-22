@@ -1,10 +1,14 @@
 import useFolderState from '@/hooks/useFolderState';
+import useValidation from '@/hooks/useValidation';
 import React from 'react';
 import { LuFolderOpen } from 'react-icons/lu';
 
 function UpdateFolder() {
-  const { isEditFolder, isError, updateData, setUpdateData } = useFolderState();
-
+  const { isEditFolder, updateData, setUpdateData, setName } = useFolderState();
+  const { isError, response } = useValidation({
+    field: 'Folder',
+    value: updateData.name,
+  });
   return (
     <>
       {isEditFolder && (
@@ -18,12 +22,13 @@ function UpdateFolder() {
               type="text"
               autoFocus
               defaultValue={updateData.name}
-              onChange={(e) =>
+              onChange={(e) => {
                 setUpdateData({
                   name: e.target.value,
                   id_folder: updateData.id_folder,
-                })
-              }
+                });
+                setName(e.target.value);
+              }}
               className={`bg-transparent outline outline-white/[5%] rounded w-auto ${
                 isError && 'border border-red-500'
               }`}
@@ -35,7 +40,7 @@ function UpdateFolder() {
                   : 'opacity-0'
               }`}
             >
-              {isError && <p>*Folder Name is required</p>}
+              {isError && <p>{response.message}</p>}
             </div>
           </div>
         </div>

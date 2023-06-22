@@ -1,12 +1,13 @@
-"use client";
-import React from "react";
-import { useEditor, EditorContent } from "@tiptap/react";
-import StarterKit from "@tiptap/starter-kit";
-import EditorToolbar from "./EditorToolbar";
-import Underline from "@tiptap/extension-underline";
-import "./editor.css";
-import Image from "@tiptap/extension-image";
-import Link from "@tiptap/extension-link";
+'use client';
+import React from 'react';
+import { useEditor, EditorContent } from '@tiptap/react';
+import StarterKit from '@tiptap/starter-kit';
+import EditorToolbar from './EditorToolbar';
+import Underline from '@tiptap/extension-underline';
+import './editor.css';
+import Image from '@tiptap/extension-image';
+import Link from '@tiptap/extension-link';
+import Heading from '@tiptap/extension-heading';
 
 export const Editor = ({ content }: { content?: string }) => {
   const Editor = useEditor({
@@ -14,21 +15,27 @@ export const Editor = ({ content }: { content?: string }) => {
       StarterKit.configure({
         paragraph: {
           HTMLAttributes: {
-            class: "paragraph",
+            class: 'paragraph',
           },
         },
+      }),
+      Heading.configure({
+        HTMLAttributes: {
+          class: 'heading-text',
+        },
+        levels: [1, 2, 3],
       }),
       Underline,
       Image.configure({
         HTMLAttributes: {
-          class: "image-editor",
+          class: 'image-editor',
         },
         allowBase64: true,
         inline: true,
       }),
       Link.configure({
         HTMLAttributes: {
-          class: "link-custom",
+          class: 'link-custom',
         },
         autolink: false,
         linkOnPaste: true,
@@ -37,9 +44,10 @@ export const Editor = ({ content }: { content?: string }) => {
     editorProps: {
       attributes: {
         class:
-          "oultine-none min-h-[300px] mt-[30px] px-2 border-none outline-none ring-0",
+          'oultine-none min-h-[300px] mt-[30px] px-2 border-none outline-none ring-0 prose prose-sm sm:prose lg:prose-lg xl:prose-2xl dark:prose-invert w-full',
       },
     },
+
     autofocus: true,
     editable: true,
     injectCSS: false,
