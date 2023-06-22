@@ -40,7 +40,6 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
           const folderId = uuid();
           return {
             folders: [
-              ...state.folders,
               {
                 id_folder: folderId,
                 name: data.name,
@@ -53,6 +52,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
                   },
                 ],
               },
+              ...state.folders,
             ],
           };
         });
@@ -79,18 +79,20 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
       },
       addNote: (data) => {
         set((state) => {
-          if (!data.id_folder) {
+          if (data.id_folder === null) {
+            console.log('nothing ID');
             const filtered = state.folders.find(
               (item) => item.can_delete === false
             );
             if (filtered) {
               filtered.notes = [
-                ...filtered.notes!,
                 {
                   ...DEFAULT_NOTES,
+                  name: 'New Notes',
                   id_note: uuid(),
                   folder_id: filtered.id_folder,
                 },
+                ...filtered.notes!,
               ];
             }
             return { folders: [...state.folders] };
@@ -100,12 +102,13 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
           );
           if (filtered) {
             filtered.notes = [
-              ...filtered.notes!,
               {
                 ...DEFAULT_NOTES,
+                name: 'New Notes',
                 id_note: uuid(),
                 folder_id: filtered.id_folder,
               },
+              ...filtered.notes!,
             ];
           }
           return { folders: [...state.folders] };

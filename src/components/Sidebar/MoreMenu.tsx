@@ -1,5 +1,6 @@
-import { FiStar, FiTrash, FiArchive } from "react-icons/fi";
-import Link from "next/link";
+'use client';
+import { FiStar, FiTrash, FiArchive } from 'react-icons/fi';
+import Link from 'next/link';
 
 export type MoreType = {
   name: string;
@@ -9,9 +10,9 @@ export type MoreType = {
 
 const MoreMenu: React.FC = () => {
   const more: MoreType = [
-    { name: "Favorites", href: "/favorites", icon: <FiStar /> },
-    { name: "Trash", href: "/trash", icon: <FiTrash /> },
-    { name: "Archived Notes", href: "/archived-notes", icon: <FiArchive /> },
+    { name: 'Favorites', href: '/favorites', icon: <FiStar /> },
+    { name: 'Trash', href: '/trash', icon: <FiTrash /> },
+    { name: 'Archived Notes', href: '/archived-notes', icon: <FiArchive /> },
   ];
 
   return (

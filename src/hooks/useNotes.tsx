@@ -1,5 +1,6 @@
-import { FolderTypes, NoteTypes } from '@/types';
-import { Dispatch, SetStateAction, useEffect, useState } from 'react';
+'use client';
+import { NoteTypes } from '@/types';
+import { useEffect, useState } from 'react';
 import useFolderState from './useFolderState';
 import { useRouter } from 'next/navigation';
 
@@ -20,7 +21,7 @@ function useNotes({ folder_id }: notes): noteReturn {
   const { folders } = useFolderState();
   const router = useRouter();
 
-  const getNotesByFolderId = async () => {
+  const getNotesByFolderId = () => {
     if (!folder_id) {
       const filters = folders.find((item) => item.can_delete === false);
       setNotes(filters?.notes!);

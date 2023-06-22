@@ -10,6 +10,7 @@ import { slug } from '@/lib/utils';
 const NoteMenu = () => {
   const searchParams = useSearchParams();
   const getFolderId = searchParams.get('folder_id');
+  const currentNoteId = searchParams.get('note_id');
   const { notes, loading, title } = useNotes({ folder_id: getFolderId });
   return (
     <div className="fixed top-0 left-0 bottom-0 ml-[305px] w-[350px] custom-scrollbar bg-foreColor/80">
@@ -23,9 +24,9 @@ const NoteMenu = () => {
               {Array(5)
                 .fill(null)
                 .map((item, i) => (
-                  <>
+                  <React.Fragment key={i}>
                     <Skeleton className="h-[100px] w-full" />
-                  </>
+                  </React.Fragment>
                 ))}
             </div>
           </div>
@@ -41,19 +42,20 @@ const NoteMenu = () => {
                 }&folder_id=${item.folder_id}`}
                 key={i}
               >
-                <Card className="bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer">
+                <Card
+                  className={`bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer ${
+                    item.id_note === currentNoteId
+                      ? 'bg-white/[7%] text-white'
+                      : 'text-white/[40%]'
+                  }`}
+                >
                   <CardContent className="p-[20px]">
-                    <h2 className="text-white line-clamp-2 text-[18px] font-semibold leading-7">
-                      My Favorite Memories from Childhood
+                    <h2 className="line-clamp-2 text-[18px] font-semibold leading-7">
+                      {item.name}
                     </h2>
                     <div className="flex gap-[10px] inactive-text mt-[10px]">
                       <p className="font-normal">31/12/2022</p>
-                      <p className="truncate font-normal">
-                        Lorem ipsum dolor sit amet consectetur, adipisicing
-                        elit. Laudantium suscipit molestiae quo eos culpa
-                        assumenda excepturi id nam nobis veniam, adipisci dicta
-                        odit ab quos ullam molestias cupiditate aut repellat!
-                      </p>
+                      <p className="truncate font-normal">{item.content}</p>
                     </div>
                   </CardContent>
                 </Card>

@@ -1,9 +1,9 @@
-import React from "react";
-import Image from "next/image";
-import { Metadata } from "next";
+import React from 'react';
+import Image from 'next/image';
+import { Metadata } from 'next';
 
 export const metadata: Metadata = {
-  title: "Nowted",
+  title: 'Nowted',
 };
 function page() {
   return (
@@ -12,7 +12,7 @@ function page() {
         <Image
           alt="icon"
           priority
-          src={"/FileText.svg"}
+          src={'/FileText.svg'}
           height={80}
           width={80}
         />

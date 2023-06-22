@@ -16,19 +16,21 @@ import {
 } from '@/components/ui/dropdown-menu';
 import { Button } from '@/components/ui/button';
 import { CgOptions } from 'react-icons/cg';
-import { FiEdit, FiInfo, FiTrash } from 'react-icons/fi';
+import { FiEdit, FiTrash } from 'react-icons/fi';
 import { FolderTypes } from '@/types';
 import UpdateFolder from './EditFolder';
 import useFolderState from '@/hooks/useFolderState';
 import { slug } from '@/lib/utils';
-import { useNowtedStore } from '@/store';
+import { useSearchParams } from 'next/navigation';
 
 function FolderLists() {
-  const folders = useNowtedStore((state) => state.folders);
+  const searchParams = useSearchParams();
+  const getFolderId = searchParams.get('folder_id');
   const {
     isEditFolder,
     isCreateFolder,
     updateData,
+    folders,
     setUpdateData,
     setIsEdit,
     setDialogDelete,
@@ -38,21 +40,24 @@ function FolderLists() {
   return (
     <>
       {folders?.map((item: FolderTypes, i: any) => (
-        <>
-          <div
-            className="inactive-text hover:text-white hover:bg-white/[3%] px-[30px] transition rounded-md"
-            key={i}
+        <React.Fragment key={i}>
+          <Link
+            className={`inactive-text hover:text-white hover:bg-white/[3%] px-[30px] ${
+              getFolderId === item.id_folder ? 'bg-white/[3%] text-white' : ''
+            } ${
+              !getFolderId &&
+              item.can_delete === false &&
+              'bg-white/[3%] text-white'
+            }`}
+            href={`?folder=${slug(item.name)}&folder_id=${item.id_folder}`}
           >
             <div className="flex items-center justify-between">
               {isEditFolder && item.id_folder === updateData.id_folder ? (
                 <UpdateFolder />
               ) : (
                 <>
-                  <Link
+                  <div
                     className={`flex items-center gap-[15px] w-[80%] h-full py-[10px] pr-[20px] relative`}
-                    href={`?folder=${slug(item.name)}&folder_id=${
-                      item.id_folder
-                    }`}
                   >
                     <div>
                       <LuFolderOpen className="text-[20px]" />
@@ -67,7 +72,7 @@ function FolderLists() {
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
-                  </Link>
+                  </div>
                   <DropdownMenu>
                     <DropdownMenuTrigger
                       className="outline-none ring-0 border-none"
@@ -109,8 +114,8 @@ function FolderLists() {
                 </>
               )}
             </div>
-          </div>
-        </>
+          </Link>
+        </React.Fragment>
       ))}
       {folders?.length === 0 && isCreateFolder === false && (
         <p className="px-[30px] text-center text-sm">Folder is empty</p>

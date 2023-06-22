@@ -1,5 +1,6 @@
-import Link from "next/link";
-import { FiFileText } from "react-icons/fi";
+'use client';
+import Link from 'next/link';
+import { FiFileText } from 'react-icons/fi';
 
 export type fileType = {
   id: string | number;
@@ -7,9 +8,9 @@ export type fileType = {
 }[];
 
 const files: fileType = [
-  { id: 12312421, name: "Reflection on the Month of June" },
-  { id: 121115, name: "Project proposal" },
-  { id: 1231255, name: "Travel itinerary" },
+  { id: 12312421, name: 'Reflection on the Month of June' },
+  { id: 121115, name: 'Project proposal' },
+  { id: 1231255, name: 'Travel itinerary' },
 ];
 
 const RecentMenu: React.FC = () => {
