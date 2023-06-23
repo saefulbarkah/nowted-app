@@ -5,7 +5,7 @@ import { Source_Sans_Pro } from 'next/font/google';
 import { Toaster } from '@/components/ui/Toaster';
 import NoteMenu from '@/components/NoteLists/NoteMenu';
 
-const inter = Source_Sans_Pro({
+const SourceSansPro = Source_Sans_Pro({
   subsets: ['latin'],
   weight: ['200', '300', '400', '600'],
 });
@@ -17,7 +17,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" className="dark">
-      <body className={`${inter.className} `}>
+      <body className={SourceSansPro.className}>
         <NextTopLoader />
         <Sidebar />
         <NoteMenu />
