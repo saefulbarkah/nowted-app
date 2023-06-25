@@ -5,13 +5,17 @@ import { useSearchParams } from 'next/navigation';
 import useNotes from '@/hooks/useNotes';
 import { Skeleton } from '../ui/skeleton';
 import Link from 'next/link';
-import { dateToString, slug } from '@/lib/utils';
+import { dateToString, slug, toPlainText } from '@/lib/utils';
+import { useRecentStore } from '@/store/useRecentStore';
+import { FiInfo } from 'react-icons/fi';
 
 const NoteMenu = () => {
+  const addToRecent = useRecentStore((state) => state.addToRecents);
   const searchParams = useSearchParams();
   const getFolderId = searchParams.get('folder_id');
   const currentNoteId = searchParams.get('note_id');
   const { notes, loading, title } = useNotes({ folder_id: getFolderId });
+
   return (
     <div className="fixed top-0 left-0 bottom-0 ml-[305px] w-[350px] custom-scrollbar bg-foreColor/80">
       {loading ? (
@@ -32,7 +36,7 @@ const NoteMenu = () => {
           </div>
         </>
       ) : (
-        <div className="flex flex-col h-full my-[30px] px-[20px]">
+        <div className="flex flex-col h-full py-[30px] px-[20px]">
           <h2 className="text-[22px] font-semibold">{title}</h2>
           <div className="flex flex-col pb-[30px] mt-[30px] gap-[20px]">
             {notes?.map((item, i) => (
@@ -41,6 +45,7 @@ const NoteMenu = () => {
                   item.id_note
                 }&folder_id=${item.folder_id}`}
                 key={i}
+                onClick={() => addToRecent(item)}
               >
                 <Card
                   className={`bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer ${
@@ -57,13 +62,21 @@ const NoteMenu = () => {
                       <p className="font-normal">
                         {dateToString({ values: item.createdAt })}
                       </p>
-                      <p className="truncate font-normal">{item.content}</p>
+                      <p className="truncate font-normal">
+                        {toPlainText({ value: item.content, type: 'html' })}
+                      </p>
                     </div>
                   </CardContent>
                 </Card>
               </Link>
             ))}
           </div>
+          {notes?.length === 0 && (
+            <div className="h-[70vh] flex items-center justify-center flex-col gap-2">
+              <FiInfo className="text-[30px] inactive-text" />
+              <p className="inactive-text text-[20px]">Note is empty</p>
+            </div>
+          )}
         </div>
       )}
     </div>

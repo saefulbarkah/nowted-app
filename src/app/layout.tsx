@@ -1,9 +1,9 @@
-import { Sidebar } from '@/components/Sidebar';
 import NextTopLoader from 'nextjs-toploader';
 import './globals.css';
 import { Source_Sans_Pro } from 'next/font/google';
 import { Toaster } from '@/components/ui/Toaster';
 import NoteMenu from '@/components/NoteLists/NoteMenu';
+import Sidebar from '@/components/Sidebar/Sidebar';
 
 const SourceSansPro = Source_Sans_Pro({
   subsets: ['latin'],

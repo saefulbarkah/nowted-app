@@ -39,9 +39,9 @@ function FolderLists() {
 
   return (
     <>
-      {folders?.map((item: FolderTypes, i: any) => (
+      {folders.map((item: FolderTypes, i: any) => (
         <React.Fragment key={i}>
-          <Link
+          <div
             className={`inactive-text hover:text-white hover:bg-white/[3%] px-[30px] ${
               getFolderId === item.id_folder ? 'bg-white/[3%] text-white' : ''
             } ${
@@ -49,15 +49,17 @@ function FolderLists() {
               item.can_delete === false &&
               'bg-white/[3%] text-white'
             }`}
-            href={`?folder=${slug(item.name)}&folder_id=${item.id_folder}`}
           >
             <div className="flex items-center justify-between">
               {isEditFolder && item.id_folder === updateData.id_folder ? (
                 <UpdateFolder />
               ) : (
                 <>
-                  <div
+                  <Link
                     className={`flex items-center gap-[15px] w-[80%] h-full py-[10px] pr-[20px] relative`}
+                    href={`?folder=${slug(item.name)}&folder_id=${
+                      item.id_folder
+                    }`}
                   >
                     <div>
                       <LuFolderOpen className="text-[20px]" />
@@ -72,7 +74,7 @@ function FolderLists() {
                         </TooltipContent>
                       </Tooltip>
                     </TooltipProvider>
-                  </div>
+                  </Link>
                   <DropdownMenu>
                     <DropdownMenuTrigger
                       className="outline-none ring-0 border-none"
@@ -114,7 +116,7 @@ function FolderLists() {
                 </>
               )}
             </div>
-          </Link>
+          </div>
         </React.Fragment>
       ))}
       {folders?.length === 0 && isCreateFolder === false && (

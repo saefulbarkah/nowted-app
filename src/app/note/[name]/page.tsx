@@ -1,4 +1,4 @@
-import Note from '@/components/NoteEditor/Note';
+import Note from '@/components/NoteEditor/NoteEditor';
 import Container from '@/components/container';
 import React from 'react';
 

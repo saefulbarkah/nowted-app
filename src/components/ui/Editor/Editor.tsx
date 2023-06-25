@@ -7,9 +7,8 @@ import Underline from '@tiptap/extension-underline';
 import './editor.css';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
-import Heading from '@tiptap/extension-heading';
 
-export const Editor = ({ content }: { content?: string }) => {
+export const Editor = ({ content }: { content: string }) => {
   const Editor = useEditor({
     extensions: [
       StarterKit.configure({
@@ -18,12 +17,11 @@ export const Editor = ({ content }: { content?: string }) => {
             class: 'paragraph',
           },
         },
-      }),
-      Heading.configure({
-        HTMLAttributes: {
-          class: 'heading-text',
+        heading: {
+          HTMLAttributes: {
+            class: 'heading-text',
+          },
         },
-        levels: [1, 2, 3],
       }),
       Underline,
       Image.configure({

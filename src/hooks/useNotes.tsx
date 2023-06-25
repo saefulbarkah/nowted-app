@@ -21,21 +21,35 @@ function useNotes({ folder_id }: notes): noteReturn {
   const { folders } = useFolderState();
   const router = useRouter();
 
-  const getNotesByFolderId = () => {
-    if (!folder_id) {
-      const filters = folders.find((item) => item.can_delete === false);
-      setNotes(filters?.notes!);
-      setTitle(filters?.name!);
-      setIsLoading(false);
-      return;
-    }
-    const filters = folders.find((item) => item.id_folder === folder_id);
-    if (!filters) {
-      router.push('/');
-    }
+  const promiseGetData = () => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        if (!folder_id) {
+          const filters = folders.find((item) => item.can_delete === false);
+          const notes = filters!.notes.filter(
+            (item) => item.deletedAt === null
+          );
+          setNotes(notes!);
+          setTitle(filters?.name!);
+          setIsLoading(false);
+          resolve(1);
+          return;
+        }
+        const filters = folders.find((item) => item.id_folder === folder_id);
+        if (!filters) {
+          router.push('/');
+        }
+        const notes = filters?.notes.filter((item) => item.deletedAt === null);
+        setNotes(notes!);
+        setTitle(filters?.name!);
+        resolve(1);
+      }, 200);
+    });
+  };
+
+  const getNotesByFolderId = async () => {
+    await promiseGetData();
     setIsLoading(false);
-    setNotes(filters?.notes!);
-    setTitle(filters?.name!);
   };
 
   useEffect(() => {

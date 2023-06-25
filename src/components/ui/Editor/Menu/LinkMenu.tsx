@@ -21,9 +21,6 @@ function LinkMenu({ editor }: PropsEditor) {
     e: React.ChangeEvent<HTMLInputElement>
   ) => {
     seturl(e.target.value);
-    if (!url) {
-      console.log('empty');
-    }
     try {
       const newUrl = new URL(url);
       setIsNotUrl(false);

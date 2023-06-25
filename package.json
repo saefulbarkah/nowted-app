@@ -10,6 +10,7 @@
     "db-server": "json-server ./src/data/db.json"
   },
   "dependencies": {
+    "@headlessui/react": "^1.7.15",
     "@paralleldrive/cuid2": "^2.2.1",
     "@radix-ui/react-alert-dialog": "^1.0.4",
     "@radix-ui/react-context-menu": "^2.1.4",

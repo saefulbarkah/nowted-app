@@ -5,6 +5,22 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
+interface toPlainText {
+  type: 'html';
+  value?: string;
+}
+
+export function toPlainText({ type = 'html', value }: toPlainText) {
+  switch (type) {
+    case 'html':
+      const results = value?.replace(/<[^>]+>/g, '');
+      return results;
+
+    default:
+      break;
+  }
+}
+
 interface dateToString {
   type?: 'yyy-mm-dd' | null;
   values: any;
@@ -28,7 +44,7 @@ export function dateToString({ type, values }: dateToString) {
   return results;
 }
 
-export function slug(value: string) {
+export function slug(value?: string) {
   if (!value) {
     return value;
   }
