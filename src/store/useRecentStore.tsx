@@ -25,7 +25,7 @@ export const useRecentStore = create<recentTypes>()(
               data,
               ...state.recents
                 .filter((item) => item.id_note !== data.id_note)
-                .slice(0, 1),
+                .slice(0, 2),
             ],
           };
         });
