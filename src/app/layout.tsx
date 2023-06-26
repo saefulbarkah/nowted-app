@@ -8,7 +8,6 @@ import Sidebar from '@/components/Sidebar/Sidebar';
 const SourceSansPro = Source_Sans_Pro({
   subsets: ['latin'],
   weight: ['200', '300', '400', '600'],
-  variable: '--font-sans-pro',
 });
 
 export default function RootLayout({
