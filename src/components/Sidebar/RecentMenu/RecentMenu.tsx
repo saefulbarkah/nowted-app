@@ -1,18 +1,6 @@
 'use client';
 import React from 'react';
-import dynamic from 'next/dynamic';
-import { Loader2 } from 'lucide-react';
-
-const RecentLists = dynamic(() => import('./RecentLists'), {
-  ssr: false,
-  loading: () => (
-    <div className="flex flex-col gap-[15px] h-[100px] items-center justify-center">
-      <div className="flex items-center px-[30px] justify-center">
-        <Loader2 className="animate-spin" />
-      </div>
-    </div>
-  ),
-});
+import RecentLists from './RecentLists';
 
 const RecentMenu: React.FC = () => {
   return (

@@ -20,7 +20,7 @@ module.exports = {
         input: 'hsl(var(--input))',
         ring: 'hsl(var(--ring))',
         background: '#181818',
-        foreColor: '#1C1C1C',
+        'acent-2': '#1C1C1C',
         foreground: '#FFFFFF',
         primary: {
           DEFAULT: '#312EB5',

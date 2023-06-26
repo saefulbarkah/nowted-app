@@ -1,82 +1,81 @@
 'use client';
 import React from 'react';
 import { Card, CardContent } from '../ui/card';
-import { useSearchParams } from 'next/navigation';
 import useNotes from '@/hooks/useNotes';
-import { Skeleton } from '../ui/skeleton';
 import Link from 'next/link';
 import { dateToString, slug, toPlainText } from '@/lib/utils';
 import { useRecentStore } from '@/store/useRecentStore';
+import { useActiveNote } from '@/store/useActiveNote';
 import { FiInfo } from 'react-icons/fi';
+import { Loader2 } from 'lucide-react';
+import { Skeleton } from '../ui/skeleton';
 
-const NoteMenu = () => {
+interface TProps {
+  folder_id?: string;
+}
+
+const NoteMenu = ({ folder_id }: TProps) => {
   const addToRecent = useRecentStore((state) => state.addToRecents);
-  const searchParams = useSearchParams();
-  const getFolderId = searchParams.get('folder_id');
-  const currentNoteId = searchParams.get('note_id');
-  const { notes, loading, title } = useNotes({ folder_id: getFolderId });
+  const { notes, title, loading } = useNotes({
+    folder_id: folder_id as string,
+  });
+  const setActiveNote = useActiveNote((state) => state.setActiveNote);
+  const activeNoteId = useActiveNote((state) => state.note_id);
 
   return (
-    <div className="fixed top-0 left-0 bottom-0 ml-[305px] w-[350px] custom-scrollbar bg-foreColor/80">
+    <div className="overflow-y-auto w-[350px] h-screen bg-acent-2 px-5 pb-[23px]">
       {loading ? (
         <>
-          <div className="px-[20px]">
-            <Skeleton className="h-[40px] w-[200px] mt-[30px]" />
+          <div className="h-24 flex items-center">
+            <Skeleton className="h-[35px] w-[200px]" />
           </div>
-          <div className="flex flex-col h-full  px-[20px]">
-            <div className="flex flex-col pb-[30px] mt-[30px] gap-[20px]">
-              {Array(5)
-                .fill(null)
-                .map((item, i) => (
-                  <React.Fragment key={i}>
-                    <Skeleton className="h-[100px] w-full" />
-                  </React.Fragment>
-                ))}
-            </div>
-          </div>
+          {Array(3)
+            .fill(null)
+            .map((item, i) => (
+              <React.Fragment key={i}>
+                <Skeleton className="h-[100px] w-full mb-5 last-of-type:mb-0" />
+              </React.Fragment>
+            ))}
         </>
       ) : (
-        <div className="flex flex-col h-full py-[30px] px-[20px]">
-          <h2 className="text-[22px] font-semibold">{title}</h2>
-          <div className="flex flex-col pb-[30px] mt-[30px] gap-[20px]">
-            {notes?.map((item, i) => (
-              <Link
-                href={`/note/${slug(item.name)}?note_id=${
-                  item.id_note
-                }&folder_id=${item.folder_id}`}
-                key={i}
-                onClick={() => addToRecent(item)}
-              >
-                <Card
-                  className={`bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer ${
-                    item.id_note === currentNoteId
-                      ? 'bg-white/[7%] text-white'
-                      : 'text-white/[40%]'
-                  }`}
-                >
-                  <CardContent className="p-[20px]">
-                    <h2 className="line-clamp-2 text-[18px] font-semibold leading-7">
-                      {item.name}
-                    </h2>
-                    <div className="flex gap-[10px] inactive-text mt-[10px]">
-                      <p className="font-normal">
-                        {dateToString({ values: item.createdAt })}
-                      </p>
-                      <p className="truncate font-normal">
-                        {toPlainText({ value: item.content, type: 'html' })}
-                      </p>
-                    </div>
-                  </CardContent>
-                </Card>
-              </Link>
-            ))}
+        <>
+          <div className="sticky top-0 h-24 flex items-center bg-acent-2">
+            <h2 className="text-[22px] font-semibold">{title}</h2>
           </div>
-          {notes?.length === 0 && (
-            <div className="h-[70vh] flex items-center justify-center flex-col gap-2">
-              <FiInfo className="text-[30px] inactive-text" />
-              <p className="inactive-text text-[20px]">Note is empty</p>
-            </div>
-          )}
+          {notes.map((item, i) => (
+            <Card
+              className={`bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer mb-5 last-of-type:mb-0 ${
+                item.id_note === activeNoteId
+                  ? 'bg-white/[7%] text-white'
+                  : 'text-white/[40%]'
+              }`}
+              key={i}
+              onClick={() => {
+                setActiveNote(item.id_note);
+                addToRecent(item);
+              }}
+            >
+              <CardContent className="p-[20px]">
+                <h2 className="line-clamp-2 text-[18px] font-semibold leading-7">
+                  {item.name}
+                </h2>
+                <div className="flex gap-[10px] inactive-text mt-[10px]">
+                  <p className="font-normal">
+                    {dateToString({ values: item.createdAt })}
+                  </p>
+                  <p className="truncate font-normal">
+                    {toPlainText({ value: item.content, type: 'html' })}
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          ))}
+        </>
+      )}
+      {notes?.length === 0 && !loading && (
+        <div className="h-[70vh] flex items-center justify-center flex-col gap-2">
+          <FiInfo className="text-[30px] inactive-text" />
+          <p className="inactive-text text-[20px]">Note is empty</p>
         </div>
       )}
     </div>

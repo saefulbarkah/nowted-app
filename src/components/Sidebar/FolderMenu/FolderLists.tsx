@@ -20,12 +20,9 @@ import { FiEdit, FiTrash } from 'react-icons/fi';
 import { FolderTypes } from '@/types';
 import UpdateFolder from './EditFolder';
 import useFolderState from '@/hooks/useFolderState';
-import { slug } from '@/lib/utils';
-import { useSearchParams } from 'next/navigation';
+import { useParams } from 'next/navigation';
 
 function FolderLists() {
-  const searchParams = useSearchParams();
-  const getFolderId = searchParams.get('folder_id');
   const {
     isEditFolder,
     isCreateFolder,
@@ -36,6 +33,7 @@ function FolderLists() {
     setDialogDelete,
     setDeleteData,
   } = useFolderState();
+  const params = useParams();
 
   return (
     <>
@@ -43,11 +41,9 @@ function FolderLists() {
         <React.Fragment key={i}>
           <div
             className={`inactive-text hover:text-white hover:bg-white/[3%] px-[30px] ${
-              getFolderId === item.id_folder ? 'bg-white/[3%] text-white' : ''
-            } ${
-              !getFolderId &&
-              item.can_delete === false &&
-              'bg-white/[3%] text-white'
+              params.folderId === item.id_folder
+                ? 'bg-white/[3%] text-white'
+                : ''
             }`}
           >
             <div className="flex items-center justify-between">
@@ -57,9 +53,7 @@ function FolderLists() {
                 <>
                   <Link
                     className={`flex items-center gap-[15px] w-[80%] h-full py-[10px] pr-[20px] relative`}
-                    href={`?folder=${slug(item.name)}&folder_id=${
-                      item.id_folder
-                    }`}
+                    href={`/folders/${item.id_folder}`}
                   >
                     <div>
                       <LuFolderOpen className="text-[20px]" />

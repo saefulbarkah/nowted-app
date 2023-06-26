@@ -1,7 +1,7 @@
-"use client";
-import { PropsWithChildren, useEffect, useState } from "react";
+'use client';
+import { PropsWithChildren, useEffect, useState } from 'react';
 
-const HydrationZustand = ({ children }: PropsWithChildren) => {
+const NoSSR = ({ children }: PropsWithChildren) => {
   const [isHydrated, setIsHydrated] = useState(false);
 
   useEffect(() => {
@@ -11,4 +11,4 @@ const HydrationZustand = ({ children }: PropsWithChildren) => {
   return <>{isHydrated ? <div>{children}</div> : null}</>;
 };
 
-export default HydrationZustand;
+export default NoSSR;

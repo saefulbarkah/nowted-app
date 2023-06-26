@@ -2,22 +2,7 @@
 import DialogDelete from './DeleteFolder';
 import CreateFolder from './CreateFolder';
 import SaveFolder from './SaveFolder';
-import dynamic from 'next/dynamic';
-import { Loader2 } from 'lucide-react';
-
-// Disable SSR
-const FolderLists = dynamic(() => import('./FolderLists'), {
-  ssr: false,
-  loading: () => (
-    <>
-      <div className="flex flex-col gap-[15px] h-[50px] items-center justify-center">
-        <div className="flex items-center px-[30px] justify-center">
-          <Loader2 className="animate-spin" />
-        </div>
-      </div>
-    </>
-  ),
-});
+import FolderLists from './FolderLists';
 
 const FolderMenu: React.FC = () => {
   return (
@@ -30,8 +15,6 @@ const FolderMenu: React.FC = () => {
         <CreateFolder />
         <FolderLists />
       </div>
-
-      {/* dialog delete folder */}
       <DialogDelete />
     </div>
   );

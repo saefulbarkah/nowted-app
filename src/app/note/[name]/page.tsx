@@ -1,5 +1,5 @@
 import Note from '@/components/NoteEditor/NoteEditor';
-import Container from '@/components/container';
+import NoteMenu from '@/components/NoteLists/NoteMenu';
 import React from 'react';
 
 type Props = {
@@ -16,9 +16,10 @@ export async function generateMetadata({ params }: Props) {
 
 function page({ params }: any) {
   return (
-    <Container>
+    <>
+      {/* <NoteMenu params={params} /> */}
       <Note />
-    </Container>
+    </>
   );
 }
 

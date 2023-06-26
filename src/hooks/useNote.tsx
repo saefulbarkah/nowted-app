@@ -11,30 +11,24 @@ const useNote = ({ find }: getNotesByFolderId) => {
   const [folder, setFolder] = useState<FolderTypes>();
   const [loading, setLoading] = useState(true);
 
-  function queryingNote() {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const findFolder = folders.find(
-          (item) => item.id_folder === find.folder_id
-        );
-        if (!findFolder) return;
-        const note = findFolder.notes as NoteTypes[];
-        const queryNote = note.find((item) => item.id_note === find.note_id);
-        setNote(queryNote);
-        setFolder(findFolder);
-        resolve({ queryNote, findFolder });
-        setLoading(false);
-      }, 1000);
-    });
-  }
-
   async function getNote() {
-    setLoading(true);
-    await queryingNote();
+    const findFolder = folders.find(
+      (item) => item.id_folder === find.folder_id
+    );
+    if (!findFolder) return;
+    const note = findFolder.notes as NoteTypes[];
+    const queryNote = note.find((item) => item.id_note === find.note_id);
+    setNote(queryNote);
+    setFolder(findFolder);
+    setLoading(false);
   }
 
   useEffect(() => {
-    getNote();
+    setLoading(true);
+    const getnote = setTimeout(() => {
+      getNote();
+    }, 500);
+    return () => clearTimeout(getnote);
   }, [find.note_id]);
 
   return { note, loading, folder };
