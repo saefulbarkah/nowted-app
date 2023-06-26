@@ -1,6 +1,7 @@
 'use client';
 import { FiStar, FiTrash, FiArchive } from 'react-icons/fi';
 import Link from 'next/link';
+import { useActiveNote } from '@/store/useActiveNote';
 
 export type MoreType = {
   name: string;
@@ -14,7 +15,7 @@ const MoreMenu: React.FC = () => {
     { name: 'Trash', href: '/trash', icon: <FiTrash /> },
     { name: 'Archived Notes', href: '/archived-notes', icon: <FiArchive /> },
   ];
-
+  const setActiveNote = useActiveNote((state) => state.setActiveNote);
   return (
     <div className="flex flex-col space-y-[8px]">
       <div className="flex justify-between items-center px-[30px] inactive-text">
@@ -26,6 +27,7 @@ const MoreMenu: React.FC = () => {
             className="inactive-text hover:text-white py-[10px] hover:bg-white/[3%] transition px-[30px] rounded-md"
             href={item.href}
             key={i}
+            onClick={() => setActiveNote(null)}
           >
             <div className="flex items-center gap-[15px]">
               <div className="text-[20px]">{item.icon}</div>

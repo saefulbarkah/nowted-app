@@ -1,7 +1,7 @@
 import useFolderState from '@/hooks/useFolderState';
 import useValidation from '@/hooks/useValidation';
 import React from 'react';
-import { LuFolderOpen } from 'react-icons/lu';
+import { LuFolder } from 'react-icons/lu';
 
 function CreateFolder() {
   const { isCreateFolder, name, setName } = useFolderState();
@@ -14,7 +14,7 @@ function CreateFolder() {
       {isCreateFolder && (
         <div className="flex items-center gap-[15px] px-[30px] py-[10px]">
           <div>
-            <LuFolderOpen className="text-[20px]" />
+            <LuFolder className="text-[20px]" />
           </div>
           <div className="relative">
             <input

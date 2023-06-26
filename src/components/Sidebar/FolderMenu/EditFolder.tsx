@@ -1,7 +1,7 @@
 import useFolderState from '@/hooks/useFolderState';
 import useValidation from '@/hooks/useValidation';
 import React from 'react';
-import { LuFolderOpen } from 'react-icons/lu';
+import { LuFolder } from 'react-icons/lu';
 
 function UpdateFolder() {
   const { isEditFolder, updateData, setUpdateData, setName } = useFolderState();
@@ -14,7 +14,7 @@ function UpdateFolder() {
       {isEditFolder && (
         <div className="flex items-center gap-[15px] w-[80%] h-full py-[10px] pr-[20px]">
           <div>
-            <LuFolderOpen className="text-[20px]" />
+            <LuFolder className="text-[20px]" />
           </div>
           <div className="relative">
             <input

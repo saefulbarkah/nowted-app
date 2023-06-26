@@ -1,4 +1,4 @@
-import NoteMenu from '@/components/NoteLists/NoteMenu';
+import NoteMenu from '@/components/NoteLists/NoteLists';
 import { Metadata } from 'next';
 import React from 'react';
 import NoteEditor from '@/components/NoteEditor/NoteEditor';

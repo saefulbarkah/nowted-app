@@ -5,6 +5,7 @@ module.exports = {
     './src/pages/**/*.{ts,tsx}',
     './src/components/**/*.{ts,tsx}',
     './src/app/**/*.{ts,tsx}',
+    './src/hooks/**/*.{ts,tsx}',
   ],
   theme: {
     container: {
@@ -70,16 +71,6 @@ module.exports = {
         'accordion-down': 'accordion-down 0.2s ease-out',
         'accordion-up': 'accordion-up 0.2s ease-out',
       },
-      // typography: {
-      //   DEFAULT: {
-      //     css: {
-      //       color: '#FFFFFF',
-      //       p: {
-      //         color: '#3182ce',
-      //       },
-      //     },
-      //   },
-      // },
     },
   },
   plugins: [require('tailwindcss-animate'), require('@tailwindcss/typography')],

@@ -40,7 +40,7 @@ export const useFolderStateStore = create<
     name: '',
   },
   updateData: {
-    id_folder: 0,
+    id_folder: '',
     name: '',
   },
 

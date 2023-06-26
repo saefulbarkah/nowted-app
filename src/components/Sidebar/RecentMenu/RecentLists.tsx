@@ -11,7 +11,7 @@ function RecentLists() {
   const params = useParams();
   const { folderId } = params;
   const setActiveNote = useActiveNote((state) => state.setActiveNote);
-  const activeNoteId = useActiveNote((state) => state.note_id);
+  const activeNote = useActiveNote((state) => state.activeNote);
   return (
     <>
       {recents?.map((item, i) => (
@@ -19,10 +19,10 @@ function RecentLists() {
           <Link
             className={`flex items-center py-[10px] space-x-[15px] inactive-text hover:text-white hover:bg-white/[3%] transition-colors px-[30px] ${
               folderId &&
-              activeNoteId === item.id_note &&
+              activeNote?.id_note === item.id_note &&
               'bg-primary text-white hover:bg-primary/70'
             }`}
-            onClick={() => setActiveNote(item.id_note)}
+            onClick={() => setActiveNote(item)}
             href={`/folders/${item.folder_id}`}
           >
             <div>
@@ -32,6 +32,11 @@ function RecentLists() {
           </Link>
         </React.Fragment>
       ))}
+      {recents.length === 0 && (
+        <div className="flex items-center justify-center">
+          <p className="px-[30px] text-sm inactive-text">No recents</p>
+        </div>
+      )}
     </>
   );
 }

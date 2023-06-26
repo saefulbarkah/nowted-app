@@ -14,11 +14,13 @@ import { useRecentStore } from '@/store/useRecentStore';
 import { NoteTypes } from '@/types';
 import { useToast } from '../ui/use-toast';
 import { useRouter } from 'next/navigation';
+import { useActiveNote } from '@/store/useActiveNote';
 
 function NoteMenuList({ data }: { data: NoteTypes }) {
   const [open, setOpen] = React.useState(false);
   const removeNote = useNowtedStore((state) => state.removeNote);
   const removeRecents = useRecentStore((state) => state.removeRecents);
+  const setActiveNote = useActiveNote((state) => state.setActiveNote);
   const { toast } = useToast();
   const router = useRouter();
 
@@ -29,8 +31,10 @@ function NoteMenuList({ data }: { data: NoteTypes }) {
       title: 'Succesfully moving note to trash',
       variant: 'success',
     });
-    router.replace(`?folder=${data.folder_name}&folder_id=${data.folder_id}`);
+    setActiveNote('');
+    router.refresh();
   };
+
   return (
     <>
       <DropdownMenu open={open} onOpenChange={setOpen}>

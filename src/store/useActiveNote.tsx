@@ -1,11 +1,12 @@
+import { NoteTypes } from '@/types';
 import { create } from 'zustand';
 
 interface SProps {
-  note_id: string;
-  setActiveNote: (id: string) => void;
+  activeNote: NoteTypes | null;
+  setActiveNote: (data: any) => void;
 }
 
 export const useActiveNote = create<SProps>((set) => ({
-  note_id: '',
-  setActiveNote: (id) => set(() => ({ note_id: id })),
+  activeNote: null,
+  setActiveNote: (data) => set(() => ({ activeNote: data })),
 }));

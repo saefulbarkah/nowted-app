@@ -24,9 +24,9 @@ function useSaveNote({
     return new Promise((resolve) => {
       setTimeout(() => {
         saveNote({
-          folder_id: folder_id,
-          id_note: id_note,
-          name: name,
+          folder_id: folder_id as string,
+          id_note: id_note as string,
+          name: name as string,
           content: content,
         });
         updateTitleRecent({ id_note: id_note, name: name });

@@ -1,15 +1,18 @@
-'use client';
-import React from 'react';
-import { useEditor, EditorContent } from '@tiptap/react';
+import { useEditor } from '@tiptap/react';
 import StarterKit from '@tiptap/starter-kit';
-import EditorToolbar from './EditorToolbar';
 import Underline from '@tiptap/extension-underline';
-import './editor.css';
 import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
+import { useNowtedStore } from '@/store';
+import { NoteTypes } from '@/types';
 
-export const Editor = ({ content }: { content: string }) => {
-  const Editor = useEditor({
+interface Tprops {
+  data: NoteTypes;
+}
+
+function useNoteEditor({ data }: Tprops) {
+  const saveContent = useNowtedStore((state) => state.saveContent);
+  return useEditor({
     extensions: [
       StarterKit.configure({
         paragraph: {
@@ -42,20 +45,22 @@ export const Editor = ({ content }: { content: string }) => {
     editorProps: {
       attributes: {
         class:
-          'oultine-none min-h-[300px] mt-[30px] px-2 border-none outline-none ring-0 prose prose-sm sm:prose lg:prose-lg xl:prose-2xl dark:prose-invert w-full',
+          'oultine-none min-h-[300px] mt-[30px] px-2 border-none outline-none ring-0 prose prose-invert max-w-full',
       },
     },
-
+    onUpdate: ({ editor }) => {
+      const content = editor.getHTML();
+      saveContent({
+        folder_id: data.folder_id,
+        id_note: data.id_note,
+        content: content,
+      });
+      console.log('UPDATEd');
+    },
     autofocus: true,
     editable: true,
     injectCSS: false,
-    content: content,
   });
+}
 
-  return (
-    <>
-      <EditorToolbar editor={Editor} />
-      <EditorContent editor={Editor} />
-    </>
-  );
-};
+export default useNoteEditor;

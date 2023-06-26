@@ -1,7 +1,7 @@
 'use client';
 import React from 'react';
 import Link from 'next/link';
-import { LuFolderOpen } from 'react-icons/lu';
+import { LuFolder, LuFolderOpen } from 'react-icons/lu';
 import {
   Tooltip,
   TooltipContent,
@@ -21,6 +21,7 @@ import { FolderTypes } from '@/types';
 import UpdateFolder from './EditFolder';
 import useFolderState from '@/hooks/useFolderState';
 import { useParams } from 'next/navigation';
+import { useActiveNote } from '@/store/useActiveNote';
 
 function FolderLists() {
   const {
@@ -34,10 +35,11 @@ function FolderLists() {
     setDeleteData,
   } = useFolderState();
   const params = useParams();
+  const setActiveNote = useActiveNote((state) => state.setActiveNote);
 
   return (
     <>
-      {folders.map((item: FolderTypes, i: any) => (
+      {folders?.map((item: FolderTypes, i: any) => (
         <React.Fragment key={i}>
           <div
             className={`inactive-text hover:text-white hover:bg-white/[3%] px-[30px] ${
@@ -54,9 +56,14 @@ function FolderLists() {
                   <Link
                     className={`flex items-center gap-[15px] w-[80%] h-full py-[10px] pr-[20px] relative`}
                     href={`/folders/${item.id_folder}`}
+                    onClick={() => setActiveNote(null)}
                   >
                     <div>
-                      <LuFolderOpen className="text-[20px]" />
+                      {item.id_folder === params.folderId ? (
+                        <LuFolderOpen className="text-[20px]" />
+                      ) : (
+                        <LuFolder className="text-[20px]" />
+                      )}
                     </div>
                     <TooltipProvider>
                       <Tooltip>
@@ -114,7 +121,9 @@ function FolderLists() {
         </React.Fragment>
       ))}
       {folders?.length === 0 && isCreateFolder === false && (
-        <p className="px-[30px] text-center text-sm">Folder is empty</p>
+        <div className="flex items-center justify-center">
+          <p className="px-[30px] text-sm inactive-text">Folder is empty</p>
+        </div>
       )}
     </>
   );

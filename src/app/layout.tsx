@@ -3,8 +3,6 @@ import './globals.css';
 import { Source_Sans_Pro } from 'next/font/google';
 import { Toaster } from '@/components/ui/Toaster';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import NoSSR from '@/components/NoSSR';
-import react from 'react';
 import dynamic from 'next/dynamic';
 
 const NonSSRWrapper = ({ children }: React.PropsWithChildren) => (
@@ -27,7 +25,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
-    <html lang="en" className="dark">
+    <html lang="en">
       <body className={SourceSansPro.className}>
         <NextTopLoader />
         <ComponentWithNoSSR>

@@ -2,45 +2,40 @@
 import { NoteTypes } from '@/types';
 import { useEffect, useState } from 'react';
 import useFolderState from './useFolderState';
+import { useRouter } from 'next/navigation';
 
 interface notes {
   folder_id: string | null;
 }
 
 interface noteReturn {
-  notes: NoteTypes[];
+  notes: NoteTypes[] | null;
   loading: boolean;
   title: string;
 }
 
 function useNotes({ folder_id }: notes): noteReturn {
-  const [notes, setNotes] = useState<NoteTypes[]>([]);
-  const [loading, setIsLoading] = useState<boolean>(true);
-  const [title, setTitle] = useState('');
   const { folders } = useFolderState();
-
-  const promiseGetNote = () => {
-    return new Promise((resolve) => {
-      setTimeout(() => {
-        const filters = folders.find((item) => item.id_folder === folder_id);
-        const notes = filters?.notes.filter((item) => item.deletedAt === null);
-        setNotes(notes!);
-        setTitle(filters?.name!);
-        resolve(1);
-      }, 500);
-    });
-  };
+  const [notes, setNotes] = useState<NoteTypes[] | null>(null);
+  const [loading, setLoading] = useState<boolean>(false);
+  const [title, setTitle] = useState('');
+  const router = useRouter();
 
   const getNotesByFolderId = async () => {
-    await promiseGetNote();
-    setIsLoading(false);
+    const filters = folders.find((item) => item.id_folder === folder_id);
+    if (!filters) {
+      router.replace('/');
+    }
+    const notes = filters?.notes.filter((item) => item.deletedAt === null);
+    setNotes(notes!);
+    setTitle(filters?.name!);
   };
 
   useEffect(() => {
     getNotesByFolderId();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [folder_id, folders]);
-  return { notes, loading, title };
+  return { notes, title, loading };
 }
 
 export default useNotes;
