@@ -15,9 +15,7 @@ function CreateNote() {
   const params = useParams();
   const { folderId } = params;
   const { folders } = useFolderState();
-
   const addNote = useNowtedStore((state) => state.addNote);
-  const addRecent = useRecentStore((state) => state.addToRecents);
 
   const addingNewNotes = () => {
     return new Promise((resolve) => {
@@ -39,7 +37,6 @@ function CreateNote() {
     });
     const notes = getFolder!.notes as NoteTypes[];
     const data = notes[0];
-    addRecent(data);
     return;
   };
 

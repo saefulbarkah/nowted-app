@@ -15,6 +15,11 @@ export const useRecentStore = create<recentTypes>()(
       recents: [],
       addToRecents: (data: NoteTypes) => {
         set((state) => {
+          const existsRecents = state.recents.some(
+            (item) => item.id_note === data.id_note
+          );
+          console.log(existsRecents);
+          if (existsRecents) return { recents: state.recents };
           return {
             recents: [
               data,
