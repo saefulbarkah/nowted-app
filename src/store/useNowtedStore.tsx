@@ -93,34 +93,14 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
       },
       addNote: (data) => {
         set((state) => {
-          if (data.id_folder === null) {
-            const filtered = state.folders.find(
-              (item) => item.can_delete === false
-            );
-            if (filtered) {
-              filtered.notes = [
-                {
-                  name: 'Reflection on the Month of June',
-                  content: CONTENT,
-                  id_note: uuid(),
-                  folder_id: filtered.id_folder,
-                  createdAt: new Date(),
-                  folder_name: filtered.name,
-                  deletedAt: null,
-                },
-                ...filtered.notes!,
-              ];
-            }
-            return { folders: [...state.folders] };
-          }
           const filtered = state.folders.find(
             (item) => item.id_folder === data.id_folder
           );
           if (filtered) {
             filtered.notes = [
               {
-                content: CONTENT,
-                name: 'Reflection on the Month of June',
+                name: 'New Note',
+                content: '',
                 id_note: uuid(),
                 folder_id: filtered.id_folder,
                 createdAt: new Date(),

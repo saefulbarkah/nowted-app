@@ -5,6 +5,7 @@ import Image from '@tiptap/extension-image';
 import Link from '@tiptap/extension-link';
 import { useNowtedStore } from '@/store';
 import { NoteTypes } from '@/types';
+import Placeholder from '@tiptap/extension-placeholder';
 
 interface Tprops {
   data: NoteTypes;
@@ -34,6 +35,10 @@ function useNoteEditor({ data }: Tprops) {
         allowBase64: true,
         inline: true,
       }),
+      Placeholder.configure({
+        emptyEditorClass: 'is-editor-empty',
+        placeholder: 'Write here what you want.....',
+      }),
       Link.configure({
         HTMLAttributes: {
           class: 'link-custom',
@@ -46,6 +51,7 @@ function useNoteEditor({ data }: Tprops) {
       attributes: {
         class:
           'oultine-none min-h-[300px] mt-[30px] px-2 border-none outline-none ring-0 prose prose-invert max-w-full',
+        spellcheck: 'false',
       },
     },
     onUpdate: ({ editor }) => {

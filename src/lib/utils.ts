@@ -13,7 +13,8 @@ interface toPlainText {
 export function toPlainText({ type = 'html', value }: toPlainText) {
   switch (type) {
     case 'html':
-      const results = value?.replace(/<[^>]+>/g, '');
+      const convert = value?.replace(/<[^>]+>/g, '');
+      const results = convert?.substring(0, 30);
       return results;
 
     default:
