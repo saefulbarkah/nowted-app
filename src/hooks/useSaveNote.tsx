@@ -27,7 +27,6 @@ function useSaveNote({
           folder_id: folder_id as string,
           id_note: id_note as string,
           name: name as string,
-          content: content,
         });
         updateTitleRecent({ id_note: id_note, name: name });
         toast({
