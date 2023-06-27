@@ -3,16 +3,7 @@ import './globals.css';
 import { Source_Sans_Pro } from 'next/font/google';
 import { Toaster } from '@/components/ui/Toaster';
 import Sidebar from '@/components/Sidebar/Sidebar';
-import dynamic from 'next/dynamic';
-
-const NonSSRWrapper = ({ children }: React.PropsWithChildren) => (
-  <>{children}</>
-);
-
-const ComponentWithNoSSR = dynamic(() => Promise.resolve(NonSSRWrapper), {
-  ssr: false,
-  loading: () => <p>Loading...</p>,
-});
+import { InitialLoadingPage } from '@/components/Loader';
 
 const SourceSansPro = Source_Sans_Pro({
   subsets: ['latin'],
@@ -27,14 +18,14 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={SourceSansPro.className}>
-        <NextTopLoader />
-        <ComponentWithNoSSR>
+        <InitialLoadingPage>
+          <NextTopLoader />
           <div className="w-[calc(100vw-300px)] ml-auto">
             <Sidebar />
             <div className="flex">{children}</div>
           </div>
-        </ComponentWithNoSSR>
-        <Toaster />
+          <Toaster />
+        </InitialLoadingPage>
       </body>
     </html>
   );

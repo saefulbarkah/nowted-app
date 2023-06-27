@@ -1,5 +1,6 @@
 import { ClassValue, clsx } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { convert } from 'html-to-text';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -7,16 +8,14 @@ export function cn(...inputs: ClassValue[]) {
 
 interface toPlainText {
   type: 'html';
-  value?: string;
+  value: string;
 }
 
 export function toPlainText({ type = 'html', value }: toPlainText) {
   switch (type) {
     case 'html':
-      const convert = value?.replace(/<[^>]+>/g, '');
-      const results = convert?.substring(0, 30);
-      return results;
-
+      const text = convert(value, { wordwrap: 130 });
+      return text;
     default:
       break;
   }
