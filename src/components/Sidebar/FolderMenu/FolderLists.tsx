@@ -22,6 +22,7 @@ import UpdateFolder from './EditFolder';
 import useFolderState from '@/hooks/useFolderState';
 import { useParams } from 'next/navigation';
 import { useActiveNote } from '@/store/useActiveNote';
+import { useRecentStore } from '@/store/useRecentStore';
 
 function FolderLists() {
   const {

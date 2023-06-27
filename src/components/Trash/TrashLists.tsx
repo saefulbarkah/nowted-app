@@ -5,7 +5,7 @@ import { Card, CardContent } from '../ui/card';
 import { dateToString, toPlainText } from '@/lib/utils';
 import useTrash from '@/hooks/useTrash';
 import { useActiveNote } from '@/store/useActiveNote';
-import { FiInfo } from 'react-icons/fi';
+import { FiInfo, FiTrash } from 'react-icons/fi';
 
 interface TrashListsProps {}
 
@@ -14,7 +14,14 @@ const TrashLists: FC<TrashListsProps> = ({}) => {
   const setActiveNote = useActiveNote((state) => state.setActiveNote);
   const { trash } = useTrash();
   return (
-    <MenuLists title="Trash">
+    <MenuLists
+      title={
+        <div className="flex items-center">
+          <FiTrash className="mr-3 h-5 w-5" />
+          <span>Trash</span>
+        </div>
+      }
+    >
       {trash?.map((item, i) => (
         <Card
           className={`bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer mb-5 last-of-type:mb-0 ${
@@ -36,7 +43,7 @@ const TrashLists: FC<TrashListsProps> = ({}) => {
                 {dateToString({ values: item.createdAt })}
               </p>
               <p className="truncate font-normal">
-                {toPlainText({ value: item.content, type: 'html' })}
+                {toPlainText({ value: item.content as string, type: 'html' })}
               </p>
             </div>
           </CardContent>
@@ -45,7 +52,7 @@ const TrashLists: FC<TrashListsProps> = ({}) => {
       {trash?.length === 0 && (
         <div className="h-[70vh] flex items-center justify-center flex-col gap-2">
           <FiInfo className="text-[24px] inactive-text" />
-          <p className="inactive-text text-[20px]">Note is empty</p>
+          <p className="inactive-text text-[20px]">Trash is empty</p>
         </div>
       )}
     </MenuLists>

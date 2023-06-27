@@ -2,7 +2,7 @@ import React, { FC } from 'react';
 
 interface MenuListsProps {
   children: React.ReactNode;
-  title: string;
+  title: string | JSX.Element;
 }
 
 const MenuLists: FC<MenuListsProps> = ({ children, title }) => {

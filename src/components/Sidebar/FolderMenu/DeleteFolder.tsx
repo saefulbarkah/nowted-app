@@ -9,6 +9,7 @@ import {
 import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import useFolderState from '@/hooks/useFolderState';
+import { useRecentStore } from '@/store/useRecentStore';
 import { useState } from 'react';
 
 const DialogDelete = () => {
@@ -16,17 +17,16 @@ const DialogDelete = () => {
   const { isOpenDialogDelete, setDialogDelete, deleteData, removeFolder } =
     useFolderState();
   const [isLoading, setIsLoading] = useState(false);
+  const removeRecents = useRecentStore((state) => state.removeRecents);
+  const recents = useRecentStore((state) => state.recents);
 
   const handleDeleteFolder = () => {
+    recents.map((item) =>
+      item.folder_id === deleteData.id_folder
+        ? removeRecents({ id_note: item.id_note })
+        : null
+    );
     setIsLoading(true);
-    if (!deleteData.id_folder) {
-      setIsLoading(false);
-      return toast({
-        title: 'Failed',
-        description: 'Delete folder failed',
-        variant: 'danger',
-      });
-    }
     setTimeout(() => {
       toast({
         title: 'Success',

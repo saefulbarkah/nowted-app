@@ -2,12 +2,12 @@
 import React from 'react';
 import { Card, CardContent } from '../ui/card';
 import useNotes from '@/hooks/useNotes';
-import { dateToString, slug, toPlainText } from '@/lib/utils';
+import { dateToString, toPlainText } from '@/lib/utils';
 import { useRecentStore } from '@/store/useRecentStore';
 import { useActiveNote } from '@/store/useActiveNote';
 import { FiInfo } from 'react-icons/fi';
-import { Loader2 } from 'lucide-react';
 import MenuLists from '../MenuLists';
+import { LuFolderOpen } from 'react-icons/lu';
 
 interface TProps {
   folder_id?: string;
@@ -22,7 +22,14 @@ const NoteLists = ({ folder_id }: TProps) => {
   const activeNote = useActiveNote((state) => state.activeNote);
 
   return (
-    <MenuLists title={title}>
+    <MenuLists
+      title={
+        <div className="flex items-center">
+          <LuFolderOpen className="mr-3 h-5 w-5" />
+          <span>{title}</span>
+        </div>
+      }
+    >
       {notes?.map((item, i) => (
         <Card
           className={`bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer mb-5 last-of-type:mb-0 ${
@@ -37,7 +44,7 @@ const NoteLists = ({ folder_id }: TProps) => {
           }}
         >
           <CardContent className="p-[20px]">
-            <h2 className="line-clamp-2 text-[18px] font-semibold leading-7">
+            <h2 className="line-clamp-2 text-[18px] font-semibold leading-7 break-words">
               {item.name}
             </h2>
             <div className="flex gap-[10px] inactive-text mt-[10px]">
@@ -45,7 +52,7 @@ const NoteLists = ({ folder_id }: TProps) => {
                 {dateToString({ values: item.createdAt })}
               </p>
               <p className="truncate font-normal">
-                {toPlainText({ value: item.content, type: 'html' })}
+                {toPlainText({ value: item.content as string, type: 'html' })}
               </p>
             </div>
           </CardContent>
