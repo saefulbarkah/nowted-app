@@ -32,7 +32,7 @@ const NoteLists = ({ folder_id }: TProps) => {
     >
       {notes?.map((item, i) => (
         <Card
-          className={`bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer mb-5 last-of-type:mb-0 ${
+          className={`bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer mb-5 last-of-type:mb-0 rounded-sm ${
             item.id_note === activeNote?.id_note
               ? 'bg-white/[7%] text-white'
               : 'text-white/[40%]'
