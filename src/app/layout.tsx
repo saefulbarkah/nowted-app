@@ -19,7 +19,7 @@ export default function RootLayout({
     <html lang="en">
       <body className={SourceSansPro.className}>
         <InitialLoadingPage>
-          <NextTopLoader />
+          <NextTopLoader color="#F86F03" />
           <div className="w-[calc(100vw-300px)] ml-auto">
             <Sidebar />
             <div className="flex">{children}</div>
