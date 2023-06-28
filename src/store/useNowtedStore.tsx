@@ -36,15 +36,7 @@ export type noteStateType = {
 export const useNowtedStore = create<folderStateType & noteStateType>()(
   persist(
     (set) => ({
-      folders: [
-        {
-          id_folder: generateFolderId,
-          name: 'Personal',
-          can_delete: false,
-          notes: [{ ...DEFAULT_NOTES, folder_name: 'Personal' }],
-          createdAt: new Date(),
-        },
-      ],
+      folders: [],
       addFolder: (data) => {
         set((state) => {
           const folderId = uuid();
