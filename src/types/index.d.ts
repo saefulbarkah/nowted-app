@@ -11,7 +11,6 @@ export type NoteTypes = {
 export type FolderTypes = {
   id_folder: string;
   name: string;
-  can_delete: boolean;
   notes: noteTypes[];
   createdAt?: null | Date;
 };

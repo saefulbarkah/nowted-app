@@ -45,7 +45,6 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
               {
                 id_folder: folderId,
                 name: data.name,
-                can_delete: true,
                 notes: [
                   {
                     ...DEFAULT_NOTES,

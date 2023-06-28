@@ -41,12 +41,15 @@ const DialogDelete = () => {
 
   return (
     <AlertDialog open={isOpenDialogDelete}>
-      <AlertDialogContent className="bg-background border-white/[20%] flex flex-col justify-center items-center min-w-[120px]">
+      <AlertDialogContent className="bg-background border-white/[20%] flex flex-col justify-center items-center nax-w-[120px]">
         <AlertDialogHeader className="text-[35px] font-semibold">
-          Are you sure ?
+          <span>Are you sure ?</span>
         </AlertDialogHeader>
         <p>
           You will delete <span className="font-bold">{deleteData.name}</span>
+        </p>
+        <p className="italic text-sm inactive-text break-words">
+          this will delete everything including your notes and also in the trash
         </p>
         <AlertDialogFooter>
           <AlertDialogCancel onClick={() => setDialogDelete(false)}>

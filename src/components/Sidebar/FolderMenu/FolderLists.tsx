@@ -22,7 +22,6 @@ import UpdateFolder from './EditFolder';
 import useFolderState from '@/hooks/useFolderState';
 import { useParams } from 'next/navigation';
 import { useActiveNote } from '@/store/useActiveNote';
-import { useRecentStore } from '@/store/useRecentStore';
 
 function FolderLists() {
   const {
@@ -101,18 +100,16 @@ function FolderLists() {
                         <FiEdit className="mr-2 text-[16px]" />
                         <span className="text-[16px]">Edit Folder</span>
                       </DropdownMenuItem>
-                      {item.can_delete && (
-                        <DropdownMenuItem
-                          className="focus:text-white w-[150px] cursor-pointer text-white/[60%] focus:bg-white/[5%] py-2"
-                          onClick={() => {
-                            setDeleteData(item);
-                            setDialogDelete(true);
-                          }}
-                        >
-                          <FiTrash className="mr-2 text-[16px]" />
-                          <span className="text-[16px]">Delete Folder</span>
-                        </DropdownMenuItem>
-                      )}
+                      <DropdownMenuItem
+                        className="focus:text-white w-[150px] cursor-pointer text-white/[60%] focus:bg-white/[5%] py-2"
+                        onClick={() => {
+                          setDeleteData(item);
+                          setDialogDelete(true);
+                        }}
+                      >
+                        <FiTrash className="mr-2 text-[16px]" />
+                        <span className="text-[16px]">Delete Folder</span>
+                      </DropdownMenuItem>
                     </DropdownMenuContent>
                   </DropdownMenu>
                 </>
