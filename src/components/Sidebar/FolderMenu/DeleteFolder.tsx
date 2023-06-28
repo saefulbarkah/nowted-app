@@ -10,6 +10,7 @@ import { Button } from '@/components/ui/button';
 import { useToast } from '@/components/ui/use-toast';
 import useFolderState from '@/hooks/useFolderState';
 import { useRecentStore } from '@/store/useRecentStore';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 const DialogDelete = () => {
@@ -19,6 +20,7 @@ const DialogDelete = () => {
   const [isLoading, setIsLoading] = useState(false);
   const removeRecents = useRecentStore((state) => state.removeRecents);
   const recents = useRecentStore((state) => state.recents);
+  const router = useRouter();
 
   const handleDeleteFolder = () => {
     recents.map((item) =>
@@ -36,6 +38,7 @@ const DialogDelete = () => {
       setDialogDelete(false);
       setIsLoading(false);
       removeFolder({ id_folder: deleteData.id_folder });
+      router.replace('/');
     }, 1000);
   };
 
