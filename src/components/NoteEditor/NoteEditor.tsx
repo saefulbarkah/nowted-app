@@ -14,6 +14,7 @@ import EditorToolbar from '../ui/Editor/EditorToolbar';
 import useNoteEditor from '@/hooks/useNoteEditor';
 import { EditorTipTap } from '../ui/Editor';
 import { NoteTypes } from '@/types';
+import BubbleEditor from '../ui/Editor/BubbleEditor';
 
 interface TProps {
   folder_id: string;
@@ -64,7 +65,7 @@ const NoteEditor = ({ folder_id }: TProps) => {
   return (
     <>
       <div className="w-[calc(100vw-650px)] px-[50px] h-screen overflow-y-auto">
-        <header className="sticky top-0 bg-background pt-[30px]">
+        <header className="sticky top-0 bg-background pt-[30px] z-50">
           <div className="flex justify-between items-center gap-5 mb-[20px] relative">
             <Editable
               className={`text-[30px] text-white font-semibold w-full border-white/[5%] border-b  ${
@@ -111,6 +112,7 @@ const NoteEditor = ({ folder_id }: TProps) => {
           </div>
           <EditorToolbar editor={editor} />
         </header>
+        <BubbleEditor editor={editor} />
         <EditorTipTap editor={editor} />
       </div>
     </>
