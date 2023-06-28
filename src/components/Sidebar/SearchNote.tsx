@@ -1,13 +1,7 @@
 'use client';
-import React, { useState, useMemo, Key } from 'react';
+import React, { useState, useMemo } from 'react';
 import { Button } from '../ui/button';
 import { FiFolder, FiSearch, FiX } from 'react-icons/fi';
-import {
-  AlertDialog,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogTrigger,
-} from '../ui/alert-dialog';
 import { FiFileText } from 'react-icons/fi';
 import useFolderState from '@/hooks/useFolderState';
 import { FolderTypes, NoteTypes } from '@/types';
