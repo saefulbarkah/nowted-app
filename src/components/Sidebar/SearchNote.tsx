@@ -1,5 +1,5 @@
 'use client';
-import React, { useState, useMemo } from 'react';
+import React, { useState, useMemo, Key } from 'react';
 import { Button } from '../ui/button';
 import { FiFolder, FiSearch, FiX } from 'react-icons/fi';
 import {
@@ -10,108 +10,241 @@ import {
 } from '../ui/alert-dialog';
 import Link from 'next/link';
 import { FiFileText } from 'react-icons/fi';
+import useFolderState from '@/hooks/useFolderState';
+import { FolderTypes, NoteTypes } from '@/types';
+import { useActiveNote } from '@/store/useActiveNote';
+import { useRouter } from 'next/navigation';
+import { Loader2 } from 'lucide-react';
+import * as NProgress from 'nprogress';
 
-const RenderNoteItem = ({ title, data, icon }: any) => {
+const RenderNoteItem = ({ title, data, icon, setOpen }: any) => {
+  const setActiveNote = useActiveNote((state) => state.setActiveNote);
+  const [loading, setLoading] = useState<Record<number, boolean>>({});
+  const router = useRouter();
+
+  const setNote = (item: NoteTypes) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        setActiveNote(item);
+        resolve(1);
+      }, 1000);
+    });
+  };
+
+  const handlePushRoute = async (item: NoteTypes, index: number) => {
+    setLoading((state) => ({ ...state, [index]: true }));
+    setActiveNote(null);
+    NProgress.start();
+    router.replace(`/folders/${item.folder_id}`);
+    await setNote(item);
+    setOpen(false);
+    setLoading((state) => ({ ...state, [index]: false }));
+    NProgress.done();
+  };
+
   return (
-    <>
-      {data.length !== 0 ? (
-        <>
-          <div className="flex flex-col pt-[25px] px-[20px]">
+    <React.Fragment>
+      {data?.length !== 0 ? (
+        <React.Fragment>
+          <div className="flex flex-col px-[20px]">
             <div className="flex items-center">
               <p className="inactive-text text-sm pb-1 mr-4">{title}</p>
               <div className="bg-white/[20%] w-full h-[1px]"></div>
             </div>
-            {data?.map((item: any, i: any) => (
-              <Link
-                href={'#'}
-                className="hover:bg-white/[5%] py-3 rounded-md transition px-3"
+            {data?.map((item: NoteTypes, i: number) => (
+              <div
+                className={`hover:bg-white/[5%] py-3 rounded-md transition px-3 cursor-pointer relative ${
+                  loading[Number(i)]
+                    ? 'opacity-50 cursor-default pointer-events-none'
+                    : ''
+                } `}
                 key={i}
+                onClick={() => handlePushRoute(item, i)}
               >
                 <div className="flex gap-[20px] items-center">
                   {icon}
-                  <p className="truncate">{item.title}</p>
+                  <p className="truncate">{item.name}</p>
                 </div>
-              </Link>
+                {loading[Number(i)] === true && (
+                  <div className="absolute inset-y-0 right-0 flex items-center -translate-x-5">
+                    <Loader2 className="animate-spin" />
+                  </div>
+                )}
+              </div>
             ))}
           </div>
-        </>
+        </React.Fragment>
       ) : null}
-    </>
+    </React.Fragment>
   );
 };
 
-const RenderFolderItem = ({ title, data, icon }: any) => {
+const RenderFolderItem = ({ title, data, icon, setOpen }: any) => {
+  const [loading, setLoading] = useState<Record<number, boolean>>({});
+  const setActiveNote = useActiveNote((state) => state.setActiveNote);
+
+  const router = useRouter();
+  const redirectTo = (item: FolderTypes) => {
+    NProgress.start();
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        setActiveNote(null);
+        router.replace(`/folders/${item.id_folder}`);
+        NProgress.done();
+        resolve(1);
+      }, 1000);
+    });
+  };
+
+  const handlePushRoute = async (item: FolderTypes, index: number) => {
+    setLoading((state) => ({ ...state, [index]: true }));
+    await redirectTo(item);
+    setOpen(false);
+    setLoading((state) => ({ ...state, [index]: false }));
+  };
   return (
-    <>
-      {data.length !== 0 ? (
-        <>
-          <div className="flex flex-col pt-[25px] px-[20px]">
+    <React.Fragment>
+      {data?.length !== 0 ? (
+        <React.Fragment>
+          <div className="flex flex-col px-[20px]">
             <div className="flex items-center">
               <p className="inactive-text text-sm pb-1 mr-4">{title}</p>
               <div className="bg-white/[20%] w-full h-[1px]"></div>
             </div>
-            {data?.map((item: any, i: any) => (
-              <Link
-                href={'#'}
-                className="hover:bg-white/[5%] py-3 rounded-md transition px-3"
+            {data?.map((item: FolderTypes, i: number) => (
+              <div
+                className={`hover:bg-white/[5%] py-3 rounded-md transition px-3 cursor-pointer relative ${
+                  loading[Number(i)]
+                    ? 'opacity-50 cursor-default pointer-events-none'
+                    : ''
+                } `}
                 key={i}
+                onClick={() => handlePushRoute(item, i)}
               >
                 <div className="flex gap-[20px] items-center">
                   {icon}
-                  <p className="truncate">{item.title}</p>
+                  <p className="truncate">{item.name}</p>
                 </div>
-              </Link>
+                {loading[Number(i)] === true && (
+                  <div className="absolute inset-y-0 right-0 flex items-center -translate-x-5">
+                    <Loader2 className="animate-spin" />
+                  </div>
+                )}
+              </div>
             ))}
           </div>
-        </>
+        </React.Fragment>
       ) : null}
-    </>
+    </React.Fragment>
+  );
+};
+
+const RenderNoteOnTrash = ({ title, data, icon, setOpen }: any) => {
+  const [loading, setLoading] = useState<Record<number, boolean>>({});
+  const setActiveNote = useActiveNote((state) => state.setActiveNote);
+  const router = useRouter();
+
+  const setNote = (item: NoteTypes) => {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        setActiveNote(item);
+        resolve(1);
+      }, 500);
+    });
+  };
+
+  const handlePushRoute = async (item: NoteTypes, index: number) => {
+    NProgress.start();
+    router.replace(`/trash`);
+    setLoading((state) => ({ ...state, [index]: true }));
+    await setNote(item);
+    setOpen(false);
+    NProgress.done();
+    setLoading((state) => ({ ...state, [index]: false }));
+  };
+  return (
+    <React.Fragment>
+      {data?.length !== 0 ? (
+        <React.Fragment>
+          <div className="flex flex-col px-[20px]">
+            <div className="flex items-center">
+              <p className="inactive-text text-sm pb-1 mr-4">{title}</p>
+              <div className="bg-white/[20%] w-full h-[1px]"></div>
+            </div>
+            {data?.map((item: NoteTypes, i: number) => (
+              <div
+                className={`hover:bg-white/[5%] py-3 rounded-md transition px-3 cursor-pointer relative ${
+                  loading[Number(i)]
+                    ? 'opacity-50 cursor-default pointer-events-none'
+                    : ''
+                } `}
+                key={i}
+                onClick={() => handlePushRoute(item, i)}
+              >
+                <div className="flex gap-[20px] items-center">
+                  {icon}
+                  <p className="truncate">{item.name}</p>
+                </div>
+                {loading[Number(i)] === true && (
+                  <div className="absolute inset-y-0 right-0 flex items-center -translate-x-5">
+                    <Loader2 className="animate-spin" />
+                  </div>
+                )}
+              </div>
+            ))}
+            {data.length === 0 && (
+              <p className="text-center text-sm inactive-text">
+                Trash is empty
+              </p>
+            )}
+          </div>
+        </React.Fragment>
+      ) : null}
+    </React.Fragment>
   );
 };
 
 function SearchNote() {
   const [search, setSearch] = useState<string>('');
-
-  const dummyData: {
-    notes: {
-      title: string;
-      category: string;
-    }[];
-    folders: {
-      title: string;
-      category: string;
-    }[];
-  } = {
-    notes: [
-      { title: 'wedqweqewqasdqweqwewqeqe', category: 'notes' },
-      { title: 'loweqweqw eqw eqwewes', category: 'notes' },
-    ],
-    folders: [
-      { title: 'Travel', category: 'folder' },
-      { title: 'Home', category: 'folder' },
-    ],
-  };
+  const [open, setOpen] = useState<boolean>(false);
+  const { folders } = useFolderState();
 
   const searchNoteData = useMemo(() => {
-    if (!search) return dummyData.notes;
-    const res = dummyData.notes.filter((item) =>
-      item.title.toLowerCase().includes(search)
+    const findNotes = folders.reduce((results, item) => {
+      const filteredData = item.notes.filter((item) => item.deletedAt === null);
+      return results.concat(filteredData as []);
+    }, []);
+    if (!search) return findNotes;
+    const res = findNotes.filter((item: NoteTypes) =>
+      item.name.toLowerCase().includes(search.toLowerCase())
     );
     return res;
-  }, [search, dummyData.notes]);
+  }, [search, folders]);
 
   const searchFolderData = useMemo(() => {
-    if (!search) return dummyData.folders;
-    const res = dummyData.folders.filter((item) =>
-      item.title.toLowerCase().includes(search)
+    if (!search) return folders;
+    const res = folders.filter((item) =>
+      item.name.toLowerCase().includes(search.toLowerCase())
     );
     return res;
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [search]);
+  }, [search, folders]);
+
+  const searchNoteOnTrash = useMemo(() => {
+    const findNotes = folders.reduce((results, item) => {
+      const filteredData = item.notes.filter((item) => item.deletedAt !== null);
+      return results.concat(filteredData as []);
+    }, []);
+    if (!search) return findNotes;
+    const res = findNotes.filter((item: NoteTypes) =>
+      item.name.toLowerCase().includes(search.toLowerCase())
+    );
+    return res;
+  }, [search, folders]);
 
   return (
     <>
-      <AlertDialog>
+      <AlertDialog open={open} onOpenChange={setOpen}>
         <AlertDialogTrigger asChild>
           <Button size={'sm'} variant={'ghost'}>
             <FiSearch className="text-[20px]" />
@@ -130,7 +263,7 @@ function SearchNote() {
                   maxLength={30}
                 />
               </div>
-              <AlertDialogCancel asChild>
+              <AlertDialogCancel asChild onClick={() => setSearch('')}>
                 <Button
                   size={'sm'}
                   variant={'ghost'}
@@ -140,16 +273,26 @@ function SearchNote() {
                 </Button>
               </AlertDialogCancel>
             </div>
-            <RenderNoteItem
-              title="notes"
-              data={searchNoteData}
-              icon={<FiFileText className="text-[20px]" />}
-            />
-            <RenderFolderItem
-              title="folders"
-              data={searchFolderData}
-              icon={<FiFolder className="text-[20px]" />}
-            />
+            <div className="flex flex-col gap-[20px] mt-[20px]">
+              <RenderFolderItem
+                title="Folders"
+                data={searchFolderData}
+                icon={<FiFolder className="text-[20px]" />}
+                setOpen={setOpen}
+              />
+              <RenderNoteItem
+                title="Notes"
+                data={searchNoteData}
+                icon={<FiFileText className="text-[20px]" />}
+                setOpen={setOpen}
+              />
+              <RenderNoteOnTrash
+                title="Trash"
+                data={searchNoteOnTrash}
+                icon={<FiFileText className="text-[20px]" />}
+                setOpen={setOpen}
+              />
+            </div>
             {searchNoteData.length === 0 && searchFolderData.length === 0 && (
               <p className="text-lg flex h-[330px] items-center justify-center truncate">
                 <span>No results for</span>
