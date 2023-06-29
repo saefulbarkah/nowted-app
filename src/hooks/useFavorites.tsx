@@ -9,7 +9,7 @@ function useFavorites() {
   function getFavorites() {
     const findNoteOnFavorites = folders.reduce((results, item) => {
       const filteredData = item.notes.filter(
-        (item: NoteTypes) => item.favorite === true
+        (item: NoteTypes) => item.favorite === true && item.deletedAt === null
       );
       return results.concat(filteredData as []);
     }, []);

@@ -6,9 +6,9 @@ import { Card, CardContent } from '../ui/card';
 import { NoteTypes } from '@/types';
 import { create } from 'zustand';
 import { dateToString, toPlainText } from '@/lib/utils';
-import { FiInfo, FiStar } from 'react-icons/fi';
 import EmptyInfo from '../EmptyInfo';
 import { AiFillStar } from 'react-icons/ai';
+import { useRecentStore } from '@/store/useRecentStore';
 
 interface FavoriteListsProps {}
 
@@ -28,6 +28,7 @@ export const FavoriteLists: FC<FavoriteListsProps> = ({}) => {
   const setFavoriteActive = useFavoriteActive(
     (state) => state.setFavoriteActive
   );
+  const addToRecent = useRecentStore((state) => state.addToRecents);
 
   return (
     <MenuLists
@@ -48,6 +49,7 @@ export const FavoriteLists: FC<FavoriteListsProps> = ({}) => {
           key={i}
           onClick={() => {
             setFavoriteActive(item);
+            addToRecent(item);
           }}
         >
           <CardContent className="p-[20px]">
