@@ -11,6 +11,7 @@ import { Loader2 } from 'lucide-react';
 import * as NProgress from 'nprogress';
 import { create } from 'zustand';
 import { Dialog, DialogContent, DialogTrigger } from '../ui/dialog';
+import { AiFillStar } from 'react-icons/ai';
 
 interface TSearch {
   search: string;
@@ -119,6 +120,9 @@ const RenderNoteItem = ({ title, data, icon, setOpen }: any) => {
                 <div className="flex gap-[20px] items-center">
                   {icon}
                   <p className="truncate">{item.name}</p>
+                  {item.favorite && (
+                    <AiFillStar className="h-4 w-4 text-yellow-300" />
+                  )}
                 </div>
                 {loading[item.id_note] && item.deletedAt === null && (
                   <div className="absolute inset-y-0 right-0 flex items-center -translate-x-5">
@@ -290,11 +294,31 @@ function SearchNote() {
       const filteredData = item.notes.filter((item) => item.deletedAt === null);
       return results.concat(filteredData as []);
     }, []);
-    if (!search) return findNotes;
+    if (!search) {
+      const sorting = findNotes.sort((a: NoteTypes, b: NoteTypes) => {
+        if (a.favorite === b.favorite) {
+          return 0;
+        }
+        if (a.favorite) {
+          return -1;
+        }
+        return 1;
+      });
+      return sorting;
+    }
     const res = findNotes.filter((item: NoteTypes) =>
       item.name.toLowerCase().includes(search.toLowerCase())
     );
-    return res;
+    const sorting = res.sort((a: NoteTypes, b: NoteTypes) => {
+      if (a.favorite === b.favorite) {
+        return 0;
+      }
+      if (a.favorite) {
+        return -1;
+      }
+      return 1;
+    });
+    return sorting;
   }, [search, folders]);
 
   const searchFolderData = useMemo(() => {
@@ -374,12 +398,22 @@ function SearchNote() {
                 setOpen={setOpen}
               />
             </div>
-            {searchNoteData.length === 0 && searchFolderData.length === 0 && (
-              <p className="text-lg flex h-[60%] pt-0 items-center justify-center break-words">
-                <span>No results for</span>
-                <span className="ml-2 font-bold text-white">{search}</span>
-              </p>
-            )}
+            {searchNoteData.length === 0 &&
+              searchFolderData.length === 0 &&
+              search && (
+                <p className="text-lg flex h-[50%] pt-0 items-center justify-center break-wor ds">
+                  <span>No results for</span>
+                  <span className="ml-2 font-bold text-white">{search}</span>
+                </p>
+              )}
+            {searchNoteData.length === 0 &&
+              searchFolderData.length === 0 &&
+              searchNoteOnTrash.length === 0 &&
+              !search && (
+                <p className="text-lg flex h-[50%] pt-0 items-center justify-center break-wor ds">
+                  <span>Data is empty</span>
+                </p>
+              )}
           </div>
         </DialogContent>
       </Dialog>
