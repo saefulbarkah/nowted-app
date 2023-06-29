@@ -1,3 +1,4 @@
+import Dvider from '@/components/ui/Dvider';
 import {
   AlertDialog,
   AlertDialogAction,
@@ -7,6 +8,12 @@ import {
   AlertDialogHeader,
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+} from '@/components/ui/dialog';
 import { useToast } from '@/components/ui/use-toast';
 import useFolderState from '@/hooks/useFolderState';
 import { useRecentStore } from '@/store/useRecentStore';
@@ -43,31 +50,36 @@ const DialogDelete = () => {
   };
 
   return (
-    <AlertDialog open={isOpenDialogDelete}>
-      <AlertDialogContent className="bg-background border-white/[20%] flex flex-col justify-center items-center nax-w-[120px]">
-        <AlertDialogHeader className="text-[35px] font-semibold">
-          <span>Are you sure ?</span>
-        </AlertDialogHeader>
+    <Dialog open={isOpenDialogDelete}>
+      <DialogContent>
+        <DialogHeader>
+          <h2 className="text-2xl font-semibold">Delete Folder?</h2>
+          <Dvider />
+        </DialogHeader>
         <p>
-          You will delete <span className="font-bold">{deleteData.name}</span>
+          Are you sure you want to delete
+          <span className="font-bold"> {deleteData.name} </span> folder?. This
+          will also delete all notes
         </p>
-        <p className="italic text-sm inactive-text break-words">
-          this will delete everything including your notes and also in the trash
-        </p>
-        <AlertDialogFooter>
-          <AlertDialogCancel onClick={() => setDialogDelete(false)}>
-            Cancel
-          </AlertDialogCancel>
-          <AlertDialogAction
-            onClick={() => handleDeleteFolder()}
-            className="bg-destructive/[30%] border border-destructive hover:bg-destructive/[70%] font-semibold"
-            asChild
+        <DialogFooter>
+          <Button
+            onClick={() => setDialogDelete(false)}
+            size={'sm'}
+            variant={'secondary'}
           >
-            <Button isLoading={isLoading}>Yes, delete it</Button>
-          </AlertDialogAction>
-        </AlertDialogFooter>
-      </AlertDialogContent>
-    </AlertDialog>
+            Cancel
+          </Button>
+          <Button
+            isLoading={isLoading}
+            onClick={() => handleDeleteFolder()}
+            size={'sm'}
+            variant={'destructive'}
+          >
+            Yes, delete it
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    </Dialog>
   );
 };
 

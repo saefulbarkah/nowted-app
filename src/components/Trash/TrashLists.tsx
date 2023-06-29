@@ -6,12 +6,13 @@ import { dateToString, toPlainText } from '@/lib/utils';
 import useTrash from '@/hooks/useTrash';
 import { useActiveNote } from '@/store/useActiveNote';
 import { FiInfo, FiTrash } from 'react-icons/fi';
+import { useTrashActive } from './TrashMenu';
 
 interface TrashListsProps {}
 
 const TrashLists: FC<TrashListsProps> = ({}) => {
-  const activeNote = useActiveNote((state) => state.activeNote);
-  const setActiveNote = useActiveNote((state) => state.setActiveNote);
+  const trashActive = useTrashActive((state) => state.trashActive);
+  const setTrashActive = useTrashActive((state) => state.setTrashActive);
   const { trash } = useTrash();
   return (
     <MenuLists
@@ -25,13 +26,13 @@ const TrashLists: FC<TrashListsProps> = ({}) => {
       {trash?.map((item, i) => (
         <Card
           className={`bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer mb-5 last-of-type:mb-0 ${
-            item.id_note === activeNote?.id_note
+            item.id_note === trashActive?.id_note
               ? 'bg-white/[7%] text-white'
               : 'text-white/[40%]'
           }`}
           key={i}
           onClick={() => {
-            setActiveNote(item);
+            setTrashActive(item);
           }}
         >
           <CardContent className="p-[20px]">

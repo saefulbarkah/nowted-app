@@ -2,7 +2,6 @@
 import React, { useEffect, useState } from 'react';
 import Dvider from '../ui/Dvider';
 import { LuCalendarDays, LuFolder } from 'react-icons/lu';
-import NoteMenuList from './NoteMenuList';
 import { dateToString } from '@/lib/utils';
 import Editable from '../ui/Editable';
 import useSaveNote from '@/hooks/useSaveNote';
@@ -15,6 +14,7 @@ import useNoteEditor from '@/hooks/useNoteEditor';
 import { EditorTipTap } from '../ui/Editor';
 import { NoteTypes } from '@/types';
 import BubbleEditor from '../ui/Editor/BubbleEditor';
+import { NoteMenuList } from './NoteMenuLists';
 
 interface TProps {
   folder_id: string;

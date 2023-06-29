@@ -1,39 +1,24 @@
 import React from 'react';
-import { DropdownMenuItem, DropdownMenuTrigger } from '../ui/dropdown-menu';
-import { Button } from '../ui/button';
+import { DropdownMenuItem, DropdownMenuTrigger } from '../../ui/dropdown-menu';
+import { Button } from '../../ui/button';
 import { SlOptions } from 'react-icons/sl';
 import { FiArchive, FiStar, FiTrash } from 'react-icons/fi';
-import Dvider from '../ui/Dvider';
+import Dvider from '../../ui/Dvider';
 import {
   DropdownMenu,
   DropdownMenuContent,
 } from '@radix-ui/react-dropdown-menu';
 import { Transition } from '@headlessui/react';
-import { useNowtedStore } from '@/store';
-import { useRecentStore } from '@/store/useRecentStore';
+import MoveToTrash from './menus/MoveToTrash';
 import { NoteTypes } from '@/types';
-import { useToast } from '../ui/use-toast';
-import { useRouter } from 'next/navigation';
-import { useActiveNote } from '@/store/useActiveNote';
 
-function NoteMenuList({ data }: { data: NoteTypes }) {
+export interface TnoteProps {
+  data: NoteTypes;
+}
+
+export const NoteMenuList = ({ data }: TnoteProps) => {
   const [open, setOpen] = React.useState(false);
-  const removeNote = useNowtedStore((state) => state.removeNote);
-  const removeRecents = useRecentStore((state) => state.removeRecents);
-  const setActiveNote = useActiveNote((state) => state.setActiveNote);
-  const { toast } = useToast();
-  const router = useRouter();
-
-  const handleRemoveNote = () => {
-    removeRecents({ id_note: data.id_note });
-    removeNote({ folder_id: data.folder_id, id_note: data.id_note });
-    toast({
-      title: 'Succesfully moving note to trash',
-      variant: 'success',
-    });
-    setActiveNote('');
-    router.refresh();
-  };
+  const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
 
   return (
     <>
@@ -80,7 +65,7 @@ function NoteMenuList({ data }: { data: NoteTypes }) {
               <Dvider />
               <DropdownMenuItem
                 className="focus:bg-white/[3%] focus:text-white text-white/[50%] cursor-pointer text-[16px]"
-                onClick={() => handleRemoveNote()}
+                onClick={() => setOpenDialogDelete(true)}
               >
                 <div className="flex items-center gap-[15px]">
                   <div className="text-[20px]">
@@ -93,8 +78,13 @@ function NoteMenuList({ data }: { data: NoteTypes }) {
           </DropdownMenuContent>
         </Transition>
       </DropdownMenu>
+
+      {/* trash */}
+      <MoveToTrash
+        open={openDialogDelete}
+        setOpen={setOpenDialogDelete}
+        data={data}
+      />
     </>
   );
-}
-
-export default NoteMenuList;
+};
