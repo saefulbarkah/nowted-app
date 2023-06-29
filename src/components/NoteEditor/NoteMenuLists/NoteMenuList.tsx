@@ -11,6 +11,10 @@ import {
 import { Transition } from '@headlessui/react';
 import MoveToTrash from './menus/MoveToTrash';
 import { NoteTypes } from '@/types';
+import { useNowtedStore } from '@/store';
+import { useToast } from '@/components/ui/use-toast';
+import { useRouter } from 'next/navigation';
+import { useFavoriteActive } from '@/components/Favorites';
 
 export interface TnoteProps {
   data: NoteTypes;
@@ -19,6 +23,32 @@ export interface TnoteProps {
 export const NoteMenuList = ({ data }: TnoteProps) => {
   const [open, setOpen] = React.useState(false);
   const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
+  const addToFavorite = useNowtedStore((state) => state.addToFavorite);
+  const setFavorites = useFavoriteActive((state) => state.setFavoriteActive);
+  const removeFromFavorite = useNowtedStore(
+    (state) => state.removeFromFavorite
+  );
+  const { toast } = useToast();
+  const router = useRouter();
+
+  const handleAddToFavorite = () => {
+    addToFavorite({ id_note: data.id_note, folder_id: data.folder_id });
+    toast({
+      title: 'Add to favorite Successfully',
+      variant: 'success',
+    });
+    router.refresh();
+  };
+
+  const handleRemoveFavorite = () => {
+    removeFromFavorite({ id_note: data.id_note, folder_id: data.folder_id });
+    toast({
+      title: 'Remove from favorite Successfully',
+      variant: 'success',
+    });
+    setFavorites(null);
+    router.refresh();
+  };
 
   return (
     <>
@@ -44,24 +74,33 @@ export const NoteMenuList = ({ data }: TnoteProps) => {
           leaveTo="opacity-0"
           className="absolute"
         >
-          <DropdownMenuContent className="bg-[#333333] p-[15px] translate-y-4 rounded-xl text-white w-[202px] absolute right-0 translate-x-5">
+          <DropdownMenuContent className="bg-[#333333] p-[15px] translate-y-4 rounded-xl text-white min-w-[200px] absolute right-0 translate-x-5">
             <div className="flex flex-col gap-[5px]">
-              <DropdownMenuItem className="focus:bg-white/[3%] focus:text-white text-white/[50%] cursor-pointer text-[16px]">
-                <div className="flex items-center gap-[15px]">
-                  <div className="text-[20px]">
-                    <FiStar />
+              {data?.favorite ? (
+                <DropdownMenuItem
+                  className="focus:bg-white/[3%] focus:text-white text-white/[50%] cursor-pointer text-[16px]"
+                  onClick={() => handleRemoveFavorite()}
+                >
+                  <div className="flex items-center gap-[15px]">
+                    <div className="text-[20px]">
+                      <FiStar />
+                    </div>
+                    <p className="truncate">Remove from favorite</p>
                   </div>
-                  <p className="truncate">Favorite</p>
-                </div>
-              </DropdownMenuItem>
-              <DropdownMenuItem className="focus:bg-white/[3%] focus:text-white text-white/[50%] cursor-pointer text-[16px]">
-                <div className="flex items-center gap-[15px]">
-                  <div className="text-[20px]">
-                    <FiArchive />
+                </DropdownMenuItem>
+              ) : (
+                <DropdownMenuItem
+                  className="focus:bg-white/[3%] focus:text-white text-white/[50%] cursor-pointer text-[16px]"
+                  onClick={() => handleAddToFavorite()}
+                >
+                  <div className="flex items-center gap-[15px]">
+                    <div className="text-[20px]">
+                      <FiStar />
+                    </div>
+                    <p className="truncate">Add to favorite</p>
                   </div>
-                  <p className="truncate">Move to archive</p>
-                </div>
-              </DropdownMenuItem>
+                </DropdownMenuItem>
+              )}
               <Dvider />
               <DropdownMenuItem
                 className="focus:bg-white/[3%] focus:text-white text-white/[50%] cursor-pointer text-[16px]"

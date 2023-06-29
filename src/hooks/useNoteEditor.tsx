@@ -61,7 +61,6 @@ function useNoteEditor({ data }: Tprops) {
         id_note: data.id_note,
         content: content,
       });
-      console.log('UPDATEd');
     },
     autofocus: true,
     editable: true,

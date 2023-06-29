@@ -6,6 +6,7 @@ export type NoteTypes = {
   deletedAt: null | Date;
   folder_name?: string | null;
   folder_id: string | null;
+  favorite: boolean;
 };
 
 export type FolderTypes = {

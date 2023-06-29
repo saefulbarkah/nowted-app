@@ -8,28 +8,27 @@ import useSaveNote from '@/hooks/useSaveNote';
 import { Loader2 } from 'lucide-react';
 import useNote from '@/hooks/useNote';
 import Image from 'next/image';
-import { useActiveNote } from '@/store/useActiveNote';
 import EditorToolbar from '../ui/Editor/EditorToolbar';
 import useNoteEditor from '@/hooks/useNoteEditor';
 import { EditorTipTap } from '../ui/Editor';
 import { NoteTypes } from '@/types';
 import BubbleEditor from '../ui/Editor/BubbleEditor';
-import { NoteMenuList } from './NoteMenuLists';
 import { AiFillFolder } from 'react-icons/ai';
+import { NoteMenuList } from '../NoteEditor/NoteMenuLists';
+import { useFavoriteActive } from './FavoriteLists';
 
-interface TProps {
-  folder_id: string;
-}
-
-const NoteEditor = ({ folder_id }: TProps) => {
-  const activeNote = useActiveNote((state) => state.activeNote);
+export const FavoriteEditor = () => {
+  const favoriteActive = useFavoriteActive((state) => state.favoriteActive);
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
   const { note, folder } = useNote({
-    find: { note_id: activeNote?.id_note as string, folder_id: folder_id },
+    find: {
+      note_id: favoriteActive?.id_note as string,
+      folder_id: favoriteActive?.folder_id as string,
+    },
   });
   const { handleSaveTitle, onSave, isError } = useSaveNote({
-    folder_id: folder_id,
+    folder_id: favoriteActive?.folder_id as string,
     name: title,
     id_note: note?.id_note,
     content: note?.content,
@@ -44,7 +43,7 @@ const NoteEditor = ({ folder_id }: TProps) => {
     }
   }, [note]);
 
-  if (!activeNote) {
+  if (!favoriteActive) {
     return (
       <div className="flex flex-col gap-[10px] items-center justify-center w-[calc(100vw-650px)]">
         <Image
@@ -119,5 +118,3 @@ const NoteEditor = ({ folder_id }: TProps) => {
     </>
   );
 };
-
-export default NoteEditor;

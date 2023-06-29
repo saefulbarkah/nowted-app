@@ -5,9 +5,11 @@ import useNotes from '@/hooks/useNotes';
 import { dateToString, toPlainText } from '@/lib/utils';
 import { useRecentStore } from '@/store/useRecentStore';
 import { useActiveNote } from '@/store/useActiveNote';
-import { FiInfo } from 'react-icons/fi';
+import { FiStar } from 'react-icons/fi';
+import { AiFillFolderOpen, AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import MenuLists from '../MenuLists';
 import { LuFolderOpen } from 'react-icons/lu';
+import EmptyInfo from '../EmptyInfo';
 
 interface TProps {
   folder_id?: string;
@@ -24,9 +26,9 @@ const NoteLists = ({ folder_id }: TProps) => {
   return (
     <MenuLists
       title={
-        <div className="flex items-center">
-          <LuFolderOpen className="mr-3 h-5 w-5" />
-          <span>{title}</span>
+        <div className="flex items-center max-w-full">
+          <AiFillFolderOpen className="mr-3 h-6 w-6 text-orange-300" />
+          <p className="truncate">{title}</p>
         </div>
       }
     >
@@ -43,27 +45,28 @@ const NoteLists = ({ folder_id }: TProps) => {
             addToRecent(item);
           }}
         >
-          <CardContent className="p-[20px]">
+          <CardContent className="p-[20px] relative">
             <h2 className="line-clamp-2 text-[18px] font-semibold leading-7 break-words">
               {item.name}
             </h2>
-            <div className="flex gap-[10px] inactive-text mt-[10px]">
-              <p className="font-normal">
+            <div className="flex inactive-text mt-[10px] items-center max-w-full">
+              {item.favorite && (
+                <AiFillStar className="text-yellow-500 text-sm mr-1" />
+              )}
+              {!item.favorite && (
+                <AiOutlineStar className="text-white text-sm mr-1" />
+              )}
+              <p className="font-normal mr-2">
                 {dateToString({ values: item.createdAt })}
               </p>
-              <p className="truncate font-normal">
+              <p className="truncate font-normal flex-1">
                 {toPlainText({ value: item.content as string, type: 'html' })}
               </p>
             </div>
           </CardContent>
         </Card>
       ))}
-      {notes?.length === 0 && (
-        <div className="h-[70vh] flex items-center justify-center flex-col gap-2">
-          <FiInfo className="text-[24px] inactive-text" />
-          <p className="inactive-text text-[20px]">Note is empty</p>
-        </div>
-      )}
+      <EmptyInfo title="Note is empty" data={notes as []} />
     </MenuLists>
   );
 };

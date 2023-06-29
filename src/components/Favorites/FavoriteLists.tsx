@@ -1,39 +1,53 @@
 'use client';
 import React, { FC } from 'react';
 import MenuLists from '../MenuLists';
+import useFavorites from '@/hooks/useFavorites';
 import { Card, CardContent } from '../ui/card';
+import { NoteTypes } from '@/types';
+import { create } from 'zustand';
 import { dateToString, toPlainText } from '@/lib/utils';
-import useTrash from '@/hooks/useTrash';
-import { FiInfo, FiTrash } from 'react-icons/fi';
-import { useTrashActive } from './TrashMenu';
+import { FiInfo, FiStar } from 'react-icons/fi';
 import EmptyInfo from '../EmptyInfo';
-import { AiFillDelete } from 'react-icons/ai';
+import { AiFillStar } from 'react-icons/ai';
 
-interface TrashListsProps {}
+interface FavoriteListsProps {}
 
-const TrashLists: FC<TrashListsProps> = ({}) => {
-  const trashActive = useTrashActive((state) => state.trashActive);
-  const setTrashActive = useTrashActive((state) => state.setTrashActive);
-  const { trash } = useTrash();
+interface SProps {
+  favoriteActive: NoteTypes | null;
+  setFavoriteActive: (data: any) => void;
+}
+
+export const useFavoriteActive = create<SProps>((set) => ({
+  favoriteActive: null,
+  setFavoriteActive: (data) => set(() => ({ favoriteActive: data })),
+}));
+
+export const FavoriteLists: FC<FavoriteListsProps> = ({}) => {
+  const { favorites } = useFavorites();
+  const favoriteActive = useFavoriteActive((state) => state.favoriteActive);
+  const setFavoriteActive = useFavoriteActive(
+    (state) => state.setFavoriteActive
+  );
+
   return (
     <MenuLists
       title={
-        <div className="flex items-center">
-          <AiFillDelete className="text-rose-400 mr-3 h-6 w-6" />
-          <p>Trash</p>
+        <div className="flex items-center max-w-full">
+          <AiFillStar className="mr-3 h-6 w-6 text-yellow-500" />
+          <span>Favorites</span>
         </div>
       }
     >
-      {trash?.map((item, i) => (
+      {favorites?.map((item, i) => (
         <Card
           className={`bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer mb-5 last-of-type:mb-0 ${
-            item.id_note === trashActive?.id_note
+            item.id_note === favoriteActive?.id_note
               ? 'bg-white/[7%] text-white'
               : 'text-white/[40%]'
           }`}
           key={i}
           onClick={() => {
-            setTrashActive(item);
+            setFavoriteActive(item);
           }}
         >
           <CardContent className="p-[20px]">
@@ -51,9 +65,7 @@ const TrashLists: FC<TrashListsProps> = ({}) => {
           </CardContent>
         </Card>
       ))}
-      <EmptyInfo title="Trash is empty" data={trash as []} />
+      <EmptyInfo title="Favorite is empty" data={favorites as []} />
     </MenuLists>
   );
 };
-
-export default TrashLists;

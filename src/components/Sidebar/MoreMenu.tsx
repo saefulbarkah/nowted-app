@@ -12,7 +12,6 @@ const MoreMenu: React.FC = () => {
   const more: MoreType = [
     { name: 'Favorites', href: '/favorites', icon: <FiStar /> },
     { name: 'Trash', href: '/trash', icon: <FiTrash /> },
-    { name: 'Archived Notes', href: '/archived-notes', icon: <FiArchive /> },
   ];
   return (
     <div className="flex flex-col space-y-[8px]">

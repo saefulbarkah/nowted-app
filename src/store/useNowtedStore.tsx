@@ -13,6 +13,7 @@ export const DEFAULT_NOTES: NoteTypes = {
   folder_id: generateFolderId,
   createdAt: new Date(),
   deletedAt: null,
+  favorite: false,
 };
 
 export type folderStateType = {
@@ -31,6 +32,8 @@ export type noteStateType = {
   ) => void;
   removeNote: (data: Pick<NoteTypes, 'id_note' | 'folder_id'>) => void;
   restoreNote: (data: Pick<NoteTypes, 'id_note' | 'folder_id'>) => void;
+  addToFavorite: (data: Pick<NoteTypes, 'id_note' | 'folder_id'>) => void;
+  removeFromFavorite: (data: Pick<NoteTypes, 'id_note' | 'folder_id'>) => void;
 };
 
 export const useNowtedStore = create<folderStateType & noteStateType>()(
@@ -90,6 +93,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
           if (filtered) {
             filtered.notes = [
               {
+                ...DEFAULT_NOTES,
                 name: 'New Note',
                 content: '',
                 id_note: uuid(),
@@ -162,6 +166,38 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
             ) as NoteTypes;
             note.deletedAt = null;
           }
+          return { folders: [...state.folders] };
+        });
+      },
+      addToFavorite: (data) => {
+        set((state) => {
+          const folders = state.folders.find(
+            (item) => item.id_folder === data.folder_id
+          );
+          if (folders) {
+            const notes = folders.notes;
+            const note = notes?.find(
+              (item: NoteTypes) => item.id_note === data.id_note
+            ) as NoteTypes;
+            note.favorite = true;
+          }
+
+          return { folders: [...state.folders] };
+        });
+      },
+      removeFromFavorite: (data) => {
+        set((state) => {
+          const folders = state.folders.find(
+            (item) => item.id_folder === data.folder_id
+          );
+          if (folders) {
+            const notes = folders.notes;
+            const note = notes?.find(
+              (item: NoteTypes) => item.id_note === data.id_note
+            ) as NoteTypes;
+            note.favorite = false;
+          }
+
           return { folders: [...state.folders] };
         });
       },
