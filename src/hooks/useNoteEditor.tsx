@@ -36,8 +36,9 @@ function useNoteEditor({ data }: Tprops) {
         inline: true,
       }),
       Placeholder.configure({
-        emptyEditorClass: 'is-editor-empty',
+        emptyNodeClass: 'is-editor-empty',
         placeholder: 'Write here what you want.....',
+        showOnlyCurrent: true,
       }),
       Link.configure({
         HTMLAttributes: {

@@ -10,7 +10,7 @@ export type MoreType = {
   name: string;
   href: string;
   icon: JSX.Element;
-  counter: number | [] | null;
+  counter: number;
 }[];
 
 const MoreMenu: React.FC = () => {
@@ -47,11 +47,7 @@ const MoreMenu: React.FC = () => {
                   <div className="text-[20px]">{item.icon}</div>
                   <p className="truncate">{item.name}</p>
                 </div>
-                {item.counter !== 0 && (
-                  <IndicatorCount className="mr-2">
-                    {item.counter}
-                  </IndicatorCount>
-                )}
+                <IndicatorCount className="mr-2" count={item.counter} />
               </div>
             </Link>
           </React.Fragment>
