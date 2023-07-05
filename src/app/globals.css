@@ -98,6 +98,27 @@
     overflow-y: auto;
   }
 
+  .radial-blur-circle {
+    border-radius: 876px;
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      #3a3af4 0%,
+      rgba(58, 58, 244, 0) 100%
+    );
+    filter: blur(150px);
+  }
+
+  .radial-blur-navbar {
+    border-radius: 1252px;
+    opacity: 0.5;
+    background: radial-gradient(
+      50% 50% at 50% 50%,
+      #3a3af4 0%,
+      rgba(58, 58, 244, 0) 100%
+    );
+    filter: blur(150px);
+  }
+
   input:-webkit-autofill,
   input:-webkit-autofill:hover,
   input:-webkit-autofill:focus,

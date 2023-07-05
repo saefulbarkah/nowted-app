@@ -55,7 +55,7 @@ function FolderLists() {
                 <>
                   <Link
                     className={`flex items-center gap-[15px] w-[80%] h-full py-[10px] pr-[20px] relative`}
-                    href={`/folders/${item.id_folder}`}
+                    href={`/app/folders/${item.id_folder}`}
                     onClick={() => setActiveNote(null)}
                   >
                     <div>

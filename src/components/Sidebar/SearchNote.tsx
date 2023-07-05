@@ -89,7 +89,7 @@ const RenderNoteItem = ({ title, data, icon, setOpen }: any) => {
     setActiveNote(null);
     setWaiting(true);
     NProgress.start();
-    router.replace(`/folders/${item.folder_id}`);
+    router.replace(`/app/folders/${item.folder_id}`);
     await setNote(item);
     setOpen(false);
     setWaiting(false);
@@ -155,7 +155,7 @@ const RenderFolderItem = ({ title, data, icon, setOpen }: any) => {
     return new Promise((resolve) => {
       setTimeout(() => {
         setActiveNote(null);
-        router.replace(`/folders/${item.id_folder}`);
+        router.replace(`/app/folders/${item.id_folder}`);
         NProgress.done();
         resolve(1);
       }, 1000);
@@ -230,7 +230,7 @@ const RenderNoteOnTrash = ({ title, data, icon, setOpen }: any) => {
 
   const handlePushRoute = async (item: NoteTypes) => {
     NProgress.start();
-    router.replace(`/trash`);
+    router.replace(`/app/trash`);
     setLoading(item.id_note as string);
     setWaiting(true);
     await setNote(item);

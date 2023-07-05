@@ -24,7 +24,7 @@ function useNotes({ folder_id }: notes): noteReturn {
   const getNotesByFolderId = async () => {
     const filters = folders.find((item) => item.id_folder === folder_id);
     if (!filters) {
-      router.replace('/');
+      router.replace('/app');
     }
     const notes = filters?.notes.filter((item) => item.deletedAt === null);
     setNotes(notes!);

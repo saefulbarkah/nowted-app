@@ -45,7 +45,7 @@ const DialogDelete = () => {
       setDialogDelete(false);
       setIsLoading(false);
       removeFolder({ id_folder: deleteData.id_folder });
-      router.replace('/');
+      router.replace('/app');
     }, 1000);
   };
 

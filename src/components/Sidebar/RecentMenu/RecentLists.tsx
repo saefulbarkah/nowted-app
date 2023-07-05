@@ -23,7 +23,7 @@ function RecentLists() {
               'bg-primary text-white hover:bg-primary/70'
             }`}
             onClick={() => setActiveNote(item)}
-            href={`/folders/${item.folder_id}`}
+            href={`/app/folders/${item.folder_id}`}
           >
             <div>
               <FiFileText className="text-[20px]" />

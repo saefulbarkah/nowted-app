@@ -40,7 +40,7 @@ const MoreMenu: React.FC = () => {
           <React.Fragment key={i}>
             <Link
               className="inactive-text hover:text-white py-[10px] hover:bg-white/[3%] transition px-[30px] rounded-md"
-              href={item.href}
+              href={'/app' + item.href}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-[15px]">
