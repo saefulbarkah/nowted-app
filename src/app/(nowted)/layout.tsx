@@ -3,6 +3,7 @@ import { Source_Sans_Pro } from 'next/font/google';
 import { Toaster } from '@/components/ui/Toaster';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import { InitialLoadingPage } from '@/components/Loader';
+import '../globals.css';
 
 const SourceSansPro = Source_Sans_Pro({
   subsets: ['latin'],
