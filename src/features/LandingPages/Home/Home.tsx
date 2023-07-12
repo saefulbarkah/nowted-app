@@ -43,13 +43,13 @@ export const Home = () => {
         <section className="mt-[72px] relative">
           <div className="absolute radial-blur-circle w-full border h-full" />
           <div className="relative w-full  bg-white/[3%] rounded-[18px] backdrop-blur-md lg:px-[30px] px-[15px] py-[20px]">
-            <div className="flex items-center">
+            <div className="flex items-center lg:gap-0 gap-5">
               <div className="flex gap-[5px]">
                 <div className="bg-[#FF007A] rounded-full w-[10px] h-[10px]"></div>
                 <div className="bg-[#FFE600] rounded-full w-[10px] h-[10px]"></div>
                 <div className="bg-[#05FF00] rounded-full w-[10px] h-[10px]"></div>
               </div>
-              <div className="flex mx-auto items-center justify-between bg-white/[5%] backdrop-blur-sm py-[10px] px-[15px] lg:w-[358px] w-[220px] rounded-[6px]">
+              <div className="flex lg:mx-auto items-center justify-between bg-white/[5%] backdrop-blur-sm py-[10px] px-[15px] lg:w-[358px] w-full rounded-[6px]">
                 <div className="flex items-center gap-[10px]">
                   <FiLock className="opacity-[40%]" />
                   <p className="text-[10px]">https://nowted-web.vercel.app/</p>
