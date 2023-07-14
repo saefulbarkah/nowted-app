@@ -1,4 +1,5 @@
 'use client';
+import { useSidebar } from '@/components/Mobile/Sidebar';
 import { useActiveNote } from '@/store/useActiveNote';
 import { useRecentStore } from '@/store/useRecentStore';
 import Link from 'next/link';
@@ -12,6 +13,7 @@ function RecentLists() {
   const { folderId } = params;
   const setActiveNote = useActiveNote((state) => state.setActiveNote);
   const activeNote = useActiveNote((state) => state.activeNote);
+  const setSidebar = useSidebar((state) => state.setOpen);
   return (
     <>
       {recents?.map((item, i) => (
@@ -22,7 +24,10 @@ function RecentLists() {
               activeNote?.id_note === item.id_note &&
               'bg-primary text-white hover:bg-primary/70'
             }`}
-            onClick={() => setActiveNote(item)}
+            onClick={() => {
+              setActiveNote(item);
+              setSidebar(false);
+            }}
             href={`/app/folders/${item.folder_id}`}
           >
             <div>

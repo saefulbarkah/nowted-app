@@ -51,7 +51,7 @@ function useNoteEditor({ data }: Tprops) {
     editorProps: {
       attributes: {
         class:
-          'oultine-none min-h-[300px] mt-[30px] px-2 border-none outline-none ring-0 prose prose-invert max-w-full',
+          'oultine-none min-h-[300px] mt-[30px] mb-[75px] px-2 border-none outline-none ring-0 prose prose-invert max-w-full',
         spellcheck: 'false',
       },
     },

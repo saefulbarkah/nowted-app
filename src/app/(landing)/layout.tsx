@@ -3,6 +3,7 @@ import { Metadata } from 'next';
 import { Navbar } from '@/features/LandingPages/components';
 import { Poppins } from 'next/font/google';
 import NextTopLoader from 'nextjs-toploader';
+import '../globals.css';
 
 export const metadata: Metadata = {
   title: 'Nowted App',

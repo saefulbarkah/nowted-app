@@ -62,7 +62,7 @@ function LinkMenu({ editor }: PropsEditor) {
       {!isUrl && (
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant={'ghost'} size={'sm'}>
+            <Button variant={'ghost'} className="p-[7px]" size={'sm'}>
               <FiLink className="text-[20px] text-white/[60%]" />
             </Button>
           </PopoverTrigger>

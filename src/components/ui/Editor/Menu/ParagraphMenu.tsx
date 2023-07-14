@@ -55,7 +55,7 @@ function ParagraphMenu({ editor }: Props) {
         onValueChange={(value) => handleHeading(Number(value))}
         value={`${levelSelected.level ? levelSelected.level : 0}`}
       >
-        <SelectTrigger className="w-[120px] focus:outline-none focus:ring-0 focus:ring-offset-0 border-none">
+        <SelectTrigger className="w-[120px] focus:outline-none focus:ring-0 focus:ring-offset-0 border-none pr-0">
           <SelectValue placeholder="Paragraph" />
         </SelectTrigger>
         <SelectContent className="bg-background border-none">

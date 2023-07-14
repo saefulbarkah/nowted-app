@@ -1,7 +1,6 @@
-import NoteMenu from '@/components/NoteLists/NoteLists';
+import { FolderLists } from '@/features/Nowted/Folders';
 import { Metadata } from 'next';
 import React from 'react';
-import NoteEditor from '@/components/NoteEditor/NoteEditor';
 
 type Props = {
   params: { folderId: string };
@@ -15,8 +14,7 @@ export const metadata: Metadata = {
 function page({ params }: Props) {
   return (
     <>
-      <NoteMenu folder_id={params.folderId} />
-      <NoteEditor folder_id={params.folderId} />
+      <FolderLists params={params} />
     </>
   );
 }

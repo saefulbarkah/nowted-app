@@ -53,16 +53,8 @@ export const NoteMenuList = ({ data }: TnoteProps) => {
   return (
     <>
       <DropdownMenu open={open} onOpenChange={setOpen}>
-        <DropdownMenuTrigger
-          asChild
-          className="focus-visible:ring-0 focus-visible:ring-offset-0"
-        >
-          <Button
-            className="rounded-full border-[2px] border-white/[50%] p-0 h-[40px] w-[40px]"
-            variant={'ghost'}
-          >
-            <SlOptions />
-          </Button>
+        <DropdownMenuTrigger className="focus-visible:ring-0 focus-visible:ring-offset-0 outline-none lg:p-[10px] p-[7px] border-[1px] border-white/[50%] rounded-full">
+          <SlOptions />
         </DropdownMenuTrigger>
         <Transition
           show={open}

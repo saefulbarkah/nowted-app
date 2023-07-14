@@ -119,7 +119,7 @@ const RenderNoteItem = ({ title, data, icon, setOpen }: any) => {
               >
                 <div className="flex gap-[20px] items-center">
                   {icon}
-                  <p className="truncate">{item.name}</p>
+                  <p className="truncate lg:text-base text-sm">{item.name}</p>
                   {item.favorite && (
                     <AiFillStar className="h-4 w-4 text-yellow-300" />
                   )}
@@ -183,7 +183,7 @@ const RenderFolderItem = ({ title, data, icon, setOpen }: any) => {
             </div>
             {data?.map((item: FolderTypes, i: number) => (
               <div
-                className={`hover:bg-white/[5%] py-3 rounded-md transition px-3 cursor-pointer relative ${
+                className={`hover:bg-white/[5%] py-3 rounded-md transition px-3 cursor-pointer relative  ${
                   loading[item.id_folder] ? 'opacity-50' : ''
                 } ${isWaiting && 'pointer-events-none cursor-default'} `}
                 key={i}
@@ -191,7 +191,7 @@ const RenderFolderItem = ({ title, data, icon, setOpen }: any) => {
               >
                 <div className="flex gap-[20px] items-center">
                   {icon}
-                  <p className="truncate">{item.name}</p>
+                  <p className="truncate lg:text-base text-sm">{item.name}</p>
                 </div>
                 {loading[item.id_folder] === true && (
                   <div className="absolute inset-y-0 right-0 flex items-center -translate-x-5">
@@ -261,7 +261,7 @@ const RenderNoteOnTrash = ({ title, data, icon, setOpen }: any) => {
               >
                 <div className="flex gap-[20px] items-center">
                   {icon}
-                  <p className="truncate">{item.name}</p>
+                  <p className="truncate lg:text-base text-sm">{item.name}</p>
                 </div>
                 {loading[item.id_note] && item.deletedAt !== null && (
                   <div className="absolute inset-y-0 right-0 flex items-center -translate-x-5">
@@ -350,10 +350,10 @@ function SearchNote() {
             <FiSearch className="text-[20px]" />
           </Button>
         </DialogTrigger>
-        <DialogContent className="p-0 border max-w-[520px] border-white/[30%] h-[400px] overflow-hidden overflow-y-auto custom-scrollbar">
+        <DialogContent className="p-0 border lg:max-w-[520px] max-w-[350px] border-white/[30%] lg:h-[400px] h-[300px] overflow-auto custom-scrollbar z-50">
           <div>
             <div className="flex justify-between z-50 items-center px-[20px] sticky top-0 right-0 left-0 bg-background border-b border-white/[20%]">
-              <div className="flex items-center gap-4 w-full  py-[20px]">
+              <div className="flex items-center gap-4 w-full py-[20px]">
                 <FiSearch className="text-[20px]" />
                 <input
                   type="text"
@@ -378,7 +378,7 @@ function SearchNote() {
                 <FiX className="text-[22px]" />
               </Button>
             </div>
-            <div className="flex flex-col gap-[20px] my-[20px]">
+            <div className="flex flex-col gap-[20px] my-[20px] lg:w-full w-[320px] mx-auto">
               <RenderFolderItem
                 title="Folders"
                 data={searchFolderData}
