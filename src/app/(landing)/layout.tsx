@@ -7,6 +7,16 @@ import '../globals.css';
 
 export const metadata: Metadata = {
   title: 'Nowted App',
+  keywords: [
+    'nowted-app',
+    'notes applications',
+    'notes website',
+    'nowted-web',
+    'noteslists',
+    'notes',
+    'sticky notes',
+    'notes online',
+  ],
 };
 
 const poppins = Poppins({
