@@ -60,7 +60,7 @@ export const NoteEditorMobile = ({
             exit={{ opacity: 0 }}
             key={'note-lists'}
           >
-            <div className="h-[calc(100vh-80px)] overflow-y-auto overflow-x-hidden w-full px-[20px]">
+            <div className="h-[calc(100vh-60px)] overflow-y-auto overflow-x-hidden w-full px-[20px]">
               <header className="sticky top-0 bg-background pt-[20px]">
                 <div className="flex items-center gap-5 mb-[20px] relative">
                   <Editable
