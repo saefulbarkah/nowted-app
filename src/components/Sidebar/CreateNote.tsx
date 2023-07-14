@@ -8,6 +8,7 @@ import { useParams, useRouter } from 'next/navigation';
 import { useRecentStore } from '@/store/useRecentStore';
 import { NoteTypes } from '@/types';
 import { FiPlus } from 'react-icons/fi';
+import { useSidebar } from '../Mobile/Sidebar';
 
 function CreateNote() {
   const [isLoading, setLoading] = useState(false);
@@ -16,6 +17,7 @@ function CreateNote() {
   const { folderId } = params;
   const { folders } = useFolderState();
   const addNote = useNowtedStore((state) => state.addNote);
+  const setSidebar = useSidebar((state) => state.setOpen);
 
   const addingNewNotes = () => {
     return new Promise((resolve) => {
@@ -29,14 +31,12 @@ function CreateNote() {
   const handleCreateNote = async () => {
     setLoading(true);
     await addingNewNotes();
-    const getFolder = folders.find((item) => item.id_folder === folderId);
     setLoading(false);
     toast({
       title: 'Note succesfully created',
       variant: 'success',
     });
-    const notes = getFolder!.notes as NoteTypes[];
-    const data = notes[0];
+    setSidebar(false);
     return;
   };
 

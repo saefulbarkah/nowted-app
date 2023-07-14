@@ -61,8 +61,8 @@ export const NoteEditorMobile = ({
             key={'note-lists'}
           >
             <div className="h-[calc(100vh-80px)] overflow-y-auto overflow-x-hidden w-full px-[20px]">
-              <header className="sticky top-0 bg-background pt-[30px]">
-                <div className="flex justify-between items-center gap-5 mb-[20px] relative">
+              <header className="sticky top-0 bg-background pt-[20px]">
+                <div className="flex items-center gap-5 mb-[20px] relative">
                   <Editable
                     className={`lg:text-[22px] text-lg text-white font-semibold w-full border-white/[5%] border-b  ${
                       onSave && 'opacity-10 blur-sm'
