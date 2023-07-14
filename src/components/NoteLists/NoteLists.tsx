@@ -5,17 +5,15 @@ import useNotes from '@/hooks/useNotes';
 import { dateToString, toPlainText } from '@/lib/utils';
 import { useRecentStore } from '@/store/useRecentStore';
 import { useActiveNote } from '@/store/useActiveNote';
-import { FiStar } from 'react-icons/fi';
 import { AiFillFolderOpen, AiFillStar, AiOutlineStar } from 'react-icons/ai';
 import MenuLists from '../MenuLists';
-import { LuFolderOpen } from 'react-icons/lu';
 import EmptyInfo from '../EmptyInfo';
 
 interface TProps {
-  folder_id?: string;
+  folder_id: string;
 }
 
-const NoteLists = ({ folder_id }: TProps) => {
+export const NoteLists = ({ folder_id }: TProps) => {
   const addToRecent = useRecentStore((state) => state.addToRecents);
   const { notes, title, loading } = useNotes({
     folder_id: folder_id as string,
@@ -70,4 +68,3 @@ const NoteLists = ({ folder_id }: TProps) => {
     </MenuLists>
   );
 };
-export default NoteLists;

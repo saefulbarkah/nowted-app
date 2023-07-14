@@ -22,6 +22,8 @@ import UpdateFolder from './EditFolder';
 import useFolderState from '@/hooks/useFolderState';
 import { useParams } from 'next/navigation';
 import { useActiveNote } from '@/store/useActiveNote';
+import { useSidebar } from '@/components/Mobile/Sidebar';
+import { useFavoriteActive } from '@/components/Favorites';
 
 function FolderLists() {
   const {
@@ -36,6 +38,10 @@ function FolderLists() {
   } = useFolderState();
   const params = useParams();
   const setActiveNote = useActiveNote((state) => state.setActiveNote);
+  const setFavoriteActive = useFavoriteActive(
+    (state) => state.setFavoriteActive
+  );
+  const setSidebar = useSidebar((state) => state.setOpen);
 
   return (
     <>
@@ -56,7 +62,11 @@ function FolderLists() {
                   <Link
                     className={`flex items-center gap-[15px] w-[80%] h-full py-[10px] pr-[20px] relative`}
                     href={`/app/folders/${item.id_folder}`}
-                    onClick={() => setActiveNote(null)}
+                    onClick={() => {
+                      setActiveNote(null);
+                      setFavoriteActive(null);
+                      setSidebar(false);
+                    }}
                   >
                     <div>
                       {item.id_folder === params.folderId ? (

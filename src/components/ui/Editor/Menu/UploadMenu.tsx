@@ -45,6 +45,7 @@ function UploadMenu({ editor }: PropsEditor) {
         onChangeCapture={(e) => handleUploadImages(e)}
       />
       <Button
+        className="p-[7px]"
         size={'sm'}
         variant={'ghost'}
         onClick={() => {

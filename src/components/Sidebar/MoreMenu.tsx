@@ -5,6 +5,9 @@ import React from 'react';
 import IndicatorCount from '../ui/IndicatorCount';
 import useFavorites from '@/hooks/useFavorites';
 import useTrash from '@/hooks/useTrash';
+import { useSidebar } from '../Mobile/Sidebar';
+import { useActiveNote } from '@/store/useActiveNote';
+import { useFavoriteActive } from '../Favorites';
 
 export type MoreType = {
   name: string;
@@ -14,8 +17,14 @@ export type MoreType = {
 }[];
 
 const MoreMenu: React.FC = () => {
+  const setSidebar = useSidebar((state) => state.setOpen);
   const { favorites } = useFavorites();
   const { trash } = useTrash();
+  const setFavoriteActive = useFavoriteActive(
+    (state) => state.setFavoriteActive
+  );
+  const setActiveNote = useActiveNote((state) => state.setActiveNote);
+
   const more: MoreType = [
     {
       name: 'Favorites',
@@ -41,6 +50,11 @@ const MoreMenu: React.FC = () => {
             <Link
               className="inactive-text hover:text-white py-[10px] hover:bg-white/[3%] transition px-[30px] rounded-md"
               href={'/app' + item.href}
+              onClick={() => {
+                setFavoriteActive(null);
+                setActiveNote(null);
+                setSidebar(false);
+              }}
             >
               <div className="flex items-center justify-between">
                 <div className="flex items-center gap-[15px]">

@@ -1,5 +1,4 @@
-import { FavoriteLists } from '@/components/Favorites';
-import { FavoriteEditor } from '@/components/Favorites/FavoritesMenu';
+import { Favorites } from '@/features/Nowted/Favorites';
 import { Metadata } from 'next';
 import React from 'react';
 export const metadata: Metadata = {
@@ -9,8 +8,7 @@ export const metadata: Metadata = {
 function page() {
   return (
     <>
-      <FavoriteLists />
-      <FavoriteEditor />
+      <Favorites />
     </>
   );
 }

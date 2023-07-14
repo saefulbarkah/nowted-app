@@ -17,7 +17,7 @@ function EditorToolbar({ editor }: PropsEditor) {
   return (
     <div className="flex flex-col gap-[10px] mb-[10px]">
       <Dvider />
-      <div className="flex gap-[30px] items-center">
+      <div className="flex lg:gap-[30px] items-center justify-between lg:justify-start">
         <ParagraphMenu editor={editor} />
         <ToggleMenus editor={editor} />
         <div className="flex gap-[5px] items-center">

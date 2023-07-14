@@ -12,29 +12,37 @@ import { useActiveNote } from '@/store/useActiveNote';
 import EditorToolbar from '../ui/Editor/EditorToolbar';
 import useNoteEditor from '@/hooks/useNoteEditor';
 import { EditorTipTap } from '../ui/Editor';
-import { NoteTypes } from '@/types';
+import { FolderTypes, NoteTypes } from '@/types';
 import BubbleEditor from '../ui/Editor/BubbleEditor';
 import { NoteMenuList } from './NoteMenuLists';
 import { AiFillFolder } from 'react-icons/ai';
+import { useMediaQuery } from 'react-responsive';
+import { NoteEditorMobile } from '../Mobile/Note';
 
-interface TProps {
+export interface TNoteEditorProps {
   folder_id: string;
+  note: NoteTypes;
+  folder: FolderTypes;
+  isActive: NoteTypes | null;
 }
 
-const NoteEditor = ({ folder_id }: TProps) => {
-  const activeNote = useActiveNote((state) => state.activeNote);
+export const NoteEditor = ({
+  folder_id,
+  folder,
+  note,
+  isActive,
+}: TNoteEditorProps) => {
   const [isEdit, setIsEdit] = useState<boolean>(false);
   const [title, setTitle] = useState<string>('');
-  const { note, folder } = useNote({
-    find: { note_id: activeNote?.id_note as string, folder_id: folder_id },
-  });
+  const isBigScreen = useMediaQuery({ minWidth: 1024 });
+
+  // hooks
   const { handleSaveTitle, onSave, isError } = useSaveNote({
     folder_id: folder_id,
     name: title,
     id_note: note?.id_note,
     content: note?.content,
   });
-
   const editor = useNoteEditor({ data: note as NoteTypes });
 
   useEffect(() => {
@@ -44,29 +52,20 @@ const NoteEditor = ({ folder_id }: TProps) => {
     }
   }, [note]);
 
-  if (!activeNote) {
+  if (!isBigScreen)
     return (
-      <div className="flex flex-col gap-[10px] items-center justify-center w-[calc(100vw-650px)]">
-        <Image
-          alt="icon"
-          priority
-          src={'/FileText.svg'}
-          height={80}
-          width={80}
-        />
-        <h2 className="font-semibold text-[28px]">Select note to view</h2>
-        <p className="w-[460px] text-center font-normal text-white/[60%]">
-          Choose a note from the list on the left to view its contents, or
-          create a new note to add to your collection.
-        </p>
-      </div>
+      <NoteEditorMobile
+        folder_id={folder_id}
+        folder={folder}
+        note={note}
+        isActive={isActive}
+      />
     );
-  }
 
   return (
     <>
-      <div className="w-[calc(100vw-650px)] px-[50px] h-screen overflow-y-auto">
-        <header className="sticky top-0 bg-background pt-[30px] z-50">
+      <div className="lg:w-[calc(100vw-650px)] w-full px-[50px] lg:h-screen h-[calc(100vh-80px)] overflow-y-auto">
+        <header className="sticky top-0 bg-background pt-[30px]">
           <div className="flex justify-between items-center gap-5 mb-[20px] relative">
             <Editable
               className={`text-[30px] text-white font-semibold w-full border-white/[5%] border-b  ${
@@ -119,5 +118,3 @@ const NoteEditor = ({ folder_id }: TProps) => {
     </>
   );
 };
-
-export default NoteEditor;
