@@ -18,9 +18,17 @@ export const useTrashActive = create<SProps>((set) => ({
   setTrashActive: (data) => set(() => ({ trashActive: data })),
 }));
 
+type DeleteState = {
+  isRestoring?: boolean | false;
+  isDeleting?: boolean | false;
+};
+
 function TrashMenu() {
-  const [loading, setLoading] = React.useState<boolean>(false);
+  const [loading, setLoading] = React.useState<DeleteState>();
   const restore = useNowtedStore((state) => state.restoreNote);
+  const deleteNotePermanently = useNowtedStore(
+    (state) => state.deleteNotePermanently
+  );
   const trashActive = useTrashActive((state) => state.trashActive);
   const setTrashActive = useTrashActive((state) => state.setTrashActive);
   const { toast } = useToast();
@@ -37,16 +45,39 @@ function TrashMenu() {
     });
   }
 
+  function deleteNote() {
+    return new Promise((resolve) => {
+      setTimeout(() => {
+        deleteNotePermanently({
+          id_note: trashActive?.id_note as string,
+          folder_id: trashActive?.folder_id as string,
+        });
+        resolve(1);
+      }, 1500);
+    });
+  }
+
   async function restoreNote() {
-    setLoading(true);
+    setLoading({ isRestoring: true });
     await restoringNote();
     toast({
       title: 'Note succesfully restored',
       variant: 'success',
     });
-    setLoading(false);
+    setLoading({ isRestoring: false });
     setTrashActive(null);
   }
+
+  const deletePermanently = async () => {
+    setLoading({ isDeleting: true });
+    await deleteNote();
+    setLoading({ isDeleting: false });
+    toast({
+      title: 'Note succesfully deleted',
+      variant: 'success',
+    });
+    setTrashActive(null);
+  };
 
   return (
     <>
@@ -84,9 +115,21 @@ function TrashMenu() {
             'Restore' button and it will be added back to your list. It's that
             simple.
           </p>
-          <Button onClick={() => restoreNote()} isLoading={loading}>
-            Restore
-          </Button>
+          <div className="flex items-center gap-2">
+            <Button
+              onClick={() => restoreNote()}
+              isLoading={loading?.isRestoring}
+            >
+              Restore
+            </Button>
+            <Button
+              onClick={() => deletePermanently()}
+              isLoading={loading?.isDeleting}
+              variant={'destructive'}
+            >
+              Delete
+            </Button>
+          </div>
         </div>
       )}
     </>

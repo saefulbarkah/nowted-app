@@ -34,6 +34,9 @@ export type noteStateType = {
   restoreNote: (data: Pick<NoteTypes, 'id_note' | 'folder_id'>) => void;
   addToFavorite: (data: Pick<NoteTypes, 'id_note' | 'folder_id'>) => void;
   removeFromFavorite: (data: Pick<NoteTypes, 'id_note' | 'folder_id'>) => void;
+  deleteNotePermanently: (
+    data: Pick<NoteTypes, 'id_note' | 'folder_id'>
+  ) => void;
 };
 
 export const useNowtedStore = create<folderStateType & noteStateType>()(
@@ -199,6 +202,23 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
           }
 
           return { folders: [...state.folders] };
+        });
+      },
+      deleteNotePermanently: (data) => {
+        if (!data) return;
+        set((state) => {
+          const updatedFolders = state.folders.map((folder) => {
+            if (folder.id_folder === data.folder_id) {
+              return {
+                ...folder,
+                notes: folder.notes.filter(
+                  (note) => note.id_note !== data.id_note
+                ),
+              };
+            }
+            return folder;
+          });
+          return { folders: updatedFolders };
         });
       },
     }),
