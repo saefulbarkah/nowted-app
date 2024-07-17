@@ -1,16 +1,30 @@
 import NextTopLoader from 'nextjs-toploader';
-import { Source_Sans_Pro } from 'next/font/google';
+import { Source_Sans_3 } from 'next/font/google';
 import { Toaster } from '@/components/ui/Toaster';
 import Sidebar from '@/components/Sidebar/Sidebar';
 import { InitialLoadingPage } from '@/components/Loader';
 import '../globals.css';
-import { HeaderMobile } from '@/components/Mobile/Header';
 import { Animate } from '@/components/Animate';
+import { Metadata } from 'next';
 
-const SourceSansPro = Source_Sans_Pro({
+const SourceSansPro = Source_Sans_3({
   subsets: ['latin'],
   weight: ['200', '300', '400', '600'],
 });
+
+export const metadata: Metadata = {
+  title: 'Nowted App',
+  keywords: [
+    'nowted-app',
+    'notes applications',
+    'notes website',
+    'nowted-web',
+    'noteslists',
+    'notes',
+    'sticky notes',
+    'notes online',
+  ],
+};
 
 export default function RootLayout({
   children,

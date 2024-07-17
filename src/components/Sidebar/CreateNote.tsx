@@ -22,7 +22,7 @@ function CreateNote() {
   const addingNewNotes = () => {
     return new Promise((resolve) => {
       setTimeout(() => {
-        addNote({ id_folder: folderId });
+        addNote({ id_folder: folderId as string | null });
         resolve(1);
       }, 1000);
     });
