@@ -2,7 +2,7 @@ import { FolderTypes } from '@/types';
 import { create } from 'zustand';
 
 interface StateFolder {
-  name: string;
+  name: string | null;
   isError: boolean;
   isCreateFolder: boolean;
   isEditFolder: boolean;
@@ -28,7 +28,7 @@ export const useFolderStateStore = create<
   StateFolder & StateData & ActionFolder
 >((set) => ({
   // init state
-  name: 'New Folder',
+  name: null,
   isError: false,
   isCreateFolder: false,
   isEditFolder: false,

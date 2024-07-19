@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import useFolderState from './useFolderState';
 
 interface validation {
-  value: string | number;
+  value: string | null;
   field?: string;
 }
 

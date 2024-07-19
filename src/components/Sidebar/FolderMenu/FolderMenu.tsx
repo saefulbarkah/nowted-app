@@ -1,18 +1,19 @@
 'use client';
+import CreateNewFolder from './create-new-folder';
 import DialogDelete from './DeleteFolder';
-import CreateFolder from './CreateFolder';
-import SaveFolder from './SaveFolder';
 import FolderLists from './FolderLists';
+import UpdateFolder from './update-folder';
 
 const FolderMenu: React.FC = () => {
   return (
     <div className="flex flex-col space-y-[8px]">
       <div className="flex justify-between items-center px-[30px] inactive-text">
         <p className="text-[14px] font-semibold">Folders</p>
-        <SaveFolder />
+        <CreateNewFolder />
+        <UpdateFolder />
       </div>
       <div className="flex flex-col gap-[5px]">
-        <CreateFolder />
+        {/* <CreateFolder /> */}
         <FolderLists />
       </div>
       <DialogDelete />
