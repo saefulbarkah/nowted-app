@@ -1,17 +1,12 @@
-import { Button } from '@/components/ui/button';
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-} from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { useToast } from '@/components/ui/use-toast';
-import useFolderState from '@/hooks/useFolderState';
-import { DialogClose, DialogTrigger } from '@radix-ui/react-dialog';
-import React, { useRef, useState } from 'react';
-import { useForm } from 'react-hook-form';
-import { FiFolderPlus } from 'react-icons/fi';
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import useFolderState from "@/hooks/useFolderState";
+import { DialogTrigger } from "@radix-ui/react-dialog";
+import React, { useState } from "react";
+import { useForm } from "react-hook-form";
+import toast from "react-hot-toast";
+import { FiFolderPlus } from "react-icons/fi";
 
 function CreateNewFolder() {
   const {
@@ -23,18 +18,13 @@ function CreateNewFolder() {
   const { folders, addFolder } = useFolderState();
   const [isLoading, setIsLoading] = useState(false);
   const [isOpenDialog, setOpenDialog] = useState(false);
-  const { toast } = useToast();
 
   const handleAddFolder = handleSubmit((data) => {
     setIsLoading(true);
     const isExists = folders.some((item) => item.name === data.folder);
     if (isExists) {
       setTimeout(() => {
-        toast({
-          title: 'Failed to created',
-          description: `Folder ${data.folder} already exists`,
-          variant: 'danger',
-        });
+        toast.error(`Folder ${data.folder} already exists`);
         setIsLoading(false);
       }, 500);
       return;
@@ -43,7 +33,7 @@ function CreateNewFolder() {
       setIsLoading(false);
       addFolder({ name: data.folder });
       setOpenDialog(false);
-      reset({ folder: '' });
+      reset({ folder: "" });
     }, 1000);
   });
 
@@ -84,7 +74,7 @@ function CreateNewFolder() {
     <>
       <Dialog onOpenChange={setOpenDialog} open={isOpenDialog}>
         <DialogTrigger asChild>
-          <Button size={'sm'} variant={'ghost'}>
+          <Button size={"sm"} variant={"ghost"}>
             <FiFolderPlus className="text-[20px]" />
           </Button>
         </DialogTrigger>
@@ -92,31 +82,23 @@ function CreateNewFolder() {
           <DialogHeader>New Folder</DialogHeader>
           <div className="flex flex-col gap-1">
             <Input
-              {...register('folder', { required: 'This is required' })}
+              {...register("folder", { required: "This is required" })}
               placeholder="Create new folder...."
-              className={`${
-                errors.folder && 'ring-red-500 focus-visible:ring-red-500'
-              }`}
+              className={`${errors.folder && "ring-red-500 focus-visible:ring-red-500"}`}
             />
-            {errors.folder && (
-              <p className="text-red-500 text-md">{errors.folder.message}</p>
-            )}
+            {errors.folder && <p className="text-red-500 text-md">{errors.folder.message}</p>}
           </div>
           <DialogFooter>
             <Button
-              variant={'secondary'}
+              variant={"secondary"}
               onClick={() => {
                 setOpenDialog(false);
-                reset({ folder: '' });
+                reset({ folder: "" });
               }}
             >
               Cancel
             </Button>
-            <Button
-              variant={'default'}
-              onClick={handleAddFolder}
-              isLoading={isLoading}
-            >
+            <Button variant={"default"} onClick={handleAddFolder} isLoading={isLoading}>
               Create
             </Button>
           </DialogFooter>

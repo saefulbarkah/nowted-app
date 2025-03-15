@@ -1,15 +1,10 @@
-import { useToast } from '@/components/ui/use-toast';
-import { useNowtedStore } from '@/store';
-import { useRecentStore } from '@/store/useRecentStore';
-import { NoteTypes } from '@/types';
-import { useState, useEffect } from 'react';
+import { useNowtedStore } from "@/store";
+import { useRecentStore } from "@/store/useRecentStore";
+import { NoteTypes } from "@/types";
+import { useState, useEffect } from "react";
+import toast from "react-hot-toast";
 
-function useSaveNote({
-  content = '',
-  folder_id,
-  id_note,
-  name,
-}: Partial<NoteTypes>) {
+function useSaveNote({ content = "", folder_id, id_note, name }: Partial<NoteTypes>) {
   const [onSave, setOnSave] = useState<boolean>(false);
   const [isError, setError] = useState<{
     error: {
@@ -18,7 +13,6 @@ function useSaveNote({
   } | null>(null);
   const saveNote = useNowtedStore((state) => state.saveNote);
   const updateTitleRecent = useRecentStore((state) => state.updateTitleRecent);
-  const { toast } = useToast();
 
   const onSaving = () => {
     return new Promise((resolve) => {
@@ -29,21 +23,15 @@ function useSaveNote({
           name: name as string,
         });
         updateTitleRecent({ id_note: id_note, name: name });
-        toast({
-          title: 'Note Saved Successfully',
-          variant: 'success',
-        });
-        resolve('OK');
+        toast.success("Note has been saved!");
+        resolve("OK");
       }, 1000);
     });
   };
   const handleSaveTitle = async () => {
     setOnSave(true);
     if (!name) {
-      toast({
-        title: `Title Note is Required`,
-        variant: 'danger',
-      });
+      toast.error("Title Note is Required");
       setError({
         error: {
           message: `Title Note is Required`,

@@ -1,12 +1,11 @@
-'use client';
-import { useActiveNote } from '@/store/useActiveNote';
-import Image from 'next/image';
-import React from 'react';
-import { Button } from '../ui/button';
-import { useNowtedStore } from '@/store';
-import { useToast } from '../ui/use-toast';
-import { create } from 'zustand';
-import { NoteTypes } from '@/types';
+"use client";
+import Image from "next/image";
+import React from "react";
+import { Button } from "../ui/button";
+import { useNowtedStore } from "@/store";
+import { create } from "zustand";
+import { NoteTypes } from "@/types";
+import toast from "react-hot-toast";
 
 interface SProps {
   trashActive: NoteTypes | null;
@@ -26,12 +25,9 @@ type DeleteState = {
 function TrashMenu() {
   const [loading, setLoading] = React.useState<DeleteState>();
   const restore = useNowtedStore((state) => state.restoreNote);
-  const deleteNotePermanently = useNowtedStore(
-    (state) => state.deleteNotePermanently
-  );
+  const deleteNotePermanently = useNowtedStore((state) => state.deleteNotePermanently);
   const trashActive = useTrashActive((state) => state.trashActive);
   const setTrashActive = useTrashActive((state) => state.setTrashActive);
-  const { toast } = useToast();
 
   function restoringNote() {
     return new Promise((resolve) => {
@@ -60,10 +56,7 @@ function TrashMenu() {
   async function restoreNote() {
     setLoading({ isRestoring: true });
     await restoringNote();
-    toast({
-      title: 'Note succesfully restored',
-      variant: 'success',
-    });
+    toast.success("Note has been restored!");
     setLoading({ isRestoring: false });
     setTrashActive(null);
   }
@@ -72,10 +65,7 @@ function TrashMenu() {
     setLoading({ isDeleting: true });
     await deleteNote();
     setLoading({ isDeleting: false });
-    toast({
-      title: 'Note succesfully deleted',
-      variant: 'success',
-    });
+    toast.success("Note has been deleted!");
     setTrashActive(null);
   };
 
@@ -83,13 +73,7 @@ function TrashMenu() {
     <>
       {!trashActive && (
         <div className="flex flex-col gap-[10px] items-center justify-center w-[calc(100vw-650px)]">
-          <Image
-            alt="icon"
-            priority
-            src={'/FileText.svg'}
-            height={80}
-            width={80}
-          />
+          <Image alt="icon" priority src={"/FileText.svg"} height={80} width={80} />
 
           <h2 className="font-semibold text-[28px]">Select note to restore</h2>
           <p className="w-[460px] text-center font-normal text-white/[60%]">
@@ -100,32 +84,22 @@ function TrashMenu() {
 
       {trashActive && (
         <div className="flex flex-col gap-[10px] items-center justify-center w-[calc(100vw-650px)]">
-          <Image
-            alt="icon"
-            priority
-            src={'/history.svg'}
-            height={80}
-            width={80}
-          />
+          <Image alt="icon" priority src={"/history.svg"} height={80} width={80} />
           <h2 className="font-semibold text-[28px] break-words w-[600px] text-center">
             Restore "<span>{`${trashActive.name}`}</span>"
           </h2>
           <p className="w-[460px] text-center font-normal text-white/[60%]">
-            Don't want to lose this note? It's not too late! Just click the
-            'Restore' button and it will be added back to your list. It's that
-            simple.
+            Don't want to lose this note? It's not too late! Just click the 'Restore' button and it
+            will be added back to your list. It's that simple.
           </p>
           <div className="flex items-center gap-2">
-            <Button
-              onClick={() => restoreNote()}
-              isLoading={loading?.isRestoring}
-            >
+            <Button onClick={() => restoreNote()} isLoading={loading?.isRestoring}>
               Restore
             </Button>
             <Button
               onClick={() => deletePermanently()}
               isLoading={loading?.isDeleting}
-              variant={'destructive'}
+              variant={"destructive"}
             >
               Delete
             </Button>

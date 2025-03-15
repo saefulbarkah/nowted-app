@@ -1,18 +1,15 @@
-'use client';
-import React, { useState } from 'react';
-import { Button } from '../ui/button';
-import { useToast } from '../ui/use-toast';
-import useFolderState from '@/hooks/useFolderState';
-import { useNowtedStore } from '@/store';
-import { useParams, useRouter } from 'next/navigation';
-import { useRecentStore } from '@/store/useRecentStore';
-import { NoteTypes } from '@/types';
-import { FiPlus } from 'react-icons/fi';
-import { useSidebar } from '../Mobile/Sidebar';
+"use client";
+import React, { useState } from "react";
+import { Button } from "../ui/button";
+import useFolderState from "@/hooks/useFolderState";
+import { useNowtedStore } from "@/store";
+import { useParams } from "next/navigation";
+import toast from "react-hot-toast";
+import { FiPlus } from "react-icons/fi";
+import { useSidebar } from "../Mobile/Sidebar";
 
 function CreateNote() {
   const [isLoading, setLoading] = useState(false);
-  const { toast } = useToast();
   const params = useParams();
   const { folderId } = params;
   const { folders } = useFolderState();
@@ -32,10 +29,7 @@ function CreateNote() {
     setLoading(true);
     await addingNewNotes();
     setLoading(false);
-    toast({
-      title: 'Note succesfully created',
-      variant: 'success',
-    });
+    toast.success("Note has been created!");
     setSidebar(false);
     return;
   };
@@ -44,10 +38,10 @@ function CreateNote() {
     <div className="px-[20px]">
       <Button
         className="w-full text-[16px] font-semibold"
-        size={'lg'}
+        size={"lg"}
         isLoading={isLoading}
         disabled={params.folderId ? false : true}
-        variant={'secondary'}
+        variant={"secondary"}
         onClick={() => handleCreateNote()}
       >
         {isLoading ? null : <FiPlus className="text-[20px] mr-2" />}

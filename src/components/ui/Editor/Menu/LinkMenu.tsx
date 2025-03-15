@@ -1,25 +1,22 @@
-'use client';
-import React, { useEffect, useRef, useState } from 'react';
-import { PropsEditor } from '../EditorToolbar';
-import { Popover, PopoverContent, PopoverTrigger } from '../../popover';
-import { Button } from '../../button';
-import { FiLink } from 'react-icons/fi';
-import { Input } from '../../input';
-import { Label } from '../../label';
-import { useToast } from '../../use-toast';
+"use client";
+import React, { useEffect, useRef, useState } from "react";
+import { PropsEditor } from "../EditorToolbar";
+import { Popover, PopoverContent, PopoverTrigger } from "../../popover";
+import { Button } from "../../button";
+import { FiLink } from "react-icons/fi";
+import { Input } from "../../input";
+import { Label } from "../../label";
+import toast from "react-hot-toast";
 
 function LinkMenu({ editor }: PropsEditor) {
-  const { toast } = useToast();
-  const [url, seturl] = useState<string>('');
-  const [name, setName] = useState<string>('');
+  const [url, seturl] = useState<string>("");
+  const [name, setName] = useState<string>("");
   const inputRefUrl = useRef<HTMLInputElement | null>(null);
   const [isNotUrl, setIsNotUrl] = useState<boolean>(false);
   if (!editor) return;
-  const isUrl = editor.isActive('link');
+  const isUrl = editor.isActive("link");
 
-  const handleChangeWithValidation = (
-    e: React.ChangeEvent<HTMLInputElement>
-  ) => {
+  const handleChangeWithValidation = (e: React.ChangeEvent<HTMLInputElement>) => {
     seturl(e.target.value);
     try {
       const newUrl = new URL(url);
@@ -35,15 +32,11 @@ function LinkMenu({ editor }: PropsEditor) {
       editor
         .chain()
         .focus()
-        .extendMarkRange('link')
+        .extendMarkRange("link")
         .setLink({ href: `${newUrl}` })
         .run();
     } catch (error) {
-      toast({
-        title: 'Error',
-        variant: 'danger',
-        description: 'invalid URL, url must start with https:// or http://',
-      });
+      toast.error("invalid URL, url must start with https:// or http://");
       setIsNotUrl(true);
     }
   };
@@ -51,18 +44,14 @@ function LinkMenu({ editor }: PropsEditor) {
   return (
     <>
       {isUrl && (
-        <Button
-          variant={'secondary'}
-          size={'sm'}
-          onClick={() => editor.commands.unsetLink()}
-        >
+        <Button variant={"secondary"} size={"sm"} onClick={() => editor.commands.unsetLink()}>
           <FiLink className="text-[20px]" />
         </Button>
       )}
       {!isUrl && (
         <Popover>
           <PopoverTrigger asChild>
-            <Button variant={'ghost'} className="p-[7px]" size={'sm'}>
+            <Button variant={"ghost"} className="p-[7px]" size={"sm"}>
               <FiLink className="text-[20px] text-white/[60%]" />
             </Button>
           </PopoverTrigger>
@@ -81,20 +70,18 @@ function LinkMenu({ editor }: PropsEditor) {
                   />
                   <div
                     className={`absolute top-0 -translate-y-6 transition-opacity opacity-0 pointer-events-none ${
-                      isNotUrl ? 'opacity-100' : 'opacity-0'
+                      isNotUrl ? "opacity-100" : "opacity-0"
                     }`}
                   >
-                    {isNotUrl && (
-                      <p className="text-[14px] text-red-500">Invalid URL</p>
-                    )}
+                    {isNotUrl && <p className="text-[14px] text-red-500">Invalid URL</p>}
                   </div>
                 </div>
               </div>
             </div>
             <Button
               className="w-full mt-5 capitalize"
-              variant={'default'}
-              size={'sm'}
+              variant={"default"}
+              size={"sm"}
               onClick={() => handleAddURL()}
             >
               save

@@ -1,14 +1,13 @@
 import Dvider from "@/components/ui/Dvider";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader } from "@/components/ui/dialog";
-import { useToast } from "@/components/ui/use-toast";
 import useFolderState from "@/hooks/useFolderState";
 import { useRecentStore } from "@/store/useRecentStore";
 import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 import { useState } from "react";
 
 const DialogDelete = () => {
-  const { toast } = useToast();
   const { isOpenDialogDelete, setDialogDelete, deleteData, removeFolder } = useFolderState();
   const [isLoading, setIsLoading] = useState(false);
   const removeRecents = useRecentStore((state) => state.removeRecents);
@@ -21,11 +20,7 @@ const DialogDelete = () => {
     );
     setIsLoading(true);
     setTimeout(() => {
-      toast({
-        title: "Success",
-        description: "Delete folder successfully",
-        variant: "success",
-      });
+      toast.success("Folder has been deleted!");
       setDialogDelete(false);
       setIsLoading(false);
       removeFolder({ id_folder: deleteData.id_folder });
