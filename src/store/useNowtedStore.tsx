@@ -1,14 +1,14 @@
-import { create } from 'zustand';
-import { persist, createJSONStorage } from 'zustand/middleware';
-import { v4 as uuid } from 'uuid';
-import { FolderTypes, NoteTypes } from '@/types';
-import { CONTENT } from '@/lib/note/CONST';
+import { create } from "zustand";
+import { persist, createJSONStorage } from "zustand/middleware";
+import { v4 as uuid } from "uuid";
+import { FolderTypes, NoteTypes } from "@/types";
+import { CONTENT } from "@/lib/note/CONST";
 
 const generateFolderId = uuid();
 
 export const DEFAULT_NOTES: NoteTypes = {
   id_note: uuid(),
-  name: 'Reflection on the Month of June',
+  name: "Reflection on the Month of June",
   content: CONTENT,
   folder_id: generateFolderId,
   createdAt: new Date(),
@@ -18,25 +18,21 @@ export const DEFAULT_NOTES: NoteTypes = {
 
 export type folderStateType = {
   folders: FolderTypes[];
-  addFolder: (data: Pick<FolderTypes, 'name'>) => void;
-  updateFolder: (data: Pick<FolderTypes, 'id_folder' | 'name'>) => void;
-  removeFolder: (data: Pick<FolderTypes, 'id_folder'>) => void;
+  addFolder: (data: Pick<FolderTypes, "name">) => void;
+  updateFolder: (data: Pick<FolderTypes, "id_folder" | "name">) => void;
+  removeFolder: (data: Pick<FolderTypes, "id_folder">) => void;
 };
 
 export type noteStateType = {
   note?: NoteTypes;
   addNote: (data: { id_folder: string | null }) => void;
-  saveNote: (data: Pick<NoteTypes, 'name' | 'folder_id' | 'id_note'>) => void;
-  saveContent: (
-    data: Pick<NoteTypes, 'content' | 'folder_id' | 'id_note'>
-  ) => void;
-  removeNote: (data: Pick<NoteTypes, 'id_note' | 'folder_id'>) => void;
-  restoreNote: (data: Pick<NoteTypes, 'id_note' | 'folder_id'>) => void;
-  addToFavorite: (data: Pick<NoteTypes, 'id_note' | 'folder_id'>) => void;
-  removeFromFavorite: (data: Pick<NoteTypes, 'id_note' | 'folder_id'>) => void;
-  deleteNotePermanently: (
-    data: Pick<NoteTypes, 'id_note' | 'folder_id'>
-  ) => void;
+  saveNote: (data: Pick<NoteTypes, "name" | "folder_id" | "id_note">) => void;
+  saveContent: (data: Pick<NoteTypes, "content" | "folder_id" | "id_note">) => void;
+  removeNote: (data: Pick<NoteTypes, "id_note" | "folder_id">) => void;
+  restoreNote: (data: Pick<NoteTypes, "id_note" | "folder_id">) => void;
+  addToFavorite: (data: Pick<NoteTypes, "id_note" | "folder_id">) => void;
+  removeFromFavorite: (data: Pick<NoteTypes, "id_note" | "folder_id">) => void;
+  deleteNotePermanently: (data: Pick<NoteTypes, "id_note" | "folder_id">) => void;
 };
 
 export const useNowtedStore = create<folderStateType & noteStateType>()(
@@ -72,9 +68,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
         set((state) => {
           return {
             folders: state.folders.map((item) =>
-              item.id_folder === data.id_folder
-                ? { ...item, name: data.name }
-                : item
+              item.id_folder === data.id_folder ? { ...item, name: data.name } : item
             ),
           };
         });
@@ -82,23 +76,19 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
       removeFolder: (data) => {
         set((state) => {
           return {
-            folders: state.folders.filter(
-              (item) => item.id_folder !== data.id_folder
-            ),
+            folders: state.folders.filter((item) => item.id_folder !== data.id_folder),
           };
         });
       },
       addNote: (data) => {
         set((state) => {
-          const filtered = state.folders.find(
-            (item) => item.id_folder === data.id_folder
-          );
+          const filtered = state.folders.find((item) => item.id_folder === data.id_folder);
           if (filtered) {
             filtered.notes = [
               {
                 ...DEFAULT_NOTES,
-                name: 'New Note',
-                content: '',
+                name: "New Note",
+                content: "",
                 id_note: uuid(),
                 folder_id: filtered.id_folder,
                 createdAt: new Date(),
@@ -143,9 +133,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
       },
       removeNote: (data) => {
         set((state) => {
-          const folders = state.folders.find(
-            (item) => item.id_folder === data.folder_id
-          );
+          const folders = state.folders.find((item) => item.id_folder === data.folder_id);
           if (folders) {
             const notes = folders.notes;
             const note = notes?.find(
@@ -159,9 +147,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
       },
       restoreNote: (data) => {
         set((state) => {
-          const folders = state.folders.find(
-            (item) => item.id_folder === data.folder_id
-          );
+          const folders = state.folders.find((item) => item.id_folder === data.folder_id);
           if (folders) {
             const notes = folders.notes;
             const note = notes?.find(
@@ -174,9 +160,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
       },
       addToFavorite: (data) => {
         set((state) => {
-          const folders = state.folders.find(
-            (item) => item.id_folder === data.folder_id
-          );
+          const folders = state.folders.find((item) => item.id_folder === data.folder_id);
           if (folders) {
             const notes = folders.notes;
             const note = notes?.find(
@@ -190,9 +174,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
       },
       removeFromFavorite: (data) => {
         set((state) => {
-          const folders = state.folders.find(
-            (item) => item.id_folder === data.folder_id
-          );
+          const folders = state.folders.find((item) => item.id_folder === data.folder_id);
           if (folders) {
             const notes = folders.notes;
             const note = notes?.find(
@@ -211,9 +193,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
             if (folder.id_folder === data.folder_id) {
               return {
                 ...folder,
-                notes: folder.notes.filter(
-                  (note) => note.id_note !== data.id_note
-                ),
+                notes: folder.notes.filter((note) => note.id_note !== data.id_note),
               };
             }
             return folder;
@@ -223,7 +203,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
       },
     }),
     {
-      name: 'folder-notes',
+      name: "folder-notes",
       storage: createJSONStorage(() => localStorage),
     }
   )
