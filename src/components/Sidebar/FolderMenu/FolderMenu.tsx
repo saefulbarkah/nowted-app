@@ -1,8 +1,8 @@
-'use client';
-import CreateNewFolder from './create-new-folder';
-import DialogDelete from './DeleteFolder';
-import FolderLists from './FolderLists';
-import UpdateFolder from './update-folder';
+"use client";
+import CreateNewFolder from "./CreateNewFolder";
+import DialogDelete from "./DeleteFolder";
+import FolderLists from "./FolderLists";
+import UpdateFolder from "./update-folder";
 
 const FolderMenu: React.FC = () => {
   return (
