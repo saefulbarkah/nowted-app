@@ -58,10 +58,13 @@ function useNoteEditor({ data }: Tprops) {
     onUpdate: ({ editor }) => {
       if (!data) return;
       const content = editor.getHTML();
+      const contentPreview = editor.getText().slice(0, 30);
+
       saveContent({
         folder_id: data.folder_id,
         id_note: data.id_note,
         content: content,
+        content_preview: contentPreview,
       });
     },
     autofocus: true,

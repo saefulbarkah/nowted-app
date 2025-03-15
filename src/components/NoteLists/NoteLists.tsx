@@ -50,7 +50,7 @@ export const NoteLists = ({ folder_id }: TProps) => {
               {!item.favorite && <AiOutlineStar className="text-white text-sm mr-1" />}
               <p className="font-normal mr-2">{dateToString({ values: item.createdAt })}</p>
               <p className="truncate font-normal flex-1">
-                {toPlainText({ value: item.content as string, type: "html" })}
+                {toPlainText({ value: item.content_preview as string, type: "html" })}
               </p>
             </div>
           </CardContent>

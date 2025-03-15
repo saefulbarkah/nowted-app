@@ -13,6 +13,7 @@ export const DEFAULT_NOTES: NoteTypes = {
   folder_id: generateFolderId,
   createdAt: new Date(),
   deletedAt: null,
+  content_preview: "It's hard to believe that June is already over! Looking back on the month,",
   favorite: false,
 };
 
@@ -27,7 +28,9 @@ export type noteStateType = {
   note?: NoteTypes;
   addNote: (data: { id_folder: string | null }) => void;
   saveNote: (data: Pick<NoteTypes, "name" | "folder_id" | "id_note">) => void;
-  saveContent: (data: Pick<NoteTypes, "content" | "folder_id" | "id_note">) => void;
+  saveContent: (
+    data: Pick<NoteTypes, "content" | "folder_id" | "id_note" | "content_preview">
+  ) => void;
   removeNote: (data: Pick<NoteTypes, "id_note" | "folder_id">) => void;
   restoreNote: (data: Pick<NoteTypes, "id_note" | "folder_id">) => void;
   addToFavorite: (data: Pick<NoteTypes, "id_note" | "folder_id">) => void;
@@ -127,6 +130,7 @@ export const useNowtedStore = create<folderStateType & noteStateType>()(
               (item: NoteTypes) => item.id_note === data.id_note
             ) as NoteTypes;
             getNote.content = data.content as string;
+            getNote.content_preview = data.content_preview;
           }
           return { folders: [...state.folders] };
         });
