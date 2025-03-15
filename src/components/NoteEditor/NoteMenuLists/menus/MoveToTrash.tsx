@@ -1,13 +1,14 @@
-import Dvider from '@/components/ui/Dvider';
-import { Button } from '@/components/ui/button';
-import { Dialog, DialogContent, DialogFooter } from '@/components/ui/dialog';
-import { useToast } from '@/components/ui/use-toast';
-import { useNowtedStore } from '@/store';
-import { useActiveNote } from '@/store/useActiveNote';
-import { useRecentStore } from '@/store/useRecentStore';
-import React, { Dispatch, SetStateAction } from 'react';
-import { TnoteProps } from '../NoteMenuList';
-import { useRouter } from 'next/navigation';
+import Dvider from "@/components/ui/Dvider";
+import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogFooter } from "@/components/ui/dialog";
+import { useToast } from "@/components/ui/use-toast";
+import { useNowtedStore } from "@/store";
+import { useActiveNote } from "@/store/useActiveNote";
+import { useRecentStore } from "@/store/useRecentStore";
+import React, { Dispatch, SetStateAction } from "react";
+import { TnoteProps } from "../NoteMenuList";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
 
 interface TProps extends TnoteProps {
   open: boolean;
@@ -19,10 +20,10 @@ function MoveToTrash({ open, setOpen, data }: TProps) {
   const removeNote = useNowtedStore((state) => state.removeNote);
   const removeRecents = useRecentStore((state) => state.removeRecents);
   const setActiveNote = useActiveNote((state) => state.setActiveNote);
-  const { toast } = useToast();
   const router = useRouter();
 
   const deletingFolder = () => {
+    if (!data) return toast.error("Unable to deleting folder, try to refresh the page");
     return new Promise((resolve) => {
       setTimeout(() => {
         removeRecents({ id_note: data.id_note });
@@ -36,11 +37,8 @@ function MoveToTrash({ open, setOpen, data }: TProps) {
     setLoading(true);
     await deletingFolder();
     setLoading(false);
-    toast({
-      title: 'Succesfully moving note to trash',
-      variant: 'success',
-    });
-    setActiveNote('');
+    toast.success("Succesfully moving note to trash");
+    setActiveNote("");
     router.refresh();
   };
   return (
@@ -51,18 +49,14 @@ function MoveToTrash({ open, setOpen, data }: TProps) {
         <p>Are you sure you want to move this note to trash ?</p>
         <DialogFooter>
           <Button
-            size={'sm'}
-            variant={'destructive'}
+            size={"sm"}
+            variant={"destructive"}
             onClick={() => handleRemoveNote()}
             isLoading={loading}
           >
             Yes, move it
           </Button>
-          <Button
-            size={'sm'}
-            variant={'secondary'}
-            onClick={() => setOpen(false)}
-          >
+          <Button size={"sm"} variant={"secondary"} onClick={() => setOpen(false)}>
             Cancel
           </Button>
         </DialogFooter>
