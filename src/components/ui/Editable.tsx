@@ -1,5 +1,5 @@
-'use client';
-import { cn } from '@/lib/utils';
+"use client";
+import { cn } from "@/lib/utils";
 import {
   Dispatch,
   FC,
@@ -8,8 +8,8 @@ import {
   useEffect,
   useRef,
   useState,
-} from 'react';
-import { FiEdit2 } from 'react-icons/fi';
+} from "react";
+import { FiEdit2 } from "react-icons/fi";
 interface EditableProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
   maxLength: number;
@@ -39,7 +39,7 @@ const Editable: FC<EditableProps> = ({
       {isEdit ? (
         <div className="w-full ">
           <input
-            className={cn('bg-transparent outline-none  ', className)}
+            className={cn("bg-transparent outline-none  ", className)}
             maxLength={Number(maxLength)}
             autoFocus={true}
             value={value}
@@ -48,7 +48,7 @@ const Editable: FC<EditableProps> = ({
           />
           <span
             className={`text-sm text-white/50 ${
-              currValue === Number(maxLength) && '!text-red-500'
+              currValue === Number(maxLength) && "!text-red-500"
             }`}
           >
             {currValue}/{maxLength}
@@ -60,12 +60,7 @@ const Editable: FC<EditableProps> = ({
           onClick={() => setIsEdit(true)}
         >
           <FiEdit2 className="w-[30px] text-[20px] translate-y-2" />
-          <p
-            className={cn(
-              'bg-transparent outline-none cursor-pointer break-all',
-              className
-            )}
-          >
+          <p className={cn("bg-transparent outline-none cursor-pointer break-all", className)}>
             {value}
           </p>
         </div>
