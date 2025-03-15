@@ -1,36 +1,32 @@
-import NextTopLoader from 'nextjs-toploader';
-import { Source_Sans_3 } from 'next/font/google';
-import { Toaster } from '@/components/ui/Toaster';
-import Sidebar from '@/components/Sidebar/Sidebar';
-import { InitialLoadingPage } from '@/components/Loader';
-import '../globals.css';
-import { Animate } from '@/components/Animate';
-import { Metadata } from 'next';
+import NextTopLoader from "nextjs-toploader";
+import { Source_Sans_3 } from "next/font/google";
+import Sidebar from "@/components/Sidebar/Sidebar";
+import { Toaster } from "react-hot-toast";
+import { InitialLoadingPage } from "@/components/Loader";
+import "../globals.css";
+import { Animate } from "@/components/Animate";
+import { Metadata } from "next";
 
 const SourceSansPro = Source_Sans_3({
-  subsets: ['latin'],
-  weight: ['200', '300', '400', '600'],
+  subsets: ["latin"],
+  weight: ["200", "300", "400", "600"],
 });
 
 export const metadata: Metadata = {
-  title: 'Nowted App',
+  title: "Nowted App",
   keywords: [
-    'nowted-app',
-    'notes applications',
-    'notes website',
-    'nowted-web',
-    'noteslists',
-    'notes',
-    'sticky notes',
-    'notes online',
+    "nowted-app",
+    "notes applications",
+    "notes website",
+    "nowted-web",
+    "noteslists",
+    "notes",
+    "sticky notes",
+    "notes online",
   ],
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
       <body className={SourceSansPro.className}>
