@@ -1,23 +1,20 @@
-import React from 'react';
-import { DropdownMenuItem, DropdownMenuTrigger } from '../../ui/dropdown-menu';
-import { Button } from '../../ui/button';
-import { SlOptions } from 'react-icons/sl';
-import { FiArchive, FiStar, FiTrash } from 'react-icons/fi';
-import Dvider from '../../ui/Dvider';
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-} from '@radix-ui/react-dropdown-menu';
-import { Transition } from '@headlessui/react';
-import MoveToTrash from './menus/MoveToTrash';
-import { NoteTypes } from '@/types';
-import { useNowtedStore } from '@/store';
-import { useToast } from '@/components/ui/use-toast';
-import { useRouter } from 'next/navigation';
-import { useFavoriteActive } from '@/components/Favorites';
+import React from "react";
+import { DropdownMenuItem, DropdownMenuTrigger } from "../../ui/dropdown-menu";
+import { Button } from "../../ui/button";
+import { SlOptions } from "react-icons/sl";
+import { FiArchive, FiStar, FiTrash } from "react-icons/fi";
+import Dvider from "../../ui/Dvider";
+import { DropdownMenu, DropdownMenuContent } from "@radix-ui/react-dropdown-menu";
+import { Transition } from "@headlessui/react";
+import MoveToTrash from "./menus/MoveToTrash";
+import { NoteTypes } from "@/types";
+import { useNowtedStore } from "@/store";
+import { useRouter } from "next/navigation";
+import toast from "react-hot-toast";
+import { useFavoriteActive } from "@/components/Favorites";
 
 export interface TnoteProps {
-  data: NoteTypes;
+  data: NoteTypes | undefined;
 }
 
 export const NoteMenuList = ({ data }: TnoteProps) => {
@@ -25,27 +22,24 @@ export const NoteMenuList = ({ data }: TnoteProps) => {
   const [openDialogDelete, setOpenDialogDelete] = React.useState(false);
   const addToFavorite = useNowtedStore((state) => state.addToFavorite);
   const setFavorites = useFavoriteActive((state) => state.setFavoriteActive);
-  const removeFromFavorite = useNowtedStore(
-    (state) => state.removeFromFavorite
-  );
-  const { toast } = useToast();
+  const removeFromFavorite = useNowtedStore((state) => state.removeFromFavorite);
   const router = useRouter();
 
   const handleAddToFavorite = () => {
+    if (!data) {
+      return toast.error("Unable add to favorite, refresh the page");
+    }
     addToFavorite({ id_note: data.id_note, folder_id: data.folder_id });
-    toast({
-      title: 'Add to favorite Successfully',
-      variant: 'success',
-    });
+    toast.success("Add to favorite Successfully");
     router.refresh();
   };
 
   const handleRemoveFavorite = () => {
+    if (!data) {
+      return toast.error("Unable to remove favorite, refresh the page");
+    }
     removeFromFavorite({ id_note: data.id_note, folder_id: data.folder_id });
-    toast({
-      title: 'Remove from favorite Successfully',
-      variant: 'success',
-    });
+    toast.success("Remove from favorite Successfully");
     setFavorites(null);
     router.refresh();
   };
@@ -111,11 +105,7 @@ export const NoteMenuList = ({ data }: TnoteProps) => {
       </DropdownMenu>
 
       {/* trash */}
-      <MoveToTrash
-        open={openDialogDelete}
-        setOpen={setOpenDialogDelete}
-        data={data}
-      />
+      <MoveToTrash open={openDialogDelete} setOpen={setOpenDialogDelete} data={data} />
     </>
   );
 };

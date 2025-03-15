@@ -1,14 +1,14 @@
-import { useEditor } from '@tiptap/react';
-import StarterKit from '@tiptap/starter-kit';
-import Underline from '@tiptap/extension-underline';
-import Image from '@tiptap/extension-image';
-import Link from '@tiptap/extension-link';
-import { useNowtedStore } from '@/store';
-import { NoteTypes } from '@/types';
-import Placeholder from '@tiptap/extension-placeholder';
+import { useEditor } from "@tiptap/react";
+import StarterKit from "@tiptap/starter-kit";
+import Underline from "@tiptap/extension-underline";
+import Image from "@tiptap/extension-image";
+import Link from "@tiptap/extension-link";
+import { useNowtedStore } from "@/store";
+import { NoteTypes } from "@/types";
+import Placeholder from "@tiptap/extension-placeholder";
 
 interface Tprops {
-  data: NoteTypes;
+  data: NoteTypes | undefined;
 }
 
 function useNoteEditor({ data }: Tprops) {
@@ -18,31 +18,31 @@ function useNoteEditor({ data }: Tprops) {
       StarterKit.configure({
         paragraph: {
           HTMLAttributes: {
-            class: 'paragraph',
+            class: "paragraph",
           },
         },
         heading: {
           HTMLAttributes: {
-            class: 'heading-text',
+            class: "heading-text",
           },
         },
       }),
       Underline,
       Image.configure({
         HTMLAttributes: {
-          class: 'image-editor',
+          class: "image-editor",
         },
         allowBase64: true,
         inline: true,
       }),
       Placeholder.configure({
-        emptyNodeClass: 'is-editor-empty',
-        placeholder: 'Write here what you want.....',
+        emptyNodeClass: "is-editor-empty",
+        placeholder: "Write here what you want.....",
         showOnlyCurrent: true,
       }),
       Link.configure({
         HTMLAttributes: {
-          class: 'link-custom',
+          class: "link-custom",
         },
         autolink: false,
         linkOnPaste: true,
@@ -51,11 +51,12 @@ function useNoteEditor({ data }: Tprops) {
     editorProps: {
       attributes: {
         class:
-          'oultine-none min-h-[300px] mt-[30px] mb-[75px] px-2 border-none outline-none ring-0 prose prose-invert max-w-full',
-        spellcheck: 'false',
+          "oultine-none min-h-[300px] mt-[30px] mb-[75px] px-2 border-none outline-none ring-0 prose prose-invert max-w-full",
+        spellcheck: "false",
       },
     },
     onUpdate: ({ editor }) => {
+      if (!data) return;
       const content = editor.getHTML();
       saveContent({
         folder_id: data.folder_id,
