@@ -15,12 +15,14 @@ interface EditableProps extends InputHTMLAttributes<HTMLInputElement> {
   maxLength: number;
   isEdit: boolean;
   setIsEdit: Dispatch<SetStateAction<boolean>>;
+  onSubmit?: (e: React.FormEvent) => void;
 }
 
 const Editable: FC<EditableProps> = ({
   className,
   value,
   maxLength,
+  onSubmit,
   isEdit,
   setIsEdit,
   ...props
@@ -37,7 +39,7 @@ const Editable: FC<EditableProps> = ({
   return (
     <>
       {isEdit ? (
-        <div className="w-full ">
+        <form className="w-full" onSubmit={onSubmit}>
           <input
             className={cn("bg-transparent outline-none  ", className)}
             maxLength={Number(maxLength)}
@@ -53,7 +55,7 @@ const Editable: FC<EditableProps> = ({
           >
             {currValue}/{maxLength}
           </span>
-        </div>
+        </form>
       ) : (
         <div
           className="flex gap-2 w-full break-words cursor-pointer"

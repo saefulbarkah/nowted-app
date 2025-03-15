@@ -59,6 +59,11 @@ export const NoteEditor = ({ folder_id, folder, note, isActive }: TNoteEditorPro
         <header className="sticky top-0 bg-background pt-[30px]">
           <div className="flex justify-between items-center gap-5 mb-[20px] relative">
             <Editable
+              onSubmit={async (e) => {
+                e.preventDefault();
+                await handleSaveTitle();
+                setIsEdit(false);
+              }}
               className={`text-[30px] text-white font-semibold w-full border-white/[5%] border-b  ${
                 onSave && "opacity-10 blur-sm"
               } ${isError && "border-red-500 border-b"}`}
