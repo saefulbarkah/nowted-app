@@ -39,6 +39,7 @@ function MoveToTrash({ open, setOpen, data }: TProps) {
     setLoading(false);
     toast.success("Succesfully moving note to trash");
     setActiveNote("");
+    setOpen(false);
     router.refresh();
   };
   return (
