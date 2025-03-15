@@ -1,13 +1,13 @@
-'use client';
-import React from 'react';
-import { Card, CardContent } from '../ui/card';
-import useNotes from '@/hooks/useNotes';
-import { dateToString, toPlainText } from '@/lib/utils';
-import { useRecentStore } from '@/store/useRecentStore';
-import { useActiveNote } from '@/store/useActiveNote';
-import { AiFillFolderOpen, AiFillStar, AiOutlineStar } from 'react-icons/ai';
-import MenuLists from '../MenuLists';
-import EmptyInfo from '../EmptyInfo';
+"use client";
+import React from "react";
+import { Card, CardContent } from "../ui/card";
+import useNotes from "@/hooks/useNotes";
+import { dateToString, toPlainText } from "@/lib/utils";
+import { useRecentStore } from "@/store/useRecentStore";
+import { useActiveNote } from "@/store/useActiveNote";
+import { AiFillFolderOpen, AiFillStar, AiOutlineStar } from "react-icons/ai";
+import MenuLists from "../MenuLists";
+import EmptyInfo from "../EmptyInfo";
 
 interface TProps {
   folder_id: string;
@@ -33,9 +33,7 @@ export const NoteLists = ({ folder_id }: TProps) => {
       {notes?.map((item, i) => (
         <Card
           className={`bg-white/[3%] border-none hover:bg-white/[7%] transition cursor-pointer mb-5 last-of-type:mb-0 rounded-sm ${
-            item.id_note === activeNote?.id_note
-              ? 'bg-white/[7%] text-white'
-              : 'text-white/[40%]'
+            item.id_note === activeNote?.id_note ? "bg-white/[7%] text-white" : "text-white/[40%]"
           }`}
           key={i}
           onClick={() => {
@@ -48,17 +46,11 @@ export const NoteLists = ({ folder_id }: TProps) => {
               {item.name}
             </h2>
             <div className="flex inactive-text mt-[10px] items-center max-w-full">
-              {item.favorite && (
-                <AiFillStar className="text-yellow-500 text-sm mr-1" />
-              )}
-              {!item.favorite && (
-                <AiOutlineStar className="text-white text-sm mr-1" />
-              )}
-              <p className="font-normal mr-2">
-                {dateToString({ values: item.createdAt })}
-              </p>
+              {item.favorite && <AiFillStar className="text-yellow-500 text-sm mr-1" />}
+              {!item.favorite && <AiOutlineStar className="text-white text-sm mr-1" />}
+              <p className="font-normal mr-2">{dateToString({ values: item.createdAt })}</p>
               <p className="truncate font-normal flex-1">
-                {toPlainText({ value: item.content as string, type: 'html' })}
+                {toPlainText({ value: item.content as string, type: "html" })}
               </p>
             </div>
           </CardContent>
